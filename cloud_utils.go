@@ -120,14 +120,14 @@ func Headers(request *http.Request, config Config, timestamp string, sign string
 }
 
 
-func printRequest(request *http.Request, body string) {
+func PrintRequest(request *http.Request, body string) {
 	fmt.Println("[" + request.Method + "] url:[" + request.URL.String() + "]")
 	fmt.Printf("\tHeader: %s\n" , request.Header)
 	fmt.Println("\tBody: " + body)
 }
 
 
-func printResponse(response *CloudResponse) {
+func PrintResponse(response *CloudResponse) {
 	fmt.Println("\tResponse: ")
 	fmt.Println("\t\tHttpStatus: " + IntToString(response.httpStatus))
 	fmt.Println("\t\tBody: " + response.response)

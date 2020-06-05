@@ -9,22 +9,22 @@ import (
 // GET https://api-cloud.bitmart.com/system/time
 func TestGetSystemTime(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getSystemTime()
+	ac, err := c.GetSystemTime()
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 //GET https://api-cloud.bitmart.com/system/service
 func TestGetSystemService(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getSystemService()
+	ac, err := c.GetSystemService()
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 

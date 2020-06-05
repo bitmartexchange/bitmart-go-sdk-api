@@ -1,22 +1,22 @@
 package bitmart
 
 // currencies
-func (cloudClient *CloudClient) getSpotCurrencies() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotCurrencies() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_CURRENCIES_URL, NONE)
 }
 
 // symbols
-func (cloudClient *CloudClient) getSpotSymbol() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSymbol() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_SYMBOLS_URL, NONE)
 }
 
 // symbols/details
-func (cloudClient *CloudClient) getSpotSymbolDetail() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSymbolDetail() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_SYMBOLS_DETAILS_URL, NONE)
 }
 
 // ticker
-func (cloudClient *CloudClient) getSpotTicker(symbol string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotTicker(symbol string) (*CloudResponse, error) {
 	params := NewParams()
 	if symbol != "" {
 		params["symbol"] = symbol
@@ -26,12 +26,12 @@ func (cloudClient *CloudClient) getSpotTicker(symbol string) (*CloudResponse, er
 }
 
 // steps
-func (cloudClient *CloudClient) getSpotSteps() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSteps() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_STEPS_URL, NONE)
 }
 
 // symbols/kline
-func (cloudClient *CloudClient) getSpotSymbolKline(symbol string, from int64, to int64, step int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int64, to int64, step int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["from"] = from
@@ -42,7 +42,7 @@ func (cloudClient *CloudClient) getSpotSymbolKline(symbol string, from int64, to
 }
 
 // symbols/book
-func (cloudClient *CloudClient) getSpotSymbolBook(symbol string, precision int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	if precision != 0 {
@@ -53,14 +53,14 @@ func (cloudClient *CloudClient) getSpotSymbolBook(symbol string, precision int) 
 }
 
 // symbols/trades
-func (cloudClient *CloudClient) getSpotSymbolTrade(symbol string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSymbolTrade(symbol string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_TRADES_URL, params, NONE)
 }
 
 // wallet
-func (cloudClient *CloudClient) getSpotWallet() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotWallet() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_WALLET_URL, KEYED)
 }
 
@@ -72,7 +72,7 @@ type LimitBuyOrder struct {
 	Price  string `json:"price"`
 }
 
-func (cloudClient *CloudClient) postSpotSubmitLimitBuyOrder(order LimitBuyOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotSubmitLimitBuyOrder(order LimitBuyOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = order.Symbol
 	params["side"] = "buy"
@@ -88,7 +88,7 @@ type LimitSellOrder struct {
 	Price  string `json:"price"`
 }
 
-func (cloudClient *CloudClient) postSpotSubmitLimitSellOrder(order LimitSellOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotSubmitLimitSellOrder(order LimitSellOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = order.Symbol
 	params["side"] = "sell"
@@ -103,7 +103,7 @@ type MarketBuyOrder struct {
 	Notional string `json:"notional"`
 }
 
-func (cloudClient *CloudClient) postSpotSubmitMarketBuyOrder(order MarketBuyOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotSubmitMarketBuyOrder(order MarketBuyOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = order.Symbol
 	params["side"] = "buy"
@@ -117,7 +117,7 @@ type MarketSellOrder struct {
 	Size   string `json:"size"`
 }
 
-func (cloudClient *CloudClient) postSpotSubmitMarketSellOrder(order MarketSellOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotSubmitMarketSellOrder(order MarketSellOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = order.Symbol
 	params["side"] = "sell"
@@ -127,7 +127,7 @@ func (cloudClient *CloudClient) postSpotSubmitMarketSellOrder(order MarketSellOr
 }
 
 // cancel_order
-func (cloudClient *CloudClient) postSpotCancelOrder(symbol string, entrustId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, entrustId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["entrust_id"] = entrustId
@@ -136,7 +136,7 @@ func (cloudClient *CloudClient) postSpotCancelOrder(symbol string, entrustId int
 
 
 // cancel_orders
-func (cloudClient *CloudClient) postSpotCancelOrders(symbol string, side string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["side"] = side
@@ -144,7 +144,7 @@ func (cloudClient *CloudClient) postSpotCancelOrders(symbol string, side string)
 }
 
 // order_detail
-func (cloudClient *CloudClient) getSpotOrderDetail(symbol string, entrustId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrderDetail(symbol string, entrustId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["entrust_id"] = entrustId
@@ -153,7 +153,7 @@ func (cloudClient *CloudClient) getSpotOrderDetail(symbol string, entrustId int6
 
 
 // orders
-func (cloudClient *CloudClient) getSpotOrders(symbol string, offset int, limit int, status string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrders(symbol string, offset int, limit int, status string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["offset"] = offset
@@ -164,7 +164,7 @@ func (cloudClient *CloudClient) getSpotOrders(symbol string, offset int, limit i
 
 
 // trades
-func (cloudClient *CloudClient) getSpotHistoryTrades(symbol string, offset int, limit int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, offset int, limit int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["offset"] = offset
@@ -172,7 +172,7 @@ func (cloudClient *CloudClient) getSpotHistoryTrades(symbol string, offset int, 
 	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
 }
 
-func (cloudClient *CloudClient) getSpotOrderTrades(symbol string, entrustId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrderTrades(symbol string, entrustId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["entrust_id"] = entrustId

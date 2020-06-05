@@ -35,13 +35,13 @@ Usage
 package gotest
 
 import (
-	"log"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
+	"log"
 )
 
 func main() {
 
-	client := NewClient(Config{
+	client := bitmart.NewClient(bitmart.Config{
 		Url:"https://api-cloud.bitmart.com",
 		ApiKey:"",
 		SecretKey:"",
@@ -50,15 +50,14 @@ func main() {
 		IsPrint:true,
 	})
 
-	ac, err := client.postSpotSubmitLimitBuyOrder(LimitBuyOrder{Symbol:"BTC_USDT", Size:"8800", Price:"0.01"})
+	var ac, err = client.PostSpotSubmitLimitBuyOrder(bitmart.LimitBuyOrder{Symbol: "BTC_USDT", Size: "8800", Price: "0.01"})
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		bitmart.PrintResponse(ac)
 	}
 
 }
-
 
 ```
 

@@ -3,13 +3,13 @@ package bitmart
 const EXCHANGE  = "bitmart"
 
 // contracts
-func (cloudClient *CloudClient) getContractAllContracts() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractAllContracts() (*CloudResponse, error) {
 	params := NewParams()
 	params["exchange"] = EXCHANGE
 	return cloudClient.requestWithParams(GET, API_CONTRACT_CURRENCIES_URL, params, NONE)
 }
 
-func (cloudClient *CloudClient) getContractContracts(contractId int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractContracts(contractId int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = IntToString(contractId)
 	params["exchange"] = EXCHANGE
@@ -18,7 +18,7 @@ func (cloudClient *CloudClient) getContractContracts(contractId int) (*CloudResp
 
 
 // pnls
-func (cloudClient *CloudClient) getContractPnls(contractId int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractPnls(contractId int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	return cloudClient.requestWithParams(GET, API_CONTRACT_PNLS_URL, params, NONE)
@@ -26,17 +26,17 @@ func (cloudClient *CloudClient) getContractPnls(contractId int) (*CloudResponse,
 
 
 // indexes
-func (cloudClient *CloudClient) getContractIndexes() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractIndexes() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_CONTRACT_INDEXES_URL, NONE)
 }
 
 
 // tickers
-func (cloudClient *CloudClient) getContractTickers() (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractTickers() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_CONTRACT_TICKERS_URL, NONE)
 }
 
-func (cloudClient *CloudClient) getContractTickersByContractId(contractId int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractTickersByContractId(contractId int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	return cloudClient.requestWithParams(GET, API_CONTRACT_TICKERS_URL, params, NONE)
@@ -44,7 +44,7 @@ func (cloudClient *CloudClient) getContractTickersByContractId(contractId int) (
 
 
 // quote
-func (cloudClient *CloudClient) getContractQuote(contractId int, startTime int, endTime int, unit int, resolution string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractQuote(contractId int, startTime int, endTime int, unit int, resolution string) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	params["startTime"] = startTime
@@ -56,7 +56,7 @@ func (cloudClient *CloudClient) getContractQuote(contractId int, startTime int, 
 
 
 // index quote
-func (cloudClient *CloudClient) getContractIndexQuote(indexId int, startTime int, endTime int, unit int, resolution string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractIndexQuote(indexId int, startTime int, endTime int, unit int, resolution string) (*CloudResponse, error) {
 	params := NewParams()
 	params["indexID"] = indexId
 	params["startTime"] = startTime
@@ -67,14 +67,14 @@ func (cloudClient *CloudClient) getContractIndexQuote(indexId int, startTime int
 }
 
 // trades
-func (cloudClient *CloudClient) getContractTrades(contractId int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractTrades(contractId int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	return cloudClient.requestWithParams(GET, API_CONTRACT_TRADES_URL, params, NONE)
 }
 
 // depth
-func (cloudClient *CloudClient) getContractDepth(contractId int, count int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractDepth(contractId int, count int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	if count != 0 {
@@ -84,7 +84,7 @@ func (cloudClient *CloudClient) getContractDepth(contractId int, count int) (*Cl
 }
 
 // funding rate
-func (cloudClient *CloudClient) getContractFundingRate(contractId int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractFundingRate(contractId int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	return cloudClient.requestWithParams(GET, API_CONTRACT_FUNDING_RATE_URL, params, NONE)
@@ -92,7 +92,7 @@ func (cloudClient *CloudClient) getContractFundingRate(contractId int) (*CloudRe
 
 // --------------------- Trading API
 // userOrders
-func (cloudClient *CloudClient) getContractUserOrders(contractId int, status int, offset int, size int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractUserOrders(contractId int, status int, offset int, size int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	params["status"] = status
@@ -104,7 +104,7 @@ func (cloudClient *CloudClient) getContractUserOrders(contractId int, status int
 }
 
 // userOrderInfo
-func (cloudClient *CloudClient) getContractUserOrderInfo(contractId int, orderId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractUserOrderInfo(contractId int, orderId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	params["orderID"] = orderId
@@ -112,7 +112,7 @@ func (cloudClient *CloudClient) getContractUserOrderInfo(contractId int, orderId
 }
 
 // userTrades
-func (cloudClient *CloudClient) getContractUserTrades(contractId int, offset int, size int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractUserTrades(contractId int, offset int, size int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	if offset == 0 && size != 0 {
@@ -124,7 +124,7 @@ func (cloudClient *CloudClient) getContractUserTrades(contractId int, offset int
 }
 
 // orderTrades
-func (cloudClient *CloudClient) getContractOrderTrades(contractId int, orderId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractOrderTrades(contractId int, orderId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	params["orderID"] = orderId
@@ -143,14 +143,14 @@ type CreateOrder struct {
 }
 
 // batchOrders
-func (cloudClient *CloudClient) postContractBatchOrders(orders []CreateOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostContractBatchOrders(orders []CreateOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["orders"] = orders
 	return cloudClient.requestWithParams(POST, API_CONTRACT_USER_BATCH_ORDERS_URL, params, SIGNED)
 }
 
 // submitOrder
-func (cloudClient *CloudClient) postContractSubmitOrders(order CreateOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostContractSubmitOrders(order CreateOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["contract_id"] = order.ContractId
 	params["category"] = order.Category
@@ -169,7 +169,7 @@ type CancelOrder struct {
 }
 
 // cancelOrders
-func (cloudClient *CloudClient) postContractCancelOrders(cancelOrders []CancelOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostContractCancelOrders(cancelOrders []CancelOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["orders"] = cancelOrders
 	return cloudClient.requestWithParams(POST, API_CONTRACT_CANCEL_ORDERS_URL, params, SIGNED)
@@ -177,7 +177,7 @@ func (cloudClient *CloudClient) postContractCancelOrders(cancelOrders []CancelOr
 
 
 // accounts
-func (cloudClient *CloudClient) getContractAccounts(coinCode string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractAccounts(coinCode string) (*CloudResponse, error) {
 	params := NewParams()
 	params["coinCode"] = coinCode
 	return cloudClient.requestWithParams(GET, API_CONTRACT_ACCOUNTS_URL, params, KEYED)
@@ -185,14 +185,14 @@ func (cloudClient *CloudClient) getContractAccounts(coinCode string) (*CloudResp
 
 
 // userPositions
-func (cloudClient *CloudClient) getContractUserPositions(contractId int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractUserPositions(contractId int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	return cloudClient.requestWithParams(GET, API_CONTRACT_USER_POSITIONS_URL, params, KEYED)
 }
 
 // userLiqRecords
-func (cloudClient *CloudClient) getContractUserLiqRecords(contractId int, orderId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractUserLiqRecords(contractId int, orderId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	if orderId != 0 {
@@ -202,7 +202,7 @@ func (cloudClient *CloudClient) getContractUserLiqRecords(contractId int, orderI
 }
 
 // positionFee
-func (cloudClient *CloudClient) getContractPositionFee(contractId int, positionId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetContractPositionFee(contractId int, positionId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["contractID"] = contractId
 	params["positionID"] = positionId
@@ -210,7 +210,7 @@ func (cloudClient *CloudClient) getContractPositionFee(contractId int, positionI
 }
 
 // marginOper
-func (cloudClient *CloudClient) postContractMarginOper(contractId int, positionId int64, vol int, operType int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostContractMarginOper(contractId int, positionId int64, vol int, operType int) (*CloudResponse, error) {
 	params := NewParams()
 	params["contract_id"] = contractId
 	params["position_id"] = positionId

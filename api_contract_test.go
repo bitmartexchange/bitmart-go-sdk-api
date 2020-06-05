@@ -12,22 +12,22 @@ const (
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/contracts
 func TestGetContractContracts(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractContracts(CONTRACT_ID)
+	ac, err := c.GetContractContracts(CONTRACT_ID)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/pnls
 func TestGetContractPnl(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractPnls(CONTRACT_ID)
+	ac, err := c.GetContractPnls(CONTRACT_ID)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
@@ -35,121 +35,121 @@ func TestGetContractPnl(t *testing.T) {
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/indexes
 func TestGetContractIndexes(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractIndexes()
+	ac, err := c.GetContractIndexes()
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/tickers
 func TestGetContractTickers(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractTickers()
+	ac, err := c.GetContractTickers()
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/quote
 func TestGetContractQuote(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractQuote(CONTRACT_ID, 1584343602, 1585343602, 5, "M")
+	ac, err := c.GetContractQuote(CONTRACT_ID, 1584343602, 1585343602, 5, "M")
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/indexquote
 func TestGetContractIndexQuote(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractIndexQuote(1, 1584343602, 1585343602, 1, "H")
+	ac, err := c.GetContractIndexQuote(1, 1584343602, 1585343602, 1, "H")
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/trades
 func TestGetContractTrade(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractTrades(CONTRACT_ID)
+	ac, err := c.GetContractTrades(CONTRACT_ID)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/depth
 func TestGetContractDepth(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractDepth(CONTRACT_ID, 1)
+	ac, err := c.GetContractDepth(CONTRACT_ID, 1)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/fundingrate
 func TestGetContractFundingRate(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractFundingRate(CONTRACT_ID)
+	ac, err := c.GetContractFundingRate(CONTRACT_ID)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 //GET https://api-cloud.bitmart.com/contract/v1/ifcontract/userOrders
 func TestGetContractUserOrders(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractUserOrders(CONTRACT_ID, 0, 0, 0)
+	ac, err := c.GetContractUserOrders(CONTRACT_ID, 0, 0, 0)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/userOrderInfo
 func TestGetContractUserOrderInfo(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractUserOrderInfo(CONTRACT_ID, 2802614433)
+	ac, err := c.GetContractUserOrderInfo(CONTRACT_ID, 2802614433)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/userTrades
 func TestGetContractUserTrades(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractUserTrades(CONTRACT_ID, 1, 10)
+	ac, err := c.GetContractUserTrades(CONTRACT_ID, 1, 10)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/orderTrades
 func TestGetContractOrderTrades(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractOrderTrades(CONTRACT_ID, 2802614433)
+	ac, err := c.GetContractOrderTrades(CONTRACT_ID, 2802614433)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
@@ -162,11 +162,11 @@ func TestPostContractBatchOrders(t *testing.T) {
 		{ContractId: 1, Category: 1, Way: 1, CustomId: 100, OpenType: 1, Leverage: 10, Price: "9000", Vol: "1"},
 		{ContractId: 1, Category: 1, Way: 1, CustomId: 100, OpenType: 1, Leverage: 10, Price: "9100", Vol: "1"},
 	}
-	ac, err := c.postContractBatchOrders(orderList)
+	ac, err := c.PostContractBatchOrders(orderList)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
@@ -176,11 +176,11 @@ func TestPostContractBatchOrders(t *testing.T) {
 func TestPostContractSubmitOrders(t *testing.T) {
 	c := NewTestClient()
 	var order = CreateOrder{ContractId: 1, Category: 1, Way: 1, CustomId: 10000, OpenType: 1, Leverage: 10, Price: "9000", Vol: "1"}
-	ac, err := c.postContractSubmitOrders(order)
+	ac, err := c.PostContractSubmitOrders(order)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
@@ -191,65 +191,65 @@ func TestPostContractCancelOrders(t *testing.T) {
 	var orderIds = []CancelOrder{
 		{ContractId: CONTRACT_ID, Orders: []int64{3826296405, 3826296406}},
 	}
-	ac, err := c.postContractCancelOrders(orderIds)
+	ac, err := c.PostContractCancelOrders(orderIds)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/accounts
 func TestGetContractAccounts(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractAccounts("USDT")
+	ac, err := c.GetContractAccounts("USDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/userPositions
 func TestGetContractUserPositions(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractUserPositions(CONTRACT_ID)
+	ac, err := c.GetContractUserPositions(CONTRACT_ID)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/userLiqRecords
 func TestGetContractUserLiqRecords(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractUserLiqRecords(CONTRACT_ID, 3826296406)
+	ac, err := c.GetContractUserLiqRecords(CONTRACT_ID, 3826296406)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/contract/v1/ifcontract/positionFee
 func TestGetContractPositionFee(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.getContractPositionFee(CONTRACT_ID, 3826296406)
+	ac, err := c.GetContractPositionFee(CONTRACT_ID, 3826296406)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
 
 // POST https://api-cloud.bitmart.com/contract/v1/ifcontract/marginOper
 func TestPostContractMarginOper(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.postContractMarginOper(CONTRACT_ID, 3826296406, 100, 1)
+	ac, err := c.PostContractMarginOper(CONTRACT_ID, 3826296406, 100, 1)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		printResponse(ac)
+		PrintResponse(ac)
 	}
 }
