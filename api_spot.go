@@ -127,10 +127,10 @@ func (cloudClient *CloudClient) PostSpotSubmitMarketSellOrder(order MarketSellOr
 }
 
 // cancel_order
-func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, entrustId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
-	params["entrust_id"] = entrustId
+	params["order_id"] = orderId
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDER_URL, params, SIGNED)
 }
 
@@ -144,10 +144,10 @@ func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string)
 }
 
 // order_detail
-func (cloudClient *CloudClient) GetSpotOrderDetail(symbol string, entrustId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrderDetail(symbol string, orderId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
-	params["entrust_id"] = entrustId
+	params["order_id"] = orderId
 	return cloudClient.requestWithParams(GET, API_SPOT_ORDER_DETAIL_URL, params, KEYED)
 }
 
@@ -172,9 +172,9 @@ func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, offset int, 
 	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
 }
 
-func (cloudClient *CloudClient) GetSpotOrderTrades(symbol string, entrustId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrderTrades(symbol string, orderId int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
-	params["entrust_id"] = entrustId
+	params["order_id"] = orderId
 	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
 }
