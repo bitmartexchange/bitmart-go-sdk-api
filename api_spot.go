@@ -31,7 +31,7 @@ func (cloudClient *CloudClient) GetSpotSteps() (*CloudResponse, error) {
 }
 
 // symbols/kline
-func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int64, to int64, step int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int, to int, step int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["from"] = from

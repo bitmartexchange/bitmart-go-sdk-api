@@ -72,7 +72,7 @@ func TestGetSpotSteps(t *testing.T) {
 // GET https://api-cloud.bitmart.com/spot/v1/symbols/kline
 func TestGetSpotSymbolKline(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotSymbolKline(TEST_SYMBOL, 1525760116000, 1525769116000, 15)
+	ac, err := c.GetSpotSymbolKline(TEST_SYMBOL, 1525760116, 1525769116, 15)
 	if err != nil {
 		log.Panic(err)
 	} else {
