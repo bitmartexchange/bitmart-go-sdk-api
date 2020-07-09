@@ -40,6 +40,8 @@ const (
 
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
+	USER_AGENT       = "User-Agent"
+	VERSION       = "BitMart-GO-SDK/1.0.0"
 
 
 	APPLICATION_JSON      = "application/json"
@@ -52,6 +54,15 @@ const (
 	// system url
 	API_SYSTEM_TIME_URL    = "/system/time"
 	API_SYSTEM_SERVICE_URL = "/system/service"
+
+	// account url
+	API_ACCOUNT_CURRENCIES_URL = "/account/v1/currencies"
+	API_ACCOUNT_WALLET_URL = "/account/v1/wallet"
+	API_ACCOUNT_DEPOSIT_ADDRESS_URL = "/account/v1/deposit/address"
+	API_ACCOUNT_WITHDRAW_CHARGE_URL = "/account/v1/withdraw/charge"
+	API_ACCOUNT_WITHDRAW_APPLY_URL = "/account/v1/withdraw/apply"
+	API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL = "/account/v1/deposit-withdraw/history"
+	API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL_URL = "/account/v1/deposit-withdraw/detail"
 
 	// spot url
 	API_SPOT_CURRENCIES_URL      = "/spot/v1/currencies"

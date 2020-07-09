@@ -27,7 +27,7 @@ type ApiMessage struct {
 func GetDefaultConfig() *Config {
 	var config Config
 
-	config.Url = ""
+	config.Url = "http://api-cloud.bitmartdev.com"
 	config.ApiKey = "80618e45710812162b04892c7ee5ead4a3cc3e56"
 	config.SecretKey = "6c6c98544461bbe71db2bca4c6d7fd0021e0ba9efc215f9c6ad41852df9d9df9"
 	config.Memo = "test001"
@@ -121,8 +121,10 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 	}
 
 	// set header
-	if auth == KEYED {
-		Headers(request, config, "", "")
+	if auth == NONE {
+		Headers(request, "", "", "")
+	} else if auth == KEYED {
+		Headers(request, config.ApiKey, "", "")
 	} else if auth == SIGNED {
 		timestamp := UTCTime()
 		sign, err := HmacSha256Base64Signer(
@@ -130,7 +132,7 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 		if err != nil {
 			return response, err
 		}
-		Headers(request, config, timestamp, sign)
+		Headers(request, config.ApiKey, timestamp, sign)
 	}
 
 	if config.IsPrint {

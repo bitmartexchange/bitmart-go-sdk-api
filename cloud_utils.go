@@ -111,12 +111,22 @@ func CreateQueryString(params map[string]interface{}) string {
 /**
   add header
  */
-func Headers(request *http.Request, config Config, timestamp string, sign string) {
+func Headers(request *http.Request, apiKey string, timestamp string, sign string) {
 	request.Header.Add(ACCEPT, APPLICATION_JSON)
 	request.Header.Add(CONTENT_TYPE, APPLICATION_JSON_UTF8)
-	request.Header.Add(X_BM_KEY, config.ApiKey)
-	request.Header.Add(X_BM_SIGN, sign)
-	request.Header.Add(X_BM_TIMESTAMP, timestamp)
+	request.Header.Add(USER_AGENT, VERSION)
+
+	if apiKey != "" {
+		request.Header.Add(X_BM_KEY, apiKey)
+	}
+
+	if sign != "" {
+		request.Header.Add(X_BM_SIGN, sign)
+	}
+
+	if timestamp != "" {
+		request.Header.Add(X_BM_TIMESTAMP, timestamp)
+	}
 }
 
 
