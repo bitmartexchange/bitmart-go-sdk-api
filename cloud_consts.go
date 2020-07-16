@@ -41,7 +41,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT       = "User-Agent"
-	VERSION       = "BitMart-GO-SDK/1.0.0"
+	VERSION       = "BitMart-GO-SDK/1.0.1"
 
 
 	APPLICATION_JSON      = "application/json"
@@ -75,7 +75,7 @@ const (
 	API_SPOT_SYMBOLS_TRADES_URL  = "/spot/v1/symbols/trades"
 	API_SPOT_WALLET_URL          = "/spot/v1/wallet"
 	API_SPOT_SUBMIT_ORDER_URL    = "/spot/v1/submit_order"
-	API_SPOT_CANCEL_ORDER_URL    = "/spot/v1/cancel_order"
+	API_SPOT_CANCEL_ORDER_URL    = "/spot/v2/cancel_order"
 	API_SPOT_CANCEL_ORDERS_URL   = "/spot/v1/cancel_orders"
 	API_SPOT_ORDER_DETAIL_URL    = "/spot/v1/order_detail"
 	API_SPOT_ORDERS_URL          = "/spot/v1/orders"
