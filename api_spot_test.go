@@ -164,7 +164,7 @@ func TestPostSpotSubmitMarketSellOrder(t *testing.T) {
 
 
 
-// POST https://api-cloud.bitmart.com/spot/v1/cancel_order
+// POST https://api-cloud.bitmart.com/spot/v2/cancel_order
 func TestPostSpotCancelOrder(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostSpotCancelOrder(TEST_SYMBOL, 2147601610)
