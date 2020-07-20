@@ -31,7 +31,8 @@ const (
 
 
 const (
-	API_URL = "https://api-cloud.bitmart.com"
+	API_URL_PRO = "https://api-cloud.bitmart.com"
+	API_URL_TEST = "http://api-cloud.bitmartdev.com"
 
 	X_BM_KEY        = "X-BM-KEY"
 	X_BM_SIGN        = "X-BM-SIGN"
