@@ -83,14 +83,14 @@ func TestGetSpotSymbolKline(t *testing.T) {
 // GET https://api-cloud.bitmart.com/spot/v1/symbols/book
 func TestGetSpotSymbolBook(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotSymbolBook(TEST_SYMBOL, 0) // find by default
+	ac, err := c.GetSpotSymbolBook(TEST_SYMBOL, 0, 0) // find by default
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
 
-	ab, err := c.GetSpotSymbolBook(TEST_SYMBOL, 8) // find by precision is 8
+	ab, err := c.GetSpotSymbolBook(TEST_SYMBOL, 8, 5) // find by precision is 8
 	if err != nil {
 		log.Panic(err)
 	} else {
