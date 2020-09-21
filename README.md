@@ -69,10 +69,14 @@ func main() {
 Release Notes
 =========================
 
-** 2020-07-16 
+###### 2020-07-16 
 - Interface Spot API `Cancel Order` update to v2 version that is `POST https://api-cloud.bitmart.com/spot/v2/cancel_order`
 - UserAgent set "BitMart-GO-SDK/1.0.1"
                                                     
+
+###### 2020-09-21
+- Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
+
 
 License
 =========================

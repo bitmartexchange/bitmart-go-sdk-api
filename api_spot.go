@@ -42,11 +42,15 @@ func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int, to i
 }
 
 // symbols/book
-func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int, size int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	if precision != 0 {
 		params["precision"] = precision
+	}
+
+	if size != 0 {
+		params["size"] = size
 	}
 
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_BOOK_URL, params, NONE)
