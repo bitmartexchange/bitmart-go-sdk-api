@@ -147,3 +147,16 @@ func PrintResponse(response *CloudResponse) {
 	fmt.Printf("\t\t\tRemaining: %d\n", response.limit.remaining)
 }
 
+
+func CreateChannel(channel string, symbol string) string {
+	return fmt.Sprintf("%s:%s", channel, symbol)
+}
+
+func CreateSubscribeParam(channels []string) ([]byte, error) {
+	return json.Marshal(OpParam{
+		Op:   "subscribe",
+		Args: channels,
+	})
+}
+
+

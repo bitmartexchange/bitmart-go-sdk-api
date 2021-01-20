@@ -1,7 +1,8 @@
 package bitmart
 
 type Config struct {
-	Url string
+	RestUrl string
+	WsUrl string
 	ApiKey string
 	SecretKey string
 	Memo string
@@ -31,18 +32,17 @@ const (
 
 
 const (
-	API_URL_PRO = "https://api-cloud.bitmart.com"
-	API_URL_TEST = "http://api-cloud.bitmartdev.com"
+	API_URL_PRO  = "https://api-cloud.bitmart.com"
+	WS_URL       = "wss://ws-manager-compress.bitmart.com?protocol=1.1"
 
-	X_BM_KEY        = "X-BM-KEY"
-	X_BM_SIGN        = "X-BM-SIGN"
-	X_BM_TIMESTAMP        = "X-BM-TIMESTAMP"
-
+	X_BM_KEY       = "X-BM-KEY"
+	X_BM_SIGN      = "X-BM-SIGN"
+	X_BM_TIMESTAMP = "X-BM-TIMESTAMP"
 
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
-	USER_AGENT       = "User-Agent"
-	VERSION       = "BitMart-GO-SDK/1.0.1"
+	USER_AGENT   = "User-Agent"
+	VERSION      = "BitMart-GO-SDK/1.0.1"
 
 
 	APPLICATION_JSON      = "application/json"
@@ -50,20 +50,20 @@ const (
 
 	GET    = "GET"
 	POST   = "POST"
-	DELETE   = "DELETE"
+	DELETE = "DELETE"
 
 	// system url
 	API_SYSTEM_TIME_URL    = "/system/time"
 	API_SYSTEM_SERVICE_URL = "/system/service"
 
 	// account url
-	API_ACCOUNT_CURRENCIES_URL = "/account/v1/currencies"
-	API_ACCOUNT_WALLET_URL = "/account/v1/wallet"
-	API_ACCOUNT_DEPOSIT_ADDRESS_URL = "/account/v1/deposit/address"
-	API_ACCOUNT_WITHDRAW_CHARGE_URL = "/account/v1/withdraw/charge"
-	API_ACCOUNT_WITHDRAW_APPLY_URL = "/account/v1/withdraw/apply"
+	API_ACCOUNT_CURRENCIES_URL               = "/account/v1/currencies"
+	API_ACCOUNT_WALLET_URL                   = "/account/v1/wallet"
+	API_ACCOUNT_DEPOSIT_ADDRESS_URL          = "/account/v1/deposit/address"
+	API_ACCOUNT_WITHDRAW_CHARGE_URL          = "/account/v1/withdraw/charge"
+	API_ACCOUNT_WITHDRAW_APPLY_URL           = "/account/v1/withdraw/apply"
 	API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL = "/account/v1/deposit-withdraw/history"
-	API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL_URL = "/account/v1/deposit-withdraw/detail"
+	API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL_URL  = "/account/v1/deposit-withdraw/detail"
 
 	// spot url
 	API_SPOT_CURRENCIES_URL      = "/spot/v1/currencies"
@@ -104,6 +104,27 @@ const (
 	API_CONTRACT_USER_LIQ_RECORDS_URL  = "/contract/v1/ifcontract/userLiqRecords"
 	API_CONTRACT_POSITION_FEE_URL      = "/contract/v1/ifcontract/positionFee"
 	API_CONTRACT_MARGIN_OPER_URL       = "/contract/v1/ifcontract/marginOper"
+
+	// web socket
+	// spot common
+	WS_PUBLIC_SPOT_TICKER     = "spot/ticker"
+	WS_PUBLIC_SPOT_TRADE      = "spot/trade"
+	WS_PUBLIC_SPOT_DEPTH5     = "spot/depth5"
+	WS_PUBLIC_SPOT_DEPTH400   = "spot/depth400"
+	WS_PUBLIC_SPOT_KLINE_1M   = "spot/kline1m"
+	WS_PUBLIC_SPOT_KLINE_3M   = "spot/kline3m"
+	WS_PUBLIC_SPOT_KLINE_5M   = "spot/kline5m"
+	WS_PUBLIC_SPOT_KLINE_15M  = "spot/kline15m"
+	WS_PUBLIC_SPOT_KLINE_30M  = "spot/kline30m"
+	WS_PUBLIC_SPOT_KLINE_1H   = "spot/kline1H"
+	WS_PUBLIC_SPOT_KLINE_2H   = "spot/kline2H"
+	WS_PUBLIC_SPOT_KLINE_4H   = "spot/kline4H"
+	WS_PUBLIC_SPOT_KLINE_1D   = "spot/kline1D"
+	WS_PUBLIC_SPOT_KLINE_1W   = "spot/kline1W"
+	WS_PUBLIC_SPOT_KLINE_1MON = "spot/kline1M"
+
+	// spot user
+	WS_USER_SPOT_ORDER = "spot/user/order"
 
 
 )
