@@ -48,7 +48,7 @@ import (
 func main() {
 
 	client := bitmart.NewClient(bitmart.Config{
-		RestUrl:"https://api-cloud.bitmart.com", // Ues Https url
+		Url:"https://api-cloud.bitmart.com", // Ues Https url
 		ApiKey:"Your API KEY",
 		SecretKey:"Your Secret KEY",
 		Memo:"Your Memo",
