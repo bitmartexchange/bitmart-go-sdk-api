@@ -1,7 +1,7 @@
 package bitmart
 
 type Config struct {
-	RestUrl string
+	Url string
 	WsUrl string
 	ApiKey string
 	SecretKey string
