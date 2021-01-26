@@ -17,7 +17,7 @@ Feature
 - Efficiency, higher speeds, and lower latencies
 - Priority in development and maintenance
 - Dedicated and responsive technical support
-
+- Provide webSocket apis calls
 
 Installation
 =========================
@@ -35,6 +35,8 @@ Usage
 * An example of a spot trade API
 * Replace it with your own API KEY
 * Run
+
+#### API Example
 ```go
 package gotest
 
@@ -47,10 +49,10 @@ func main() {
 
 	client := bitmart.NewClient(bitmart.Config{
 		Url:"https://api-cloud.bitmart.com", // Ues Https url
-		ApiKey:"",
-		SecretKey:"",
-		Memo:"",
-		TimeoutSecond:30,
+		ApiKey:"Your API KEY",
+		SecretKey:"Your Secret KEY",
+		Memo:"Your Memo",
+		TimeoutSecond:10,
 		IsPrint:true,
 	})
 
@@ -61,6 +63,48 @@ func main() {
 		bitmart.PrintResponse(ac)
 	}
 
+}
+
+```
+
+#### WebSocket Example
+```go
+package gotest
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+    "fmt"
+    "sync"
+)
+
+func OnMessage(message string) {
+	fmt.Println("------------------------>")
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	ws := bitmart.NewWS(bitmart.Config{
+                        		WsUrl: "wss://ws-manager-compress.bitmart.com/?protocol=1.1",
+                        		ApiKey:"Your API KEY",
+                        		SecretKey:"Your Secret KEY",
+                        		Memo:"Your Memo",
+                        		TimeoutSecond:10,
+                        		IsPrint:true,
+                        	})
+	_ = ws.Connection(OnMessage)
+
+	channels := []string{
+		// public channel
+		bitmart.CreateChannel(WS_PUBLIC_SPOT_TICKER, "BTC_USDT"),
+		// private channel
+		bitmart.CreateChannel(WS_USER_SPOT_ORDER, "BTC_USDT"),
+	}
+	ws.SubscribeWithLogin(channels)
+
+
+	// Just test, Please do not use in production.
+	wg.Wait()
 }
 
 ```
