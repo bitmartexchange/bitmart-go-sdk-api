@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 // GET https://api-cloud.bitmart.com/account/v1/currencies
 func TestGetAccountCurrencies(t *testing.T) {
 	c := NewTestClient()
@@ -17,15 +16,21 @@ func TestGetAccountCurrencies(t *testing.T) {
 	}
 }
 
-
 // GET https://api-cloud.bitmart.com/account/v1/wallet
 func TestGetAccountWallet(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetAccountWallet("1")
+	ac, err := c.GetAccountWallet("BTC") // find by currency
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
+	}
+
+	ab, err := c.GetAccountWallet("") // find all
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ab)
 	}
 }
 
@@ -68,14 +73,13 @@ func TestPostAccountWithdrawApply(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/history
+// GET https://api-cloud.bitmart.com/account/v2/deposit-withdraw/history
 func TestPostAccountWithdrawHistory(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetDepositWithdrawHistory(HistoryApply{
 		Currency:      "USDT-ERC20",
 		OperationType: "withdraw",
-		Offset:        1,
-		Limit:         10,
+		N:             100,
 	})
 	if err != nil {
 		log.Panic(err)
@@ -94,4 +98,3 @@ func TestPostAccountWithdrawDetail(t *testing.T) {
 		PrintResponse(ac)
 	}
 }
-
