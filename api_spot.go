@@ -69,65 +69,37 @@ func (cloudClient *CloudClient) GetSpotWallet() (*CloudResponse, error) {
 }
 
 // submit_order
-
-type LimitBuyOrder struct {
-	Symbol string `json:"symbol"`
-	Size   string `json:"size"`
-	Price  string `json:"price"`
-}
-
-func (cloudClient *CloudClient) PostSpotSubmitLimitBuyOrder(order LimitBuyOrder) (*CloudResponse, error) {
-	params := NewParams()
-	params["symbol"] = order.Symbol
-	params["side"] = "buy"
-	params["type"] = "limit"
-	params["size"] = order.Size
-	params["price"] = order.Price
-	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_ORDER_URL, params, SIGNED)
-}
-
-type LimitSellOrder struct {
-	Symbol string `json:"symbol"`
-	Size   string `json:"size"`
-	Price  string `json:"price"`
-}
-
-func (cloudClient *CloudClient) PostSpotSubmitLimitSellOrder(order LimitSellOrder) (*CloudResponse, error) {
-	params := NewParams()
-	params["symbol"] = order.Symbol
-	params["side"] = "sell"
-	params["type"] = "limit"
-	params["size"] = order.Size
-	params["price"] = order.Price
-	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_ORDER_URL, params, SIGNED)
-}
-
-type MarketBuyOrder struct {
+type Order struct {
 	Symbol   string `json:"symbol"`
+	Side     string `json:"side"`
+	Type     string `json:"type"`
+	Size     string `json:"size"`
+	Price    string `json:"price"`
 	Notional string `json:"notional"`
 }
 
-func (cloudClient *CloudClient) PostSpotSubmitMarketBuyOrder(order MarketBuyOrder) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotSubmitOrder(order Order) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = order.Symbol
-	params["side"] = "buy"
-	params["type"] = "market"
-	params["notional"] = order.Notional
+	params["side"] = order.Side
+	params["type"] = order.Type
+	if order.Size != "" {
+		params["size"] = order.Size
+	}
+	if order.Price != "" {
+		params["price"] = order.Price
+	}
+	if order.Notional != "" {
+		params["notional"] = order.Notional
+	}
 	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_ORDER_URL, params, SIGNED)
 }
 
-type MarketSellOrder struct {
-	Symbol string `json:"symbol"`
-	Size   string `json:"size"`
-}
-
-func (cloudClient *CloudClient) PostSpotSubmitMarketSellOrder(order MarketSellOrder) (*CloudResponse, error) {
+// batch_orders
+func (cloudClient *CloudClient) PostSpotBatchOrders(orderParams [1]Order) (*CloudResponse, error) {
 	params := NewParams()
-	params["symbol"] = order.Symbol
-	params["side"] = "sell"
-	params["type"] = "market"
-	params["size"] = order.Size
-	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_ORDER_URL, params, SIGNED)
+	params["orderParams"] = orderParams
+	return cloudClient.requestWithParams(POST, API_SPOT_BATCH_ORDERS_URL, params, SIGNED)
 }
 
 // cancel_order
@@ -137,7 +109,6 @@ func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId int64
 	params["order_id"] = orderId
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDER_URL, params, SIGNED)
 }
-
 
 // cancel_orders
 func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string) (*CloudResponse, error) {
@@ -155,17 +126,14 @@ func (cloudClient *CloudClient) GetSpotOrderDetail(symbol string, orderId int64)
 	return cloudClient.requestWithParams(GET, API_SPOT_ORDER_DETAIL_URL, params, KEYED)
 }
 
-
 // orders
-func (cloudClient *CloudClient) GetSpotOrders(symbol string, offset int, limit int, status string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrders(symbol string, N int, status string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
-	params["offset"] = offset
-	params["limit"] = limit
+	params["N"] = N
 	params["status"] = status
 	return cloudClient.requestWithParams(GET, API_SPOT_ORDERS_URL, params, KEYED)
 }
-
 
 // trades
 func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, offset int, limit int) (*CloudResponse, error) {

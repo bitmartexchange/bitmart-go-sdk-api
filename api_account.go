@@ -6,9 +6,11 @@ func (cloudClient *CloudClient) GetAccountCurrencies() (*CloudResponse, error) {
 }
 
 // wallet
-func (cloudClient *CloudClient) GetAccountWallet(accountType string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetAccountWallet(currency string) (*CloudResponse, error) {
 	params := NewParams()
-	params["account_type"] = accountType
+	if currency != "" {
+		params["currency"] = currency
+	}
 	return cloudClient.requestWithParams(GET, API_ACCOUNT_WALLET_URL, params, KEYED)
 }
 
@@ -48,8 +50,7 @@ func (cloudClient *CloudClient) PostAccountWithdrawApply(apply WithdrawApply) (*
 type HistoryApply struct {
 	Currency      string `json:"currency"`
 	OperationType string `json:"operation_type"`
-	Offset        int `json:"offset"`
-	Limit         int `json:"limit"`
+	N             int    `json:"N"`
 }
 
 // deposit-withdraw/history
@@ -57,8 +58,7 @@ func (cloudClient *CloudClient) GetDepositWithdrawHistory(history HistoryApply) 
 	params := NewParams()
 	params["currency"] = history.Currency
 	params["operation_type"] = history.OperationType
-	params["offset"] = history.Offset
-	params["limit"] = history.Limit
+	params["N"] = history.N
 	return cloudClient.requestWithParams(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL, params, KEYED)
 }
 
@@ -68,4 +68,3 @@ func (cloudClient *CloudClient) GetDepositWithdrawDetail(id int64) (*CloudRespon
 	params["id"] = id
 	return cloudClient.requestWithParams(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL_URL, params, KEYED)
 }
-
