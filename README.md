@@ -151,6 +151,27 @@ func main() {
 Release Notes
 =========================
 
+###### 2022-10-20
+- Upgrade endpoints for Spot
+  - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
+  - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
+  - <code>/spot/v1/batch_orders</code> has been upgraded to <code>/spot/v2/batch_orders</code>
+  - <code>/spot/v2/cancel_order</code> has been upgraded to <code>/spot/v3/cancel_order</code>
+  - <code>/spot/v1/order_detail</code> has been upgraded to <code>/spot/v2/order_detail</code>
+  - <code>/spot/v2/orders</code> has been upgraded to <code>/spot/v3/orders</code>
+  - <code>/spot/v1/trades</code> has been upgraded to <code>/spot/v2/trades</code>
+- New endpoints for Spot & Margin
+  - <code>/spot/v1/margin/isolated/account</code>Applicable for isolated margin account inquiries
+  - <code>/spot/v1/margin/isolated/transfer</code>For fund transfers between a margin account and spot account
+  - <code>/spot/v1/user_fee</code>For querying the base rate of the current user
+  - <code>/spot/v1/trade_fee</code>For the actual fee rate of the trading pairs
+  - <code>/spot/v1/margin/submit_order</code>Applicable for margin order placement
+  - <code>/spot/v1/margin/isolated/borrow</code>Applicable to isolated margin account borrowing operations
+  - <code>/spot/v1/margin/isolated/repay</code>Applicable to isolated margin account repayment operations
+  - <code>/spot/v1/margin/isolated/borrow_record</code>Applicable to the inquiry of borrowing records of an isolated margin account
+  - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
+  - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
+
 ###### 2022-01-20
 - Update endpoints for Spot
     - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.

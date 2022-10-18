@@ -98,3 +98,59 @@ func TestPostAccountWithdrawDetail(t *testing.T) {
 		PrintResponse(ac)
 	}
 }
+
+// GET https://api-cloud.bitmart.com/spot/v1/margin/isolated/account
+func TestGetMarginAccountDetailsIsolated(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetMarginAccountDetailsIsolated("BTC_USDT") //specified trading pair
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+
+	ab, err := c.GetMarginAccountDetailsIsolated("") //all isolated margin assets
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ab)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/spot/v1/margin/isolated/transfer
+func TestMarginAssetTransfer(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.MarginAssetTransfer(MarginAssetTransfer{
+		Symbol:   "BTC_USDT",
+		Currency: "BTC",
+		Amount:   "1",
+		Side:     "in",
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud.bitmart.com/spot/v1/user_fee
+func TestGetUserFee(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetBasicFeeRate()
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud.bitmart.com/spot/v1/trade_fee
+func TestGetActualTradeFeeRate(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetActualTradeFeeRate("BTC_USDT")
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
