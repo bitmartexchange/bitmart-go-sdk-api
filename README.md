@@ -151,6 +151,10 @@ func main() {
 Release Notes
 =========================
 
+###### 2022-11-03
+- New endpoints for API Broker
+  - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
+
 ###### 2022-01-20
 - Update endpoints for Spot
     - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.

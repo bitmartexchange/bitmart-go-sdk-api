@@ -82,6 +82,9 @@ const (
 	API_SPOT_ORDERS_URL          = "/spot/v2/orders"
 	API_SPOT_TRADES_URL          = "/spot/v1/trades"
 
+	// broker url
+	API_BROKER_REBATE_URL = "/spot/v1/broker/rebate"
+
 	// contract url
 	API_CONTRACT_TICKERS_URL = "/contract/v1/tickers"
 
