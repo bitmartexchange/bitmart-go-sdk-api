@@ -154,6 +154,9 @@ Release Notes
 ###### 2022-11-03
 - New endpoints for API Broker
   - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
+- Update endpoints for Spot / Margin trading
+  - <code>/spot/v3/orders</code> <code>/spot/v2/trades</code>add start_time and end_time field for flexible querying
+  - add new order status 11 = Partially filled and canceled
 
 ###### 2022-10-20
 - Upgrade endpoints for Spot

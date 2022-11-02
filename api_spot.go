@@ -180,6 +180,20 @@ func (cloudClient *CloudClient) GetSpotOrders(symbol string, orderMode string, N
 	return cloudClient.requestWithParams(GET, API_SPOT_ORDERS_URL, params, KEYED)
 }
 
+func (cloudClient *CloudClient) GetSpotOrdersByTime(symbol string, orderMode string, N int, status string,
+	startTime int64, endTime int64) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	if orderMode != "" {
+		params["order_mode"] = orderMode
+	}
+	params["N"] = N
+	params["status"] = status
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	return cloudClient.requestWithParams(GET, API_SPOT_ORDERS_URL, params, KEYED)
+}
+
 // trades
 func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, orderMode string, N int) (*CloudResponse, error) {
 	params := NewParams()
@@ -188,6 +202,19 @@ func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, orderMode st
 		params["order_mode"] = orderMode
 	}
 	params["N"] = N
+	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
+}
+
+func (cloudClient *CloudClient) GetSpotHistoryTradesByTime(symbol string, orderMode string, N int,
+	startTime int64, endTime int64) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	if orderMode != "" {
+		params["order_mode"] = orderMode
+	}
+	params["N"] = N
+	params["start_time"] = startTime
+	params["end_time"] = endTime
 	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
 }
 

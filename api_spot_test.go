@@ -3,6 +3,7 @@ package bitmart
 import (
 	"log"
 	"testing"
+	"time"
 )
 
 const TEST_SYMBOL = "BTC_USDT"
@@ -210,10 +211,34 @@ func TestGetSpotOrders(t *testing.T) {
 	}
 }
 
+func TestGetSpotOrdersByTime(t *testing.T) {
+	c := NewTestClient()
+	now := time.Now().UnixMilli()
+	ac, err := c.GetSpotOrdersByTime(TEST_SYMBOL, "", 100, "10",
+		now-1000*60*60*24*7, now)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
 // GET https://api-cloud.bitmart.com/spot/v2/trades
 func TestGetSpotHistoryTrades(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetSpotHistoryTrades(TEST_SYMBOL, "", 10)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+func TestGetSpotHistoryTradesByTime(t *testing.T) {
+	c := NewTestClient()
+	now := time.Now().UnixMilli()
+	ac, err := c.GetSpotHistoryTradesByTime(TEST_SYMBOL, "", 10,
+		now-1000*60*60*24*7, now)
 	if err != nil {
 		log.Panic(err)
 	} else {
