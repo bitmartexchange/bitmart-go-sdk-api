@@ -31,17 +31,11 @@ const (
 )
 
 const (
-	API_URL_DEV     = "https://api-cloud.bitmart-dev.com"
-	WS_URL_DEV      = "wss://openapi-dev.bitmart.run/api" // ws-public
-	WS_URL_USER_DEV = "wss://openapi-dev.bitmart.run/api" // ws-private
-
-	API_URL_TEST     = "https://api-cloud.bitmarttest.com"
-	WS_URL_TEST      = "wss://openapi-ws.bitmarttest.com/api" // ws-public
-	WS_URL_USER_TEST = "wss://openapi-ws.bitmarttest.com/api" // ws-private
-
-	API_URL_PRO = "https://api-cloud.bitmart.com"
-	WS_URL      = "wss://ws-manager-compress.bitmart.com/api?protocol=1.1"  // ws-public
-	WS_URL_USER = "wss://ws-manager-compress.bitmart.com/user?protocol=1.1" // ws-private
+	API_URL_PRO             = "https://api-cloud.bitmart.com"
+	WS_URL                  = "wss://ws-manager-compress.bitmart.com/api?protocol=1.1"  // ws-public
+	WS_URL_USER             = "wss://ws-manager-compress.bitmart.com/user?protocol=1.1" // ws-private
+	CONTRACT_WS_URL         = "wss://openapi-ws.bitmart.com/api?protocol=1.1"
+	CONTRACT_WS_PRIVATE_URL = "wss://openapi-ws.bitmart.com/user?protocol=1.1"
 
 	X_BM_KEY       = "X-BM-KEY"
 	X_BM_SIGN      = "X-BM-SIGN"
