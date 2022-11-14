@@ -147,6 +147,88 @@ func main() {
 
 ```
 
+#### Contract WebSocket Public Channel Example
+```go
+package gotest
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+    "fmt"
+    "sync"
+)
+
+func OnMessage(message string) {
+	fmt.Println("------------------------>")
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	ws := bitmart.NewWSContract(bitmart.Config{
+                        		WsUrl: "wss://openapi-ws.bitmart.com/api?protocol=1.1",
+                        		ApiKey:"Your API KEY",
+                        		SecretKey:"Your Secret KEY",
+                        		Memo:"Your Memo",
+                        		TimeoutSecond:10,
+                        		IsPrint:true,
+                        	})
+	_ = ws.Connection(OnMessage)
+
+	channels := []string{
+      // public channel
+      WS_PUBLIC_CONTRACT_TICKER,
+      CreateChannel(WS_PUBLIC_CONTRACT_DEPTH20, "BTCUSDT"),
+      CreateChannel(WS_PUBLIC_CONTRACT_KLINE_1M, "BTCUSDT"),
+	}
+	ws.SubscribeWithoutLogin(channels)
+
+
+	// Just test, Please do not use in production.
+	wg.Wait()
+}
+
+```
+
+#### Contract WebSocket Private Channel Example
+```go
+package gotest
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+    "fmt"
+    "sync"
+)
+
+func OnMessage(message string) {
+	fmt.Println("------------------------>")
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	ws := bitmart.NewWSContract(bitmart.Config{
+                        		WsUrl: "wss://openapi-ws.bitmart.com/user?protocol=1.1",
+                        		ApiKey:"Your API KEY",
+                        		SecretKey:"Your Secret KEY",
+                        		Memo:"Your Memo",
+                        		TimeoutSecond:10,
+                        		IsPrint:true,
+                        	})
+	_ = ws.Connection(OnMessage)
+
+	channels := []string{
+      // private channel
+      WS_USER_CONTRACT_UNICAST,
+      WS_USER_CONTRACT_POSITION,
+      CreateChannel(WS_USER_CONTRACT_ASSET, "USDT"),
+	}
+	ws.SubscribeWithLogin(channels)
+	
+	// Just test, Please do not use in production.
+	wg.Wait()
+}
+
+```
 
 Release Notes
 =========================
@@ -226,6 +308,26 @@ Release Notes
 ###### 2020-09-21
 - Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
 
+###### 2022-11-8
+- New endpoints for Contract Market
+  - <code>/contract/public/details</code>Get contract details
+  - <code>/contract/public/depth</code>Get contract depth
+  - <code>/contract/public/open-interest</code>Get contract open interest
+  - <code>/contract/public/funding-rate</code>Get contract funding rate
+  - <code>/contract/public/kline</code>Get contract kline
+- New endpoints for Contract Account
+  - <code>/contract/private/assets-detail</code>Get contract user assets detail
+- New endpoints for Contract Trade
+  - <code>/contract/private/order</code>Get contract order detail
+  - <code>/contract/private/order-history</code>Get contract order history
+  - <code>/contract/private/position</code>Get contract position
+  - <code>/contract/private/trades</code>Get contract trades
+  - <code>/contract/private/submit_order</code>Post contract submit order
+  - <code>/contract/private/cancel_order</code>Post contract cancel order
+  - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
+- New endpoints for Contract WebSocket
+  - contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
+  - contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
 
 License
 =========================

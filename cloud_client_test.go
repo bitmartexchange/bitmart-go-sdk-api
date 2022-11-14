@@ -40,3 +40,25 @@ func NewTestWSWithLogin() *CloudWS {
 	ws := NewWS(*GetWSPrivateConfig())
 	return ws
 }
+
+func GetContractConfig() *Config {
+	config := GetDefaultConfig()
+	config.WsUrl = CONTRACT_WS_URL
+	return config
+}
+
+func GetContractWSPrivateConfig() *Config {
+	config := GetDefaultConfig()
+	config.WsUrl = CONTRACT_WS_PRIVATE_URL
+	return config
+}
+
+func NewTestWSContract() *CloudWSContract {
+	ws := NewWSContract(*GetContractConfig())
+	return ws
+}
+
+func NewTestWSContractWithLogin() *CloudWSContract {
+	ws := NewWSContract(*GetContractWSPrivateConfig())
+	return ws
+}
