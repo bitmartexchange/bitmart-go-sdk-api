@@ -36,7 +36,7 @@ Usage
 * Replace it with your own API KEY
 * Run
 
-#### API Example
+#### Spot API Example
 ```go
 package gotest
 
@@ -67,7 +67,7 @@ func main() {
 
 ```
 
-#### WebSocket Public Channel Example
+#### Spot WebSocket Public Channel Example
 ```go
 package gotest
 import (
@@ -147,9 +147,143 @@ func main() {
 
 ```
 
+#### Contract WebSocket Public Channel Example
+```go
+package gotest
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+    "fmt"
+    "sync"
+)
+
+func OnMessage(message string) {
+	fmt.Println("------------------------>")
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	ws := bitmart.NewWSContract(bitmart.Config{
+                        		WsUrl: "wss://openapi-ws.bitmart.com/api?protocol=1.1",
+                        		ApiKey:"Your API KEY",
+                        		SecretKey:"Your Secret KEY",
+                        		Memo:"Your Memo",
+                        		TimeoutSecond:10,
+                        		IsPrint:true,
+                        	})
+	_ = ws.Connection(OnMessage)
+
+	channels := []string{
+      // public channel
+      WS_PUBLIC_CONTRACT_TICKER,
+      CreateChannel(WS_PUBLIC_CONTRACT_DEPTH20, "BTCUSDT"),
+      CreateChannel(WS_PUBLIC_CONTRACT_KLINE_1M, "BTCUSDT"),
+	}
+	ws.SubscribeWithoutLogin(channels)
+
+
+	// Just test, Please do not use in production.
+	wg.Wait()
+}
+
+```
+
+#### Contract WebSocket Private Channel Example
+```go
+package gotest
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+    "fmt"
+    "sync"
+)
+
+func OnMessage(message string) {
+	fmt.Println("------------------------>")
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	ws := bitmart.NewWSContract(bitmart.Config{
+                        		WsUrl: "wss://openapi-ws.bitmart.com/user?protocol=1.1",
+                        		ApiKey:"Your API KEY",
+                        		SecretKey:"Your Secret KEY",
+                        		Memo:"Your Memo",
+                        		TimeoutSecond:10,
+                        		IsPrint:true,
+                        	})
+	_ = ws.Connection(OnMessage)
+
+	channels := []string{
+      // private channel
+      WS_USER_CONTRACT_UNICAST,
+      WS_USER_CONTRACT_POSITION,
+      CreateChannel(WS_USER_CONTRACT_ASSET, "USDT"),
+	}
+	ws.SubscribeWithLogin(channels)
+	
+	// Just test, Please do not use in production.
+	wg.Wait()
+}
+
+```
 
 Release Notes
 =========================
+
+
+###### 2022-11-8
+- New endpoints for Contract Market
+  - <code>/contract/public/details</code>Get contract details
+  - <code>/contract/public/depth</code>Get contract depth
+  - <code>/contract/public/open-interest</code>Get contract open interest
+  - <code>/contract/public/funding-rate</code>Get contract funding rate
+  - <code>/contract/public/kline</code>Get contract kline
+- New endpoints for Contract Account
+  - <code>/contract/private/assets-detail</code>Get contract user assets detail
+- New endpoints for Contract Trade
+  - <code>/contract/private/order</code>Get contract order detail
+  - <code>/contract/private/order-history</code>Get contract order history
+  - <code>/contract/private/position</code>Get contract position
+  - <code>/contract/private/trades</code>Get contract trades
+  - <code>/contract/private/submit_order</code>Post contract submit order
+  - <code>/contract/private/cancel_order</code>Post contract cancel order
+  - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
+- New endpoints for Contract WebSocket
+  - contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
+  - contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
+
+
+###### 2022-11-03
+ - New endpoints for API Broker
+   - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
+ - Update endpoints for Spot / Margin trading
+   - <code>/spot/v3/orders</code> <code>/spot/v2/trades</code>add start_time and end_time field for flexible querying
+   - add new order status 11 = Partially filled and canceled
+
+
+###### 2022-10-20
+- Upgrade endpoints for Spot
+  - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
+  - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
+  - <code>/spot/v1/batch_orders</code> has been upgraded to <code>/spot/v2/batch_orders</code>
+  - <code>/spot/v2/cancel_order</code> has been upgraded to <code>/spot/v3/cancel_order</code>
+  - <code>/spot/v1/order_detail</code> has been upgraded to <code>/spot/v2/order_detail</code>
+  - <code>/spot/v2/orders</code> has been upgraded to <code>/spot/v3/orders</code>
+  - <code>/spot/v1/trades</code> has been upgraded to <code>/spot/v2/trades</code>
+- New endpoints for Spot & Margin
+  - <code>/spot/v1/margin/isolated/account</code>Applicable for isolated margin account inquiries
+  - <code>/spot/v1/margin/isolated/transfer</code>For fund transfers between a margin account and spot account
+  - <code>/spot/v1/user_fee</code>For querying the base rate of the current user
+  - <code>/spot/v1/trade_fee</code>For the actual fee rate of the trading pairs
+  - <code>/spot/v1/margin/submit_order</code>Applicable for margin order placement
+  - <code>/spot/v1/margin/isolated/borrow</code>Applicable to isolated margin account borrowing operations
+  - <code>/spot/v1/margin/isolated/repay</code>Applicable to isolated margin account repayment operations
+  - <code>/spot/v1/margin/isolated/borrow_record</code>Applicable to the inquiry of borrowing records of an isolated margin account
+  - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
+  - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
 
 ###### 2022-01-20
 - Update endpoints for Spot
@@ -197,7 +331,6 @@ Release Notes
 
 ###### 2020-09-21
 - Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
-
 
 License
 =========================

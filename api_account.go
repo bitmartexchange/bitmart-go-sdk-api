@@ -68,3 +68,41 @@ func (cloudClient *CloudClient) GetDepositWithdrawDetail(id int64) (*CloudRespon
 	params["id"] = id
 	return cloudClient.requestWithParams(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL_URL, params, KEYED)
 }
+
+// margin/isolated/account
+func (cloudClient *CloudClient) GetMarginAccountDetailsIsolated(symbol string) (*CloudResponse, error) {
+	params := NewParams()
+	if symbol != "" {
+		params["symbol"] = symbol
+	}
+	return cloudClient.requestWithParams(GET, API_SPOT_MARGIN_ACCOUNT_ISOLATED_URL, params, KEYED)
+}
+
+type MarginAssetTransfer struct {
+	Symbol   string `json:"symbol"`
+	Currency string `json:"currency"`
+	Amount   string `json:"amount"`
+	Side     string `json:"side"`
+}
+
+// margin/isolated/transfer
+func (cloudClient *CloudClient) MarginAssetTransfer(transfer MarginAssetTransfer) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = transfer.Symbol
+	params["currency"] = transfer.Currency
+	params["amount"] = transfer.Amount
+	params["side"] = transfer.Side
+	return cloudClient.requestWithParams(POST, API_SPOT_MARGIN_ASSET_TRANSFER_URL, params, SIGNED)
+}
+
+// user_fee
+func (cloudClient *CloudClient) GetBasicFeeRate() (*CloudResponse, error) {
+	return cloudClient.requestWithoutParams(GET, API_SPOT_USER_FEE_URL, KEYED)
+}
+
+// trade_fee
+func (cloudClient *CloudClient) GetActualTradeFeeRate(symbol string) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	return cloudClient.requestWithParams(GET, API_SPOT_TRADE_FEE_URL, params, KEYED)
+}

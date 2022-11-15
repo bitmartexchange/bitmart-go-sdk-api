@@ -16,13 +16,16 @@ func (cloudClient *CloudClient) GetSpotSymbolDetail() (*CloudResponse, error) {
 }
 
 // ticker
-func (cloudClient *CloudClient) GetSpotTicker(symbol string) (*CloudResponse, error) {
-	params := NewParams()
-	if symbol != "" {
-		params["symbol"] = symbol
-	}
+func (cloudClient *CloudClient) GetSpotTicker() (*CloudResponse, error) {
+	return cloudClient.requestWithoutParams(GET, API_SPOT_TICKER_URL, NONE)
+}
 
-	return cloudClient.requestWithParams(GET, API_SPOT_TICKER_URL, params, NONE)
+// ticker_detail
+func (cloudClient *CloudClient) GetSpotTickerDetail(symbol string) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+
+	return cloudClient.requestWithParams(GET, API_SPOT_TICKER_DETAIL_URL, params, NONE)
 }
 
 // steps
@@ -70,12 +73,13 @@ func (cloudClient *CloudClient) GetSpotWallet() (*CloudResponse, error) {
 
 // submit_order
 type Order struct {
-	Symbol   string `json:"symbol"`
-	Side     string `json:"side"`
-	Type     string `json:"type"`
-	Size     string `json:"size"`
-	Price    string `json:"price"`
-	Notional string `json:"notional"`
+	Symbol        string `json:"symbol"`
+	Side          string `json:"side"`
+	Type          string `json:"type"`
+	ClientOrderId string `json:"client_order_id"`
+	Size          string `json:"size"`
+	Price         string `json:"price"`
+	Notional      string `json:"notional"`
 }
 
 func (cloudClient *CloudClient) PostSpotSubmitOrder(order Order) (*CloudResponse, error) {
@@ -83,6 +87,9 @@ func (cloudClient *CloudClient) PostSpotSubmitOrder(order Order) (*CloudResponse
 	params["symbol"] = order.Symbol
 	params["side"] = order.Side
 	params["type"] = order.Type
+	if order.ClientOrderId != "" {
+		params["client_order_id"] = order.ClientOrderId
+	}
 	if order.Size != "" {
 		params["size"] = order.Size
 	}
@@ -95,18 +102,54 @@ func (cloudClient *CloudClient) PostSpotSubmitOrder(order Order) (*CloudResponse
 	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_ORDER_URL, params, SIGNED)
 }
 
+// margin/submit_order
+type MarginOrder struct {
+	Symbol        string `json:"symbol"`
+	Side          string `json:"side"`
+	Type          string `json:"type"`
+	ClientOrderId string `json:"clientOrderId"`
+	Size          string `json:"size"`
+	Price         string `json:"price"`
+	Notional      string `json:"notional"`
+}
+
+func (cloudClient *CloudClient) PostMarginSubmitOrder(order MarginOrder) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = order.Symbol
+	params["side"] = order.Side
+	params["type"] = order.Type
+	if order.ClientOrderId != "" {
+		params["clientOrderId"] = order.ClientOrderId
+	}
+	if order.Size != "" {
+		params["size"] = order.Size
+	}
+	if order.Price != "" {
+		params["price"] = order.Price
+	}
+	if order.Notional != "" {
+		params["notional"] = order.Notional
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_MARGIN_ORDER_URL, params, SIGNED)
+}
+
 // batch_orders
 func (cloudClient *CloudClient) PostSpotBatchOrders(orderParams [1]Order) (*CloudResponse, error) {
 	params := NewParams()
-	params["orderParams"] = orderParams
+	params["order_params"] = orderParams
 	return cloudClient.requestWithParams(POST, API_SPOT_BATCH_ORDERS_URL, params, SIGNED)
 }
 
 // cancel_order
-func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId string, clientOrderId string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
-	params["order_id"] = orderId
+	if orderId != "" {
+		params["order_id"] = orderId
+	}
+	if clientOrderId != "" {
+		params["client_order_id"] = clientOrderId
+	}
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDER_URL, params, SIGNED)
 }
 
@@ -119,34 +162,68 @@ func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string)
 }
 
 // order_detail
-func (cloudClient *CloudClient) GetSpotOrderDetail(symbol string, orderId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrderDetail(orderId string) (*CloudResponse, error) {
 	params := NewParams()
-	params["symbol"] = symbol
 	params["order_id"] = orderId
 	return cloudClient.requestWithParams(GET, API_SPOT_ORDER_DETAIL_URL, params, KEYED)
 }
 
 // orders
-func (cloudClient *CloudClient) GetSpotOrders(symbol string, N int, status string) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrders(symbol string, orderMode string, N int, status string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
+	if orderMode != "" {
+		params["order_mode"] = orderMode
+	}
 	params["N"] = N
 	params["status"] = status
 	return cloudClient.requestWithParams(GET, API_SPOT_ORDERS_URL, params, KEYED)
 }
 
-// trades
-func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, offset int, limit int) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotOrdersByTime(symbol string, orderMode string, N int, status string,
+	startTime int64, endTime int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
-	params["offset"] = offset
-	params["limit"] = limit
+	if orderMode != "" {
+		params["order_mode"] = orderMode
+	}
+	params["N"] = N
+	params["status"] = status
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	return cloudClient.requestWithParams(GET, API_SPOT_ORDERS_URL, params, KEYED)
+}
+
+// trades
+func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, orderMode string, N int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	if orderMode != "" {
+		params["order_mode"] = orderMode
+	}
+	params["N"] = N
 	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
 }
 
-func (cloudClient *CloudClient) GetSpotOrderTrades(symbol string, orderId int64) (*CloudResponse, error) {
+func (cloudClient *CloudClient) GetSpotHistoryTradesByTime(symbol string, orderMode string, N int,
+	startTime int64, endTime int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
+	if orderMode != "" {
+		params["order_mode"] = orderMode
+	}
+	params["N"] = N
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
+}
+
+func (cloudClient *CloudClient) GetSpotOrderTrades(symbol string, orderMode string, orderId string) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	if orderMode != "" {
+		params["order_mode"] = orderMode
+	}
 	params["order_id"] = orderId
 	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
 }
