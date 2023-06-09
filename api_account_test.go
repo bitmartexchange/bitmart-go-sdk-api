@@ -17,16 +17,16 @@ func TestGetAccountCurrencies(t *testing.T) {
 }
 
 // GET https://api-cloud.bitmart.com/account/v1/wallet
-func TestGetAccountWallet(t *testing.T) {
+func TestGetSpotAccountWallet(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetAccountWallet("BTC") // find by currency
+	ac, err := c.GetSpotAccountWallet("BTC") // find by currency
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
 
-	ab, err := c.GetAccountWallet("") // find all
+	ab, err := c.GetSpotAccountWallet("") // find all
 	if err != nil {
 		log.Panic(err)
 	} else {
@@ -63,7 +63,7 @@ func TestPostAccountWithdrawApply(t *testing.T) {
 		Currency:    "USDT-ERC20",
 		Amount:      "50",
 		Destination: "To Digital Address",
-		Address:     "0xe57b69a8776b37860407965B73cdFFBDFe668Bb5",
+		Address:     "0xe57b69a8776b37860407965B73cdFFBDF*******",
 		AddressMemo: "",
 	})
 	if err != nil {
@@ -91,7 +91,7 @@ func TestPostAccountWithdrawHistory(t *testing.T) {
 // GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/detail
 func TestPostAccountWithdrawDetail(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetDepositWithdrawDetail(12121212)
+	ac, err := c.GetDepositWithdrawDetail("12312312312")
 	if err != nil {
 		log.Panic(err)
 	} else {

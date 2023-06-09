@@ -1,6 +1,3 @@
-//go:build api
-// +build api
-
 package bitmart
 
 import (
@@ -8,17 +5,6 @@ import (
 	"testing"
 	"time"
 )
-
-// GET https://api-cloud.bitmart.com/contract/v1/tickers
-func TestGetContractTickers(t *testing.T) {
-	c := NewTestClient()
-	ac, err := c.GetContractTickers("ETHUSDT")
-	if err != nil {
-		log.Panic(err)
-	} else {
-		PrintResponse(ac)
-	}
-}
 
 // GET https://api-cloud.bitmart.com/contract/public/details
 func TestGetContractDetails(t *testing.T) {
@@ -131,6 +117,17 @@ func TestGetContractTrades(t *testing.T) {
 	}
 }
 
+// POST https://api-cloud.bitmart.com/account/v1/transfer-contract-list
+func TestGetContractTransferList(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetContractTransferList("BTCUSDT", 0, 0, 1, 10, 5000)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
 // POST https://api-cloud.bitmart.com/contract/private/submit-order
 func TestPostContractSubmitOrder(t *testing.T) {
 	c := NewTestClient()
@@ -164,6 +161,47 @@ func TestPostContractCancelOrders(t *testing.T) {
 	}
 }
 
-// go test -run Contract 带Contract的测试案例
-// go test -run TestGetContractAssetsDetail
-// cloud_consts.go中API_URL_PRO已改为dev域名
+// POST https://api-cloud.bitmart.com/contract/private/submit-plan-order
+func TestPostContractPlanOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractPlanOrder(ContractPlanOrder{
+		Symbol:         "ETHUSDT",
+		Side:           4,
+		Type:           "limit",
+		Leverage:       "1",
+		OpenType:       "isolated",
+		Size:           10,
+		Mode:           1,
+		TriggerPrice:   "2000",
+		ExecutivePrice: "1800",
+		PriceWay:       1,
+		PriceType:      1,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/contract/private/cancel-plan-order
+func TestPostContractCancelPlanOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractCancelPlanOrder("ETHUSDT", "230608317804369")
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/account/v1/transfer-contract
+func TestPostContractTransfer(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractTransfer("USDT", "100", "spot_to_contract", 5000)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}

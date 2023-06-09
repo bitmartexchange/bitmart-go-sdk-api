@@ -41,6 +41,7 @@ type RespMsg struct {
 // SubscribeWithLogin Support public channel and private channel
 func (ws *CloudWSContract) SubscribeWithLogin(channels []string) {
 	if err := ws.login(); err != nil {
+		log.Fatalf("Login Err: %s", err)
 		return
 	}
 
@@ -68,6 +69,7 @@ func (ws *CloudWSContract) SubscribeWithoutLogin(channels []string) {
 
 }
 
+// login
 func (ws *CloudWSContract) login() error {
 	timestamp := UTCTime()
 	sign, err := HmacSha256Base64Signer(
@@ -102,13 +104,14 @@ func (ws *CloudWSContract) login() error {
 	if err := json.Unmarshal(message, &result); err == nil {
 		if result.Success != true {
 			ws.stop()
-			return errors.New("login failed")
+			return errors.New(string(message))
 		}
 	}
 
 	return nil
 }
 
+// subscribe
 func (ws *CloudWSContract) subscribe(msg Msg) error {
 	message, err := json.Marshal(msg)
 	if err != nil {
@@ -131,6 +134,7 @@ func (ws *CloudWSContract) subscribe(msg Msg) error {
 	return nil
 }
 
+// keepalive
 func (ws *CloudWSContract) keepalive() {
 	if err := ws.Conn.WriteJSON(pingMsg); err != nil {
 		log.Printf("Send Msg Err: %s", err)
