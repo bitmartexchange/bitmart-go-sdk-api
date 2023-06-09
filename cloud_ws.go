@@ -22,15 +22,15 @@ import (
 )
 
 type CloudWS struct {
-	Config  Config
-	Conn    *websocket.Conn
+	Config Config
+	Conn   *websocket.Conn
 
-	readMessage  Callback
-	close        chan interface{}
-	signal       chan os.Signal
-	reconnectUseChannels  []string
-	reconnectUseLogin     bool
-	isClose               bool
+	readMessage          Callback
+	close                chan interface{}
+	signal               chan os.Signal
+	reconnectUseChannels []string
+	reconnectUseLogin    bool
+	isClose              bool
 
 	processMut sync.Mutex
 }
@@ -41,8 +41,10 @@ func NewWS(config Config) *CloudWS {
 	return &ws
 }
 
+// Callback function
 type Callback func(message string)
 
+// Connection to websocket
 func (ws *CloudWS) Connection(callback Callback) error {
 	log.Printf("Connecting to %s", ws.Config.WsUrl)
 	c, _, err := websocket.DefaultDialer.Dial(ws.Config.WsUrl, nil)
@@ -67,10 +69,10 @@ func (ws *CloudWS) Connection(callback Callback) error {
 	return nil
 }
 
-
-// Support public channel and private channel
+// SubscribeWithLogin Support public channel and private channel
 func (ws *CloudWS) SubscribeWithLogin(channels []string) {
 	if err := ws.login(); err != nil {
+		log.Fatalf("Login Err: %s", err)
 		return
 	}
 
@@ -85,7 +87,7 @@ func (ws *CloudWS) SubscribeWithLogin(channels []string) {
 
 }
 
-// Only support public channel
+// SubscribeWithoutLogin Only support public channel
 func (ws *CloudWS) SubscribeWithoutLogin(channels []string) {
 	ws.reconnectUseLogin = false
 	ws.reconnectUseChannels = channels
@@ -98,13 +100,12 @@ func (ws *CloudWS) SubscribeWithoutLogin(channels []string) {
 
 }
 
-
-
 type OpParam struct {
 	Op   string   `json:"op"`
 	Args []string `json:"args"`
 }
 
+// login
 func (ws *CloudWS) login() error {
 	timestamp := UTCTime()
 	sign, err := HmacSha256Base64Signer(
@@ -139,14 +140,14 @@ func (ws *CloudWS) login() error {
 	if err := json.Unmarshal(message, &result); err == nil {
 		if result["event"] == "login" && result["errorCode"] != "" {
 			ws.stop()
-			return errors.New("login failed")
+			return errors.New(string(message))
 		}
 	}
 
 	return nil
 }
 
-
+// subscribe
 func (ws *CloudWS) subscribe(opParam OpParam) error {
 	message, err := json.Marshal(opParam)
 	if err != nil {
@@ -169,7 +170,7 @@ func (ws *CloudWS) subscribe(opParam OpParam) error {
 	return nil
 }
 
-
+// stop websocket close
 func (ws *CloudWS) stop() {
 	defer func() {
 		a := recover()
@@ -180,6 +181,7 @@ func (ws *CloudWS) stop() {
 	close(ws.close)
 }
 
+// decode message
 func (ws *CloudWS) gzipDecode(in []byte) ([]byte, error) {
 	reader := flate.NewReader(bytes.NewReader(in))
 	defer reader.Close()
@@ -187,9 +189,9 @@ func (ws *CloudWS) gzipDecode(in []byte) ([]byte, error) {
 	return ioutil.ReadAll(reader)
 }
 
-
+// reconnect to websocket
 func (ws *CloudWS) reconnection() {
-	time.Sleep(time.Duration(2)*time.Second)
+	time.Sleep(time.Duration(2) * time.Second)
 
 	log.Printf("Reconnecting to %s", ws.Config.WsUrl)
 	c, _, err := websocket.DefaultDialer.Dial(ws.Config.WsUrl, nil)
@@ -211,7 +213,7 @@ func (ws *CloudWS) reconnection() {
 
 }
 
-
+// keepalive
 func (ws *CloudWS) keepalive() {
 	msg := "ping"
 	//if ws.Config.IsPrint {
@@ -223,6 +225,7 @@ func (ws *CloudWS) keepalive() {
 	}
 }
 
+// work for receive message
 func (ws *CloudWS) work() {
 	defer func() {
 		a := recover()
@@ -244,7 +247,7 @@ func (ws *CloudWS) work() {
 	}
 }
 
-
+// receive message
 func (ws *CloudWS) receive() {
 	defer func() {
 		a := recover()
@@ -283,6 +286,7 @@ func (ws *CloudWS) receive() {
 
 }
 
+// finalize
 func (ws *CloudWS) finalize() {
 	defer func() {
 		log.Printf("Finalize End. Connection to WebSocket is closed.")

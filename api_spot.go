@@ -1,26 +1,26 @@
 package bitmart
 
-// currencies
+// GetSpotCurrencies /** Get Currency List
 func (cloudClient *CloudClient) GetSpotCurrencies() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_CURRENCIES_URL, NONE)
 }
 
-// symbols
+// GetSpotSymbol /** Get List of Trading Pairs
 func (cloudClient *CloudClient) GetSpotSymbol() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_SYMBOLS_URL, NONE)
 }
 
-// symbols/details
+// GetSpotSymbolDetail /** Get List of Trading Pair Details
 func (cloudClient *CloudClient) GetSpotSymbolDetail() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_SYMBOLS_DETAILS_URL, NONE)
 }
 
-// ticker
+// GetSpotTicker /** Get Ticker of All Pairs (V2)
 func (cloudClient *CloudClient) GetSpotTicker() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_TICKER_URL, NONE)
 }
 
-// ticker_detail
+// GetSpotTickerDetail /** Get Ticker of a Trading Pair
 func (cloudClient *CloudClient) GetSpotTickerDetail(symbol string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -28,13 +28,13 @@ func (cloudClient *CloudClient) GetSpotTickerDetail(symbol string) (*CloudRespon
 	return cloudClient.requestWithParams(GET, API_SPOT_TICKER_DETAIL_URL, params, NONE)
 }
 
-// steps
+// GetSpotSteps /** Get K-Line Step
 func (cloudClient *CloudClient) GetSpotSteps() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_STEPS_URL, NONE)
 }
 
-// symbols/kline
-func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int, to int, step int) (*CloudResponse, error) {
+// GetSpotSymbolKline /** Get K-Line
+func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int64, to int64, step int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	params["from"] = from
@@ -44,7 +44,7 @@ func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int, to i
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_KLINE_URL, params, NONE)
 }
 
-// symbols/book
+// GetSpotSymbolBook /** Get Depth
 func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int, size int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -59,19 +59,19 @@ func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int, 
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_BOOK_URL, params, NONE)
 }
 
-// symbols/trades
+// GetSpotSymbolTrade /** Get Recent Trades
 func (cloudClient *CloudClient) GetSpotSymbolTrade(symbol string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_TRADES_URL, params, NONE)
 }
 
-// wallet
+// GetSpotWallet /** Get Account Balance (KEYED)
 func (cloudClient *CloudClient) GetSpotWallet() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_WALLET_URL, KEYED)
 }
 
-// submit_order
+// Order /** Spot Order Parameters
 type Order struct {
 	Symbol        string `json:"symbol"`
 	Side          string `json:"side"`
@@ -82,6 +82,7 @@ type Order struct {
 	Notional      string `json:"notional"`
 }
 
+// PostSpotSubmitOrder /** New Order(v2) (SIGNED)
 func (cloudClient *CloudClient) PostSpotSubmitOrder(order Order) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = order.Symbol
@@ -102,7 +103,7 @@ func (cloudClient *CloudClient) PostSpotSubmitOrder(order Order) (*CloudResponse
 	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_ORDER_URL, params, SIGNED)
 }
 
-// margin/submit_order
+// MarginOrder /** Margin Order Parameters
 type MarginOrder struct {
 	Symbol        string `json:"symbol"`
 	Side          string `json:"side"`
@@ -113,6 +114,7 @@ type MarginOrder struct {
 	Notional      string `json:"notional"`
 }
 
+// PostMarginSubmitOrder /** New Margin Order(v1) (SIGNED)
 func (cloudClient *CloudClient) PostMarginSubmitOrder(order MarginOrder) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = order.Symbol
@@ -133,14 +135,14 @@ func (cloudClient *CloudClient) PostMarginSubmitOrder(order MarginOrder) (*Cloud
 	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_MARGIN_ORDER_URL, params, SIGNED)
 }
 
-// batch_orders
+// PostSpotBatchOrders /** Batch New Order(v2) (SIGNED)
 func (cloudClient *CloudClient) PostSpotBatchOrders(orderParams [1]Order) (*CloudResponse, error) {
 	params := NewParams()
 	params["order_params"] = orderParams
 	return cloudClient.requestWithParams(POST, API_SPOT_BATCH_ORDERS_URL, params, SIGNED)
 }
 
-// cancel_order
+// PostSpotCancelOrder /** Cancel Order(v3) (SIGNED)
 func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId string, clientOrderId string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -153,7 +155,7 @@ func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId strin
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDER_URL, params, SIGNED)
 }
 
-// cancel_orders
+// PostSpotCancelOrders /** Cancel Batch Order(v1) (SIGNED)
 func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -161,69 +163,110 @@ func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string)
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDERS_URL, params, SIGNED)
 }
 
-// order_detail
-func (cloudClient *CloudClient) GetSpotOrderDetail(orderId string) (*CloudResponse, error) {
+// GetSpotOrderByOrderId /** Query Order By Id (v4) (SIGNED)
+func (cloudClient *CloudClient) GetSpotOrderByOrderId(orderId string, queryState string, recvWindow int) (*CloudResponse, error) {
 	params := NewParams()
-	params["order_id"] = orderId
-	return cloudClient.requestWithParams(GET, API_SPOT_ORDER_DETAIL_URL, params, KEYED)
+	params["orderId"] = orderId
+	if queryState != "" {
+		params["queryState"] = queryState
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ORDER_BY_ID_URL, params, SIGNED)
 }
 
-// orders
-func (cloudClient *CloudClient) GetSpotOrders(symbol string, orderMode string, N int, status string) (*CloudResponse, error) {
+// GetSpotOrderByClientOrderId /** Query Order By clientOrderId(v4) (SIGNED)
+func (cloudClient *CloudClient) GetSpotOrderByClientOrderId(clientOrderId string, queryState string, recvWindow int) (*CloudResponse, error) {
 	params := NewParams()
-	params["symbol"] = symbol
-	if orderMode != "" {
-		params["order_mode"] = orderMode
+	params["clientOrderId"] = clientOrderId
+	if queryState != "" {
+		params["queryState"] = queryState
 	}
-	params["N"] = N
-	params["status"] = status
-	return cloudClient.requestWithParams(GET, API_SPOT_ORDERS_URL, params, KEYED)
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ORDER_BY_CLIENT_URL, params, SIGNED)
 }
 
-func (cloudClient *CloudClient) GetSpotOrdersByTime(symbol string, orderMode string, N int, status string,
-	startTime int64, endTime int64) (*CloudResponse, error) {
+// GetSpotOpenOrders /** Query Open Orders (v4) (SIGNED)
+func (cloudClient *CloudClient) GetSpotOpenOrders(symbol string, orderMode string, startTime int64, endTime int64, limit int, recvWindow int) (*CloudResponse, error) {
 	params := NewParams()
-	params["symbol"] = symbol
-	if orderMode != "" {
-		params["order_mode"] = orderMode
+	if symbol != "" {
+		params["symbol"] = symbol
 	}
-	params["N"] = N
-	params["status"] = status
-	params["start_time"] = startTime
-	params["end_time"] = endTime
-	return cloudClient.requestWithParams(GET, API_SPOT_ORDERS_URL, params, KEYED)
+	if orderMode != "" {
+		params["orderMode"] = orderMode
+	}
+	if startTime != 0 {
+		params["startTime"] = startTime
+	}
+	if endTime != 0 {
+		params["endTime"] = endTime
+	}
+	if limit > 0 {
+		params["limit"] = limit
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_OPEN_ORDERS_URL, params, SIGNED)
 }
 
-// trades
-func (cloudClient *CloudClient) GetSpotHistoryTrades(symbol string, orderMode string, N int) (*CloudResponse, error) {
+// GetSpotAccountOrders /** Query Account Orders (v4) (SIGNED)
+func (cloudClient *CloudClient) GetSpotAccountOrders(symbol string, orderMode string, startTime int64, endTime int64, limit int, recvWindow int) (*CloudResponse, error) {
 	params := NewParams()
-	params["symbol"] = symbol
-	if orderMode != "" {
-		params["order_mode"] = orderMode
+	if symbol != "" {
+		params["symbol"] = symbol
 	}
-	params["N"] = N
-	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
+	if orderMode != "" {
+		params["orderMode"] = orderMode
+	}
+	if startTime != 0 {
+		params["startTime"] = startTime
+	}
+	if endTime != 0 {
+		params["endTime"] = endTime
+	}
+	if limit > 0 {
+		params["limit"] = limit
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_HISTORY_ORDERS_URL, params, SIGNED)
 }
 
-func (cloudClient *CloudClient) GetSpotHistoryTradesByTime(symbol string, orderMode string, N int,
-	startTime int64, endTime int64) (*CloudResponse, error) {
+// GetSpotAccountTradeList /** Account Trade List (v4) (SIGNED)
+func (cloudClient *CloudClient) GetSpotAccountTradeList(symbol string, orderMode string, startTime int64, endTime int64, limit int, recvWindow int) (*CloudResponse, error) {
 	params := NewParams()
-	params["symbol"] = symbol
-	if orderMode != "" {
-		params["order_mode"] = orderMode
+	if symbol != "" {
+		params["symbol"] = symbol
 	}
-	params["N"] = N
-	params["start_time"] = startTime
-	params["end_time"] = endTime
-	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
+	if orderMode != "" {
+		params["orderMode"] = orderMode
+	}
+	if startTime != 0 {
+		params["startTime"] = startTime
+	}
+	if endTime != 0 {
+		params["endTime"] = endTime
+	}
+	if limit > 0 {
+		params["limit"] = limit
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_TRADES_URL, params, SIGNED)
 }
 
-func (cloudClient *CloudClient) GetSpotOrderTrades(symbol string, orderMode string, orderId string) (*CloudResponse, error) {
+// GetSpotOrderTradeList /** Order Trade List(v4) (SIGNED)
+func (cloudClient *CloudClient) GetSpotOrderTradeList(orderId string, recvWindow int) (*CloudResponse, error) {
 	params := NewParams()
-	params["symbol"] = symbol
-	if orderMode != "" {
-		params["order_mode"] = orderMode
+	params["orderId"] = orderId
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
 	}
-	params["order_id"] = orderId
-	return cloudClient.requestWithParams(GET, API_SPOT_TRADES_URL, params, KEYED)
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ORDER_TRADES_URL, params, SIGNED)
 }

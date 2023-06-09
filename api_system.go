@@ -1,6 +1,6 @@
 package bitmart
 
-
+// GetSystemTime /** Get System Time (NONE)
 func (cloudClient *CloudClient) GetSystemTime() (*CloudResponse, error) {
 	var cloudResponse CloudResponse
 
@@ -11,6 +11,7 @@ func (cloudClient *CloudClient) GetSystemTime() (*CloudResponse, error) {
 	return &cloudResponse, nil
 }
 
+// GetSystemService /** Get System Service Status (NONE)
 func (cloudClient *CloudClient) GetSystemService() (*CloudResponse, error) {
 	var cloudResponse CloudResponse
 
@@ -20,5 +21,3 @@ func (cloudClient *CloudClient) GetSystemService() (*CloudResponse, error) {
 
 	return &cloudResponse, nil
 }
-
-

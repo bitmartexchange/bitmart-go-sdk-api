@@ -1,10 +1,11 @@
 package bitmart
 
-// broker rebate
+// GetBrokerRebate broker rebate
 func (cloudClient *CloudClient) GetBrokerRebate() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_BROKER_REBATE_URL, KEYED)
 }
 
+// GetBrokerRebateByTimestamp broker rebate by timestamp
 func (cloudClient *CloudClient) GetBrokerRebateByTimestamp(startTime int64, endTime int64) (*CloudResponse, error) {
 	params := NewParams()
 	params["start_time"] = startTime

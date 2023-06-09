@@ -1,6 +1,6 @@
 package bitmart
 
-// margin/isolated/borrow
+// MarginBorrowIsolated /** Margin Borrow (Isolated) (SIGNED)
 func (cloudClient *CloudClient) MarginBorrowIsolated(symbol string, currency string, amount string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -9,7 +9,7 @@ func (cloudClient *CloudClient) MarginBorrowIsolated(symbol string, currency str
 	return cloudClient.requestWithParams(POST, API_MARGIN_BORROW_ISOLATED_URL, params, SIGNED)
 }
 
-// margin/isolated/repay
+// MarginRepayIsolated /** Margin Repay (Isolated) (SIGNED)
 func (cloudClient *CloudClient) MarginRepayIsolated(symbol string, currency string, amount string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -18,7 +18,7 @@ func (cloudClient *CloudClient) MarginRepayIsolated(symbol string, currency stri
 	return cloudClient.requestWithParams(POST, API_MARGIN_REPAY_ISOLATED_URL, params, SIGNED)
 }
 
-// margin/isolated/borrow_record
+// GetBorrowRecordIsolated /** Get Borrow Record(Isolated) (KEYED)
 func (cloudClient *CloudClient) GetBorrowRecordIsolated(symbol string, borrowId string, startTime int64, endTime int64, N int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -37,7 +37,7 @@ func (cloudClient *CloudClient) GetBorrowRecordIsolated(symbol string, borrowId 
 	return cloudClient.requestWithParams(GET, API_BORROW_ROCORD_ISOLATED_URL, params, KEYED)
 }
 
-// margin/isolated/repay_record
+// GetRepaymentRecordIsolated /** Get Repayment Record(Isolated) (KEYED)
 func (cloudClient *CloudClient) GetRepaymentRecordIsolated(symbol string, repayId string, currency string, startTime int64, endTime int64, N int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -59,7 +59,7 @@ func (cloudClient *CloudClient) GetRepaymentRecordIsolated(symbol string, repayI
 	return cloudClient.requestWithParams(GET, API_REPAYMENT_ROCORD_ISOLATED_URL, params, KEYED)
 }
 
-// margin/isolated/pairs
+// GetTradingPairBorrowingRateAndAmount /** Get Trading Pair Borrowing Rate and Amount (KEYED)
 func (cloudClient *CloudClient) GetTradingPairBorrowingRateAndAmount(symbol string) (*CloudResponse, error) {
 	params := NewParams()
 	if symbol != "" {

@@ -21,28 +21,28 @@ type ApiMessage struct {
 	Message string `json:"message"`
 }
 
-
-
-/*
- Get a http client
-*/
+// NewClient /** Get a http client
 func NewClient(config Config) *CloudClient {
 	var client CloudClient
 	client.Config = config
+
+	url := config.Url
+	if len(url) <= 0 {
+		client.Config.Url = API_URL_PRO
+	}
+
 	timeout := config.TimeoutSecond
 	if timeout <= 0 {
 		timeout = 30
 	}
+
 	client.HttpClient = &http.Client{
 		Timeout: time.Duration(timeout) * time.Second,
 	}
 	return &client
 }
 
-
-/*
-Send a GET http request without params
-*/
+// requestWithoutParams /** Send a GET http request without params
 func (cloudClient *CloudClient) requestWithoutParams(method string, path string, auth Auth) (*CloudResponse, error) {
 	var cloudResponse CloudResponse
 
@@ -53,9 +53,7 @@ func (cloudClient *CloudClient) requestWithoutParams(method string, path string,
 	return &cloudResponse, nil
 }
 
-/*
-Send a GET http request with params
-*/
+// requestWithParams /** Send a GET http request with params
 func (cloudClient *CloudClient) requestWithParams(method string, path string, params map[string]interface{}, auth Auth) (*CloudResponse, error) {
 	var cloudResponse CloudResponse
 
@@ -66,9 +64,7 @@ func (cloudClient *CloudClient) requestWithParams(method string, path string, pa
 	return &cloudResponse, nil
 }
 
-/*
-Send a http request to remote server and get a response data
-*/
+// Request /** Send a http request to remote server and get a response data
 func (cloudClient *CloudClient) Request(method string, requestPath string, params map[string]interface{}, auth Auth, cloudResponse *CloudResponse) (response *http.Response, err error) {
 	config := cloudClient.Config
 	// uri
@@ -90,7 +86,7 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 		if params != nil {
 			jsonBody, binBody, err = ParseRequestParams(params)
 			if err != nil {
-				return response,  err
+				return response, err
 			}
 		}
 	}
@@ -121,7 +117,6 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 		PrintRequest(request, jsonBody)
 	}
 
-
 	// send a request to remote server, and get a response
 	response, err = cloudClient.HttpClient.Do(request)
 	if err != nil {
@@ -144,9 +139,7 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 	return response, nil
 }
 
-/*
-Get a http request body is a json string and a byte array.
-*/
+// ParseRequestParams /** Parse request params to json and bin styles
 func ParseRequestParams(params interface{}) (string, *bytes.Reader, error) {
 	if params == nil {
 		return "", nil, errors.New("illegal parameter")
