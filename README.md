@@ -4,7 +4,7 @@
 BitMart-Go-SDK-API
 =========================
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/bitmartexchange/bitmart-go-sdk-api)
-[![Go version](https://shields.io/badge/Go-v1.12-blue)](https://pypi.org/project/bitmart-python-sdk-api)
+[![Go version](https://shields.io/badge/Go-v1.15-blue)](https://pypi.org/project/bitmart-python-sdk-api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
