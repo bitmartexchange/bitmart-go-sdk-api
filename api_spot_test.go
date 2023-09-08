@@ -39,10 +39,10 @@ func TestGetSpotSymbolDetail(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/spot/v2/ticker
-func TestGetSpotTicker(t *testing.T) {
+// GET https://api-cloud.bitmart.com/spot/quotation/v3/tickers
+func TestGetSpotV3Tickers(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotTicker()
+	ac, err := c.GetSpotV3Tickers()
 	if err != nil {
 		log.Panic(err)
 	} else {
@@ -50,21 +50,10 @@ func TestGetSpotTicker(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/spot/v1/ticker_detail
-func TestGetSpotTickerDetail(t *testing.T) {
+// GET https://api-cloud.bitmart.com/spot/quotation/v3/ticker
+func TestGetSpotV3Ticker(t *testing.T) {
 	c := NewTestClient()
-	ab, err := c.GetSpotTickerDetail("BTC_USDT")
-	if err != nil {
-		log.Panic(err)
-	} else {
-		PrintResponse(ab)
-	}
-}
-
-// GET https://api-cloud.bitmart.com/spot/v1/steps
-func TestGetSpotSteps(t *testing.T) {
-	c := NewTestClient()
-	ac, err := c.GetSpotSteps()
+	ac, err := c.GetSpotV3Ticker("BTC_USDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
@@ -72,12 +61,12 @@ func TestGetSpotSteps(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/spot/v1/symbols/kline
-func TestGetSpotSymbolKline(t *testing.T) {
+// GET https://api-cloud.bitmart.com/spot/quotation/v3/lite-klines
+func TestGetSpotV3LatestKline(t *testing.T) {
 	c := NewTestClient()
-	to := time.Now().Unix()
-	from := to - 60*60
-	ac, err := c.GetSpotSymbolKline("BTC_USDT", from, to, 15)
+	before := time.Now().Unix()
+	after := before - 60*60
+	ac, err := c.GetSpotV3LatestKline("BTC_USDT", before, after, 15, 5)
 	if err != nil {
 		log.Panic(err)
 	} else {
@@ -85,28 +74,35 @@ func TestGetSpotSymbolKline(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/spot/v1/symbols/book
-func TestGetSpotSymbolBook(t *testing.T) {
+// GET https://api-cloud.bitmart.com/spot/quotation/v3/klines
+func TestGetSpotV3HistoryKline(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotSymbolBook("BTC_USDT", 2, 10) // find by default
+	before := time.Now().Unix()
+	after := before - 60*60
+	ac, err := c.GetSpotV3HistoryKline("BTC_USDT", before, after, 15, 5)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud.bitmart.com/spot/quotation/v3/books
+func TestGGetSpotV3Book(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetSpotV3Book("BTC_USDT", 5) // find by default
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
 
-	ab, err := c.GetSpotSymbolBook("BTC_USDT", 2, 5) // find by precision is 8
-	if err != nil {
-		log.Panic(err)
-	} else {
-		PrintResponse(ab)
-	}
 }
 
-// GET https://api-cloud.bitmart.com/spot/v1/symbols/trades
-func TestGetSpotSymbolTrades(t *testing.T) {
+// GET https://api-cloud.bitmart.com/spot/quotation/v3/trades
+func TestGetSpotV3Trade(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotSymbolTrade("BTC_USDT")
+	ac, err := c.GetSpotV3Trade("BTC_USDT", 10)
 	if err != nil {
 		log.Panic(err)
 	} else {
@@ -125,7 +121,7 @@ func TestGetSpotWallet(t *testing.T) {
 	}
 }
 
-//POST https://api-cloud.bitmart.com/spot/v2/submit_order
+// POST https://api-cloud.bitmart.com/spot/v2/submit_order
 func TestPostSpotSubmitOrder(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostSpotSubmitOrder(Order{
@@ -144,7 +140,7 @@ func TestPostSpotSubmitOrder(t *testing.T) {
 	}
 }
 
-//POST https://api-cloud.bitmart.com/spot/v1/margin/submit_order
+// POST https://api-cloud.bitmart.com/spot/v1/margin/submit_order
 func TestPostMarginSubmitOrder(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostMarginSubmitOrder(MarginOrder{
@@ -163,12 +159,13 @@ func TestPostMarginSubmitOrder(t *testing.T) {
 	}
 }
 
-//POST https://api-cloud.bitmart.com/spot/v2/batch_orders
+// POST https://api-cloud.bitmart.com/spot/v2/batch_orders
 func TestPostSpotBatchOrders(t *testing.T) {
 	c := NewTestClient()
-	var orderParams [1]Order
+	var orderParams [2]Order
 	orderParams[0] = Order{Symbol: "BTC_USDT", Side: "buy", Type: "limit", ClientOrderId: "", Size: "0.1", Price: "8800", Notional: ""}
-	ac, err := c.PostSpotBatchOrders(orderParams)
+	orderParams[1] = Order{Symbol: "BTC_USDT", Side: "buy", Type: "limit", ClientOrderId: "", Size: "0.1", Price: "8900", Notional: ""}
+	ac, err := c.PostSpotBatchOrders(orderParams[:])
 	if err != nil {
 		log.Panic(err)
 	} else {

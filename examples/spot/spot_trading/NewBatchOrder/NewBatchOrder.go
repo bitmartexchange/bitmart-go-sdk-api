@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /spot/v2/batch_orders
-	Doc: https://developer-pro.bitmart.com/en/spot/#new-batch-order-v2-signed
+POST /spot/v2/batch_orders
+Doc: https://developer-pro.bitmart.com/en/spot/#new-batch-order-v2-signed
 */
 func main() {
 
@@ -23,7 +23,7 @@ func main() {
 	})
 
 	// New Batch Order(v2) (SIGNED)
-	var orderParams [1]bitmart.Order
+	var orderParams [3]bitmart.Order
 	orderParams[0] = bitmart.Order{
 		Symbol:        "BTC_USDT",
 		Side:          "sell",
@@ -32,7 +32,26 @@ func main() {
 		Size:          "0.1",
 		Price:         "880000",
 	}
-	ac, err := client.PostSpotBatchOrders(orderParams)
+
+	orderParams[1] = bitmart.Order{
+		Symbol:        "BTC_USDT",
+		Side:          "sell",
+		Type:          "limit",
+		ClientOrderId: "pix123120312312312314",
+		Size:          "0.1",
+		Price:         "880000",
+	}
+
+	orderParams[2] = bitmart.Order{
+		Symbol:        "BTC_USDT",
+		Side:          "sell",
+		Type:          "limit",
+		ClientOrderId: "pix123120312312312314",
+		Size:          "0.1",
+		Price:         "880000",
+	}
+
+	ac, err := client.PostSpotBatchOrders(orderParams[:])
 	if err != nil {
 		log.Panic(err)
 	} else {

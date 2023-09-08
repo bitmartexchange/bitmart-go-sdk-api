@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -122,10 +123,15 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 	if err != nil {
 		return response, err
 	}
-	defer response.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf("ReadCloser Err: %s", err)
+		}
+	}(response.Body)
 
 	// get a response results and parse
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return response, err
 	}

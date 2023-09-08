@@ -4,11 +4,11 @@
 BitMart-Go-SDK-API
 =========================
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/bitmartexchange/bitmart-go-sdk-api)
-[![Go version](https://shields.io/badge/Go-v1.15-blue)](https://pypi.org/project/bitmart-python-sdk-api)
+[![Go version](https://shields.io/badge/Go-v1.15-blue)](https://go.dev/dl/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-[BitMart Exchange official](https://bitmart.com) Go client for the [BitMart Cloud API](http://developer-pro.bitmart.com).
+[BitMart Exchange official](https://bitmart.com) Go client for the BitMart Cloud API.
 
 
 
@@ -49,16 +49,45 @@ import (
 
 
 
-Usage
+Documentation
 =========================
-* An example of a spot trade API
-* Replace it with your own API KEY
-* Run
+[API Documentation](https://developer-pro.bitmart.com/en/spot/#change-log)
+
+Example
+=========================
+
+#### Spot Market Endpoints Example
+
+<details>
+
+<summary>Get Recent Trades</summary>
+
+```go
+package main
+
+import (
+  "github.com/bitmartexchange/bitmart-go-sdk-api"
+  "log"
+)
+
+func main() {
+  client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
+
+  // Get Recent Trades
+  var ac, err = client.GetSpotSymbolTrade("BTC_USDT")
+  if err != nil {
+    log.Panic(err)
+  } else {
+    log.Println(bitmart.GetResponse(ac))
+  }
+  
+}
+```
+
+</details>
 
 
-### Examples:
-
-#### Spot / Margin Trading Endpoints
+#### Spot / Margin Trading Endpoints Example
 
 <details>
 
@@ -114,6 +143,10 @@ func main() {
 ```
 
 </details>
+
+Please find `examples/spot` folder to check for more endpoints.
+
+---
 
 
 #### Spot Websocket Endpoints
@@ -203,6 +236,8 @@ func main() {
 
 </details>
 
+---
+
 #### Futures Trading Endpoints
 
 <details>
@@ -258,6 +293,11 @@ func main() {
 ```
 
 </details>
+
+Please find `examples/futures` folder to check for more endpoints.
+
+---
+
 
 #### Futures Websocket Endpoints
 
@@ -349,3 +389,35 @@ func main() {
 ```
 
 </details>
+
+Extra Options
+=========================
+
+### Authentication
+
+```go
+client := bitmart.NewClient(bitmart.Config{
+    ApiKey:    yourApiKey,
+    SecretKey: yourSecretKey,
+    Memo:      yourMemo,
+})
+```
+
+### Timeout
+Through the `bitmart.Config` configuration class, you can set the timeout period for http requests. If not set, the default is 30 seconds.
+
+```go
+client := bitmart.NewClient(bitmart.Config{
+    TimeoutSecond: 5,
+})
+```
+
+
+### Debug
+If you want to print the request and response information, you can set it to true.
+
+```go
+client := bitmart.NewClient(bitmart.Config{
+    IsPrint: true,
+})
+```

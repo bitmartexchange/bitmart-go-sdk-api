@@ -1,39 +1,54 @@
 package bitmart
 
-// GetSpotCurrencies /** Get Currency List
+// GetSpotCurrencies /** Get Currency List (v1)
 func (cloudClient *CloudClient) GetSpotCurrencies() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_CURRENCIES_URL, NONE)
 }
 
-// GetSpotSymbol /** Get List of Trading Pairs
+// GetSpotSymbol /** Get List of Trading Pairs (v1)
 func (cloudClient *CloudClient) GetSpotSymbol() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_SYMBOLS_URL, NONE)
 }
 
-// GetSpotSymbolDetail /** Get List of Trading Pair Details
+// GetSpotSymbolDetail /** Get List of Trading Pair Details (v1)
 func (cloudClient *CloudClient) GetSpotSymbolDetail() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_SYMBOLS_DETAILS_URL, NONE)
 }
 
+// Deprecated: Use `GetSpotV3Tickers` instead.
 // GetSpotTicker /** Get Ticker of All Pairs (V2)
 func (cloudClient *CloudClient) GetSpotTicker() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_TICKER_URL, NONE)
 }
 
-// GetSpotTickerDetail /** Get Ticker of a Trading Pair
+// GetSpotV3Tickers /** Get Ticker of All Pairs (V3)
+func (cloudClient *CloudClient) GetSpotV3Tickers() (*CloudResponse, error) {
+	return cloudClient.requestWithoutParams(GET, API_SPOT_V3_TICKERS_URL, NONE)
+}
+
+// Deprecated: Use `GetSpotV3Ticker` instead.
+// GetSpotTickerDetail /** Get Ticker of a Trading Pair (V1)
 func (cloudClient *CloudClient) GetSpotTickerDetail(symbol string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
-
 	return cloudClient.requestWithParams(GET, API_SPOT_TICKER_DETAIL_URL, params, NONE)
 }
 
-// GetSpotSteps /** Get K-Line Step
+// GetSpotV3Ticker /** Get Ticker of a Trading Pair (V3)
+func (cloudClient *CloudClient) GetSpotV3Ticker(symbol string) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	return cloudClient.requestWithParams(GET, API_SPOT_V3_TICKER_URL, params, NONE)
+}
+
+// Deprecated: k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, 180, 240, 1440, 10080, 43200]
+// GetSpotSteps /** Get K-Line Step (V1)
 func (cloudClient *CloudClient) GetSpotSteps() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_STEPS_URL, NONE)
 }
 
-// GetSpotSymbolKline /** Get K-Line
+// Deprecated: Use `GetSpotV3LatestKline` or `GetSpotV3HistoryKline` instead.
+// GetSpotSymbolKline /** Get K-Line (V1)
 func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int64, to int64, step int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -44,7 +59,54 @@ func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int64, to
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_KLINE_URL, params, NONE)
 }
 
-// GetSpotSymbolBook /** Get Depth
+// GetSpotV3LatestKline /** Get Latest K-Line (V3)
+func (cloudClient *CloudClient) GetSpotV3LatestKline(symbol string, before, after int64, step, limit int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	if before > 0 {
+		params["before"] = before
+	}
+
+	if after > 0 {
+		params["after"] = after
+	}
+
+	if step > 0 {
+		params["step"] = step
+	}
+
+	if limit > 0 {
+		params["limit"] = limit
+	}
+
+	return cloudClient.requestWithParams(GET, API_SPOT_V3_LATEST_KLINE_URL, params, NONE)
+}
+
+// GetSpotV3HistoryKline /** Get History K-Line (V3)
+func (cloudClient *CloudClient) GetSpotV3HistoryKline(symbol string, before, after int64, step, limit int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	if before > 0 {
+		params["before"] = before
+	}
+
+	if after > 0 {
+		params["after"] = after
+	}
+
+	if step > 0 {
+		params["step"] = step
+	}
+
+	if limit > 0 {
+		params["limit"] = limit
+	}
+
+	return cloudClient.requestWithParams(GET, API_SPOT_V3_HISTORY_KLINE_URL, params, NONE)
+}
+
+// Deprecated: Use `GetSpotV3Book` instead.
+// GetSpotSymbolBook /** Get Depth (V1)
 func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int, size int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
@@ -59,11 +121,34 @@ func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int, 
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_BOOK_URL, params, NONE)
 }
 
-// GetSpotSymbolTrade /** Get Recent Trades
+// GetSpotV3Book /** Get Depth (V3)
+func (cloudClient *CloudClient) GetSpotV3Book(symbol string, limit int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+
+	if limit != 0 {
+		params["limit"] = limit
+	}
+
+	return cloudClient.requestWithParams(GET, API_SPOT_V3_BOOKS_URL, params, NONE)
+}
+
+// Deprecated: Use `GetSpotV3Trade` instead.
+// GetSpotSymbolTrade /** Get Recent Trades (V1)
 func (cloudClient *CloudClient) GetSpotSymbolTrade(symbol string) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = symbol
 	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_TRADES_URL, params, NONE)
+}
+
+// GetSpotV3Trade /** Get Recent Trades (V3)
+func (cloudClient *CloudClient) GetSpotV3Trade(symbol string, limit int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	if limit > 0 {
+		params["limit"] = limit
+	}
+	return cloudClient.requestWithParams(GET, API_SPOT_V3_TRADES_URL, params, NONE)
 }
 
 // GetSpotWallet /** Get Account Balance (KEYED)
@@ -136,7 +221,7 @@ func (cloudClient *CloudClient) PostMarginSubmitOrder(order MarginOrder) (*Cloud
 }
 
 // PostSpotBatchOrders /** Batch New Order(v2) (SIGNED)
-func (cloudClient *CloudClient) PostSpotBatchOrders(orderParams [1]Order) (*CloudResponse, error) {
+func (cloudClient *CloudClient) PostSpotBatchOrders(orderParams []Order) (*CloudResponse, error) {
 	params := NewParams()
 	params["order_params"] = orderParams
 	return cloudClient.requestWithParams(POST, API_SPOT_BATCH_ORDERS_URL, params, SIGNED)
