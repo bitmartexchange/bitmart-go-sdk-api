@@ -95,6 +95,17 @@ func TestGetContractOrderHistory(t *testing.T) {
 	}
 }
 
+// GET https://api-cloud.bitmart.com/contract/private/get-open-orders
+func TestGetContractOpenOrders(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetContractOpenOrders("BTCUSDT", "limit", "all", 5)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
 // GET https://api-cloud.bitmart.com/contract/private/position
 func TestGetContractPosition(t *testing.T) {
 	c := NewTestClient()
@@ -199,6 +210,17 @@ func TestPostContractCancelPlanOrder(t *testing.T) {
 func TestPostContractTransfer(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostContractTransfer("USDT", "100", "spot_to_contract", 5000)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/contract/private/submit-leverage
+func TestPostContractSubmitLeverage(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractSubmitLeverage("ETHUSDT", "10", "cross")
 	if err != nil {
 		log.Panic(err)
 	} else {

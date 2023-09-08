@@ -6,8 +6,8 @@ import (
 )
 
 /*
-GET /account/v2/deposit-withdraw/history
-Doc: https://developer-pro.bitmart.com/en/spot/#get-deposit-and-withdraw-history-keyed
+GET /contract/private/get-open-orders
+Doc: https://developer-pro.bitmart.com/en/futures/#get-all-open-orders-keyed
 */
 func main() {
 
@@ -18,13 +18,13 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Get Deposit And Withdraw History (KEYED)
-	var ac, err = client.GetDepositWithdrawHistory(bitmart.HistoryApply{
-		Currency:      "BTC",
-		OperationType: "withdraw",
-		N:             100,
-	})
-
+	// Get Order Detail (KEYED)
+	var ac, err = client.GetContractOpenOrders(
+		"BTCUSDT",
+		"limit",
+		"all",
+		5,
+	)
 	if err != nil {
 		log.Panic(err)
 	} else {

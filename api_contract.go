@@ -62,6 +62,26 @@ func (cloudClient *CloudClient) GetContractOrderHistory(contractSymbol string, f
 	return cloudClient.requestWithParams(GET, API_CONTRACT_ORDER_HISTORY_URL, params, KEYED)
 }
 
+// GetContractOpenOrders open orders /** Get All Open Orders (KEYED)
+func (cloudClient *CloudClient) GetContractOpenOrders(contractSymbol string, orderType string, orderState string, limit int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = contractSymbol
+
+	if orderType != "" {
+		params["type"] = orderType
+	}
+
+	if orderState != "" {
+		params["order_state"] = orderState
+	}
+
+	if limit > 0 {
+		params["limit"] = limit
+	}
+
+	return cloudClient.requestWithParams(GET, API_CONTRACT_OPEN_ORDERS_URL, params, KEYED)
+}
+
 // GetContractPosition position /** Get Current Position (KEYED)
 func (cloudClient *CloudClient) GetContractPosition(contractSymbol string) (*CloudResponse, error) {
 	params := NewParams()
@@ -202,4 +222,15 @@ func (cloudClient *CloudClient) PostContractTransfer(currency string, amount str
 		params["recvWindow"] = recvWindow
 	}
 	return cloudClient.requestWithParams(POST, API_CONTRACT_TRANSFER_URL, params, SIGNED)
+}
+
+// PostContractSubmitLeverage submit-leverage /** Submit Leverage (SIGNED)
+func (cloudClient *CloudClient) PostContractSubmitLeverage(contractSymbol string, leverage string, openType string) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = contractSymbol
+	params["open_type"] = openType
+	if leverage != "" {
+		params["leverage"] = leverage
+	}
+	return cloudClient.requestWithParams(POST, API_CONTRACT_SUBMIT_LEVERAGE_URL, params, SIGNED)
 }

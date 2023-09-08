@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/websocket"
-	"io/ioutil"
+	"io"
 	_ "io/ioutil"
 	"time"
 
@@ -184,9 +184,14 @@ func (ws *CloudWS) stop() {
 // decode message
 func (ws *CloudWS) gzipDecode(in []byte) ([]byte, error) {
 	reader := flate.NewReader(bytes.NewReader(in))
-	defer reader.Close()
+	defer func(reader io.ReadCloser) {
+		err := reader.Close()
+		if err != nil {
+			log.Printf("ReadCloser Err: %s", err)
+		}
+	}(reader)
 
-	return ioutil.ReadAll(reader)
+	return io.ReadAll(reader)
 }
 
 // reconnect to websocket

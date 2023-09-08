@@ -6,8 +6,8 @@ import (
 )
 
 /*
-POST /spot/v4/query/history-orders
-Doc: https://developer-pro.bitmart.com/en/spot/#account-orders-v4-signed
+POST /contract/private/submit-leverage
+Doc: https://developer-pro.bitmart.com/en/futures/#submit-leverage-signed
 */
 func main() {
 
@@ -22,14 +22,13 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Account Orders(v4) (SIGNED)
-	var ac, err = client.GetSpotAccountOrders(
-		"BTC_USDT",
-		"spot",
-		0,
-		0,
-		10,
-		5000)
+	// Submit Leverage (SIGNED)
+	var ac, err = client.PostContractSubmitLeverage(
+		"BTCUSDT",
+		"10",
+		"cross",
+	)
+
 	if err != nil {
 		log.Panic(err)
 	} else {

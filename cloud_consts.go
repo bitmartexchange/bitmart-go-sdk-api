@@ -44,7 +44,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "BitMart-GO-SDK-API/1.0.0"
+	VERSION      = "BitMart-GO-SDK-API/1.0.1"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
@@ -70,7 +70,7 @@ const (
 	API_SPOT_USER_FEE_URL                    = "/spot/v1/user_fee"
 	API_SPOT_TRADE_FEE_URL                   = "/spot/v1/trade_fee"
 
-	//Public Market Data Endpoints: https://developer-pro.bitmart.com/en/spot/#public-market-data
+	// Public Market Data Endpoints: https://developer-pro.bitmart.com/en/spot/#public-market-data
 	API_SPOT_CURRENCIES_URL      = "/spot/v1/currencies"
 	API_SPOT_SYMBOLS_URL         = "/spot/v1/symbols"
 	API_SPOT_SYMBOLS_DETAILS_URL = "/spot/v1/symbols/details"
@@ -80,6 +80,13 @@ const (
 	API_SPOT_SYMBOLS_KLINE_URL   = "/spot/v1/symbols/kline"
 	API_SPOT_SYMBOLS_BOOK_URL    = "/spot/v1/symbols/book"
 	API_SPOT_SYMBOLS_TRADES_URL  = "/spot/v1/symbols/trades"
+
+	API_SPOT_V3_TICKERS_URL       = "/spot/quotation/v3/tickers"
+	API_SPOT_V3_TICKER_URL        = "/spot/quotation/v3/ticker"
+	API_SPOT_V3_LATEST_KLINE_URL  = "/spot/quotation/v3/lite-klines"
+	API_SPOT_V3_HISTORY_KLINE_URL = "/spot/quotation/v3/klines"
+	API_SPOT_V3_BOOKS_URL         = "/spot/quotation/v3/books"
+	API_SPOT_V3_TRADES_URL        = "/spot/quotation/v3/trades"
 
 	// Spot / Margin Trading Endpoints: https://developer-pro.bitmart.com/en/spot/#spot-margin-trading
 	API_SPOT_WALLET_URL              = "/spot/v1/wallet"
@@ -119,6 +126,7 @@ const (
 	// Futures Trading Endpoints: https://developer-pro.bitmart.com/en/futures/#futures-trading
 	API_CONTRACT_ORDER_URL             = "/contract/private/order"
 	API_CONTRACT_ORDER_HISTORY_URL     = "/contract/private/order-history"
+	API_CONTRACT_OPEN_ORDERS_URL       = "/contract/private/get-open-orders"
 	API_CONTRACT_POSITION_URL          = "/contract/private/position"
 	API_CONTRACT_TRADES_URL            = "/contract/private/trades"
 	API_CONTRACT_TRANSFER_LIST_URL     = "/account/v1/transfer-contract-list"
@@ -128,7 +136,8 @@ const (
 	API_CONTRACT_SUBMIT_PLAN_ORDER_URL = "/contract/private/submit-plan-order"
 	API_CONTRACT_CANCEL_PLAN_ORDER_URL = "/contract/private/cancel-plan-order"
 
-	API_CONTRACT_TRANSFER_URL = "/account/v1/transfer-contract"
+	API_CONTRACT_TRANSFER_URL        = "/account/v1/transfer-contract"
+	API_CONTRACT_SUBMIT_LEVERAGE_URL = "/contract/private/submit-leverage"
 
 	// web socket
 	// spot common
