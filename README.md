@@ -58,40 +58,33 @@ Example
 
 #### Spot Market Endpoints Example
 
-<details>
-
-<summary>Get Recent Trades</summary>
-
 ```go
 package main
 
 import (
   "github.com/bitmartexchange/bitmart-go-sdk-api"
-  "log"
 )
 
 func main() {
-  client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
+  client := bitmart.NewClient(bitmart.Config{})
 
-  // Get Recent Trades
-  var ac, err = client.GetSpotSymbolTrade("BTC_USDT")
-  if err != nil {
-    log.Panic(err)
-  } else {
-    log.Println(bitmart.GetResponse(ac))
-  }
+  // Get List of Trading Pairs
+  client.GetSpotSymbol()
   
+  // Get Ticker of a Trading Pair (V3)
+  client.GetSpotV3Ticker("BTC_USDT")
+  
+  // Get Ticker of All Pairs (V3)
+  client.GetSpotV3Tickers()
+
+  // Get Depth (V3)
+  client.GetSpotV3Book("BTC_USDT", 10)
+
 }
 ```
 
-</details>
-
 
 #### Spot / Margin Trading Endpoints Example
-
-<details>
-
-<summary>New Order(v2) (SIGNED)</summary>
 
 ```go
 
@@ -102,10 +95,6 @@ import (
 	"log"
 )
 
-/*
-	POST /spot/v2/submit_order
-	Doc: https://developer-pro.bitmart.com/en/spot/#new-order-v2-signed
-*/
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -142,18 +131,13 @@ func main() {
 
 ```
 
-</details>
-
 Please find `examples/spot` folder to check for more endpoints.
 
 ---
 
 
-#### Spot Websocket Endpoints
+#### Spot Websocket Endpoints : Subscribe Public Channel
 
-<details>
-
-<summary>Subscribe Public Channel: Ticker</summary>
 
 ```go
 
@@ -162,14 +146,12 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
 )
 
 func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/spot/#public-ticker-channel
 func main() {
 	ws := bitmart.NewWS(bitmart.Config{WsUrl: bitmart.WS_URL})
 
@@ -187,11 +169,8 @@ func main() {
 
 ```
 
-</details>
 
-<details>
-
-<summary>Subscribe Private Channel: Order Progress</summary>
+#### Spot Websocket Endpoints : Subscribe Private Channel
 
 ```go
 
@@ -207,7 +186,6 @@ func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/spot/#private-order-progress
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -234,15 +212,38 @@ func main() {
 
 ```
 
-</details>
+
+Please find `examples/spot/websocket` folder to check for more endpoints.
+
 
 ---
 
+#### Futures Market Endpoints
+
+```go
+package main
+
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+)
+
+func main() {
+	client := bitmart.NewClient(bitmart.Config{})
+
+	// Get Contract Details
+	client.GetContractDetails("BTCUSDT")
+    // Get Current Funding Rate
+    client.GetContractFundingRate("BTCUSDT")
+    // Get Futures Open Interest
+    client.GetContractOpenInterest("BTCUSDT")
+    // Get Market Depth
+    client.GetContractDepth("BTCUSDT")
+}
+
+```
+
 #### Futures Trading Endpoints
 
-<details>
-
-<summary>Submit Order (SIGNED)</summary>
 
 ```go
 
@@ -253,10 +254,6 @@ import (
 	"log"
 )
 
-/*
-	POST /contract/private/submit-order
-	Doc: https://developer-pro.bitmart.com/en/futures/#submit-order-signed
-*/
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -292,18 +289,13 @@ func main() {
 
 ```
 
-</details>
 
 Please find `examples/futures` folder to check for more endpoints.
 
 ---
 
 
-#### Futures Websocket Endpoints
-
-<details>
-
-<summary>Subscribe Public Channel: Ticker</summary>
+#### Futures Websocket Endpoints : Subscribe Public Channel
 
 ```go
 
@@ -319,7 +311,6 @@ func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/futures/#public-ticker-channel
 func main() {
 	ws := bitmart.NewWSContract(bitmart.Config{WsUrl: bitmart.CONTRACT_WS_URL})
 
@@ -340,11 +331,7 @@ func main() {
 
 ```
 
-</details>
-
-<details>
-
-<summary>Subscribe Private Channel: Assets</summary>
+#### Futures Websocket Endpoints : Subscribe Private Channel
 
 ```go
 
@@ -353,14 +340,12 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
 )
 
 func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/futures/#private-assets-channel
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -382,13 +367,10 @@ func main() {
 	}
 	ws.SubscribeWithLogin(channels)
 
-	// Just test, Please do not use in production.
-	time.Sleep(60 * time.Second)
 }
 
 ```
 
-</details>
 
 Extra Options
 =========================
