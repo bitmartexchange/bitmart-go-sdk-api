@@ -8,18 +8,20 @@ type Config struct {
 	Memo          string
 	TimeoutSecond int
 	IsPrint       bool
+	Headers       map[string]string
 }
 
 type CloudResponse struct {
-	httpStatus int
-	response   string
-	limit      RateLimit
+	HttpStatus int
+	Response   string
+	Limit      RateLimit
 }
 
 type RateLimit struct {
-	remaining int
-	limit     int
-	reset     int
+	Remaining int
+	Limit     int
+	Reset     int
+	Mode      string
 }
 
 type Auth int
@@ -53,11 +55,11 @@ const (
 	POST   = "POST"
 	DELETE = "DELETE"
 
-	// System Status Endpoints: https://developer-pro.bitmart.com/en/spot/#system-status
+	// API_SYSTEM_TIME_URL System Status Endpoints: https://developer-pro.bitmart.com/en/spot/#system-status
 	API_SYSTEM_TIME_URL    = "/system/time"
 	API_SYSTEM_SERVICE_URL = "/system/service"
 
-	// Funding Account Endpoints: https://developer-pro.bitmart.com/en/spot/#funding-account
+	// API_ACCOUNT_CURRENCIES_URL Funding Account Endpoints: https://developer-pro.bitmart.com/en/spot/#funding-account
 	API_ACCOUNT_CURRENCIES_URL               = "/account/v1/currencies"
 	API_ACCOUNT_WALLET_URL                   = "/account/v1/wallet"
 	API_ACCOUNT_DEPOSIT_ADDRESS_URL          = "/account/v1/deposit/address"
@@ -70,7 +72,7 @@ const (
 	API_SPOT_USER_FEE_URL                    = "/spot/v1/user_fee"
 	API_SPOT_TRADE_FEE_URL                   = "/spot/v1/trade_fee"
 
-	// Public Market Data Endpoints: https://developer-pro.bitmart.com/en/spot/#public-market-data
+	// API_SPOT_CURRENCIES_URL Public Market Data Endpoints: https://developer-pro.bitmart.com/en/spot/#public-market-data
 	API_SPOT_CURRENCIES_URL      = "/spot/v1/currencies"
 	API_SPOT_SYMBOLS_URL         = "/spot/v1/symbols"
 	API_SPOT_SYMBOLS_DETAILS_URL = "/spot/v1/symbols/details"
@@ -88,7 +90,7 @@ const (
 	API_SPOT_V3_BOOKS_URL         = "/spot/quotation/v3/books"
 	API_SPOT_V3_TRADES_URL        = "/spot/quotation/v3/trades"
 
-	// Spot / Margin Trading Endpoints: https://developer-pro.bitmart.com/en/spot/#spot-margin-trading
+	// API_SPOT_WALLET_URL Spot / Margin Trading Endpoints: https://developer-pro.bitmart.com/en/spot/#spot-margin-trading
 	API_SPOT_WALLET_URL              = "/spot/v1/wallet"
 	API_SPOT_SUBMIT_ORDER_URL        = "/spot/v2/submit_order"
 	API_SPOT_SUBMIT_MARGIN_ORDER_URL = "/spot/v1/margin/submit_order"

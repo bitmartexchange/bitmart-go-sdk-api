@@ -7,11 +7,13 @@ Changelog
 - New
 - Updated
 - Removed
-  - `/spot/v1/steps`
+  - `/spot/v2/ticker`
   - `/spot/v1/symbols/book`
 #### Improvements
 - Support custom request headers
 #### Bug Fixes
+- The fields of the `CloudResponse` are now publicly accessible
+- The fields of the `RateLimit` are now publicly accessible
 
 ---
 

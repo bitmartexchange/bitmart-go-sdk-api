@@ -403,3 +403,48 @@ client := bitmart.NewClient(bitmart.Config{
     IsPrint: true,
 })
 ```
+
+### Custom request headers
+You can add your own request header information here, but please do not fill in `X-BM-KEY, X-BM-SIGN, X-BM-TIMESTAMP`
+
+
+```go
+client := bitmart.NewClient(bitmart.Config{Headers: map[string]string{
+      "X-Custom-Header1": "HeaderValue1",
+      "X-Custom-Header2": "HeaderValue2",
+}})
+client.GetSpotV3Ticker("BTC_USDT")
+```
+
+
+### Response Metadata
+The bitmart API server provides the endpoint rate limit usage in the header of each response. 
+This information can be obtained from the headers property. 
+x-bm-ratelimit-remaining indicates the number of times the current window has been used,
+x-bm-ratelimit-limit indicates the maximum number of times the current window can be used, 
+and x-bm-ratelimit-reset indicates the current window time.
+
+
+Example:
+
+```
+x-bm-ratelimit-mode: IP
+x-bm-ratelimit-remaining: 10
+x-bm-ratelimit-limit: 600
+x-bm-ratelimit-reset: 60
+```
+
+This means that this IP can call the endpoint 600 times within 60 seconds, and has called 10 times so far.
+
+
+```go
+var ac, err = client.GetSpotV3Ticker("BTC_USDT")
+if err != nil {
+    log.Panic(err)
+} else {
+    log.Println(ac.Limit.Limit)
+    log.Println(ac.Limit.Remaining)
+    log.Println(ac.Limit.Reset)
+    log.Println(ac.Limit.Mode)
+}
+```

@@ -10,6 +10,10 @@ func GetDefaultConfig() *Config {
 	config.Memo = "Your Memo"
 	config.TimeoutSecond = 30
 	config.IsPrint = true
+	config.Headers = map[string]string{
+		"X-Custom-Header1": "HeaderValue1",
+		"X-Custom-Header2": "HeaderValue2",
+	}
 	return &config
 }
 

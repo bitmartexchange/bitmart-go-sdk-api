@@ -101,7 +101,7 @@ func CreateQueryString(params map[string]interface{}) string {
 }
 
 // Headers set headers
-func Headers(request *http.Request, apiKey string, timestamp string, sign string) {
+func Headers(request *http.Request, apiKey string, timestamp string, sign string, additionalHeaders map[string]string) {
 	request.Header.Add(ACCEPT, APPLICATION_JSON)
 	request.Header.Add(CONTENT_TYPE, APPLICATION_JSON_UTF8)
 	request.Header.Add(USER_AGENT, VERSION)
@@ -117,6 +117,13 @@ func Headers(request *http.Request, apiKey string, timestamp string, sign string
 	if timestamp != "" {
 		request.Header.Add(X_BM_TIMESTAMP, timestamp)
 	}
+
+	// Add additional headers from the map if they are provided
+	for key, value := range additionalHeaders {
+		if value != "" {
+			request.Header.Add(key, value)
+		}
+	}
 }
 
 // PrintRequest print request
@@ -129,27 +136,27 @@ func PrintRequest(request *http.Request, body string) {
 // PrintResponse print response
 func PrintResponse(response *CloudResponse) {
 	fmt.Println("\tResponse: ")
-	fmt.Println("\t\tHttpStatus: " + IntToString(response.httpStatus))
-	fmt.Println("\t\tBody: " + response.response)
+	fmt.Println("\t\tHttpStatus: " + IntToString(response.HttpStatus))
+	fmt.Println("\t\tBody: " + response.Response)
 	fmt.Println("\t\tRateLimit:")
-	fmt.Printf("\t\t\tReset: %d\n", response.limit.reset)
-	fmt.Printf("\t\t\tLimit: %d\n", response.limit.limit)
-	fmt.Printf("\t\t\tRemaining: %d\n", response.limit.remaining)
+	fmt.Printf("\t\t\tReset: %d\n", response.Limit.Reset)
+	fmt.Printf("\t\t\tLimit: %d\n", response.Limit.Limit)
+	fmt.Printf("\t\t\tRemaining: %d\n", response.Limit.Remaining)
 }
 
 // GetResponse get response
 func GetResponse(response *CloudResponse) string {
-	return response.response
+	return response.Response
 }
 
 // GetHttpStatus get http status
 func GetHttpStatus(response *CloudResponse) int {
-	return response.httpStatus
+	return response.HttpStatus
 }
 
 // GetLimit get limit
 func GetLimit(response *CloudResponse) RateLimit {
-	return response.limit
+	return response.Limit
 }
 
 // CreateChannel create channel
