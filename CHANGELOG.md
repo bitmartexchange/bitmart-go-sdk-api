@@ -2,8 +2,22 @@ Changelog
 =========================
 
 
+### v2.0.0 Release
+#### New Features
+- New
+- Updated
+- Removed
+  - `/spot/v1/steps`
+  - `/spot/v1/symbols/book`
+#### Improvements
+- Support custom request headers
+#### Bug Fixes
 
-###### 2023-09-08
+---
+
+### v1.0.1 Release
+#### New Features
+##### 2023-09-08
 - New endpoints for API Futures Trading
   - <code>/contract/private/get-open-orders</code>Get All Open Orders (KEYED)
   - <code>/contract/private/submit-leverage</code>Submit Leverage (SIGNED)
@@ -17,7 +31,9 @@ Changelog
 
 ---
 
-###### 2023-06-09
+### v1.0.0 Release
+#### New Features
+##### 2023-06-09
 - New endpoints for API Futures Trading
     - <code>/contract/private/submit-plan-order</code>Applicable for placing contract plan orders
     - <code>/contract/private/cancel-plan-order</code>Applicable for canceling a specific contract plan order
@@ -36,9 +52,7 @@ Changelog
   - <code>/spot/v2/trades</code>
   - <code>/contract/v1/tickers</code>
 
----
-
-###### 2022-11-8
+##### 2022-11-8
 - New endpoints for Contract Market
     - <code>/contract/public/details</code>Get contract details
     - <code>/contract/public/depth</code>Get contract depth
@@ -59,19 +73,14 @@ Changelog
     - contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
     - contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
 
----
-
-
-###### 2022-11-03
+##### 2022-11-03
 - New endpoints for API Broker
     - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
 - Update endpoints for Spot / Margin trading
     - <code>/spot/v3/orders</code> <code>/spot/v2/trades</code>add start_time and end_time field for flexible querying
     - add new order status 11 = Partially filled and canceled
 
----
-
-###### 2022-10-20
+##### 2022-10-20
 - Upgrade endpoints for Spot
     - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
     - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
@@ -92,20 +101,14 @@ Changelog
     - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
     - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
 
----
-
-###### 2022-01-20
+##### 2022-01-20
 - Update endpoints for Spot
     - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.
 
----
-
-###### 2022-01-18
+##### 2022-01-18
 - websocket public channel address<code>wss://ws-manager-compress.bitmart.com?protocol=1.1</code>will be taken down on 2022-02-28 UTC time,The new address is<code>wss://ws-manager-compress.bitmart.com/api?protocol=1.1</code>
 
----
-
-###### 2021-11-24
+##### 2021-11-24
 - New endpoints for Spot
     - <code>/spot/v2/orders</code>Get User Order History V2
     - <code>/spot/v1/batch_orders</code>Batch Order
@@ -119,9 +122,7 @@ Changelog
 - Update endpoints for Account
     - <code>/account/v1/wallet</code>Remove the account_type,Only respond to currency accounts; you can bring currency parameters (optional)
 
----
-
-###### 2021-11-06
+##### 2021-11-06
 - Update endpoints for Spot WebSocket
     - Public-Depth Channel:
         - spot/depth50     50 Level Depth Channel
@@ -129,9 +130,7 @@ Changelog
     - User-Trade Channel:
         - Eligible pushes add new orders successfully
 
----
-
-###### 2021-01-19
+##### 2021-01-19
 - New endpoints for Spot WebSocket
     - Public - ticket channels
     - Public - K channel
@@ -140,13 +139,9 @@ Changelog
     - Login
     - User - Trading Channel
 
----
-
-###### 2020-07-16
+##### 2020-07-16
 - Interface Spot API `Cancel Order` update to v2 version that is `POST https://api-cloud.bitmart.com/spot/v2/cancel_order`
 - UserAgent set "BitMart-GO-SDK/1.0.1"
 
----
-
-###### 2020-09-21
+##### 2020-09-21
 - Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
