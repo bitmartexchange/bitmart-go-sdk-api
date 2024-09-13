@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /spot/v1/currencies
-	Doc: https://developer-pro.bitmart.com/en/spot/#get-currency-list
+GET /spot/v1/currencies
+Doc: https://developer-pro.bitmart.com/en/spot/#get-currency-list
 */
 func main() {
 	client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
@@ -17,7 +17,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

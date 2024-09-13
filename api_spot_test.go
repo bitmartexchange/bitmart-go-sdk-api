@@ -66,11 +66,24 @@ func TestGetSpotV3LatestKline(t *testing.T) {
 	c := NewTestClient()
 	before := time.Now().Unix()
 	after := before - 60*60
-	ac, err := c.GetSpotV3LatestKline("BTC_USDT", before, after, 15, 5)
+
+	ac, err := c.GetSpotV3LatestKline("BTC_USDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
+	}
+
+	var ac2, err2 = c.GetSpotV3LatestKline("BTC_USDT", map[string]interface{}{
+		"before": before,
+		"after":  after,
+		"step":   15,
+		"limit":  10,
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
 	}
 }
 
@@ -79,22 +92,43 @@ func TestGetSpotV3HistoryKline(t *testing.T) {
 	c := NewTestClient()
 	before := time.Now().Unix()
 	after := before - 60*60
-	ac, err := c.GetSpotV3HistoryKline("BTC_USDT", before, after, 15, 5)
+	ac, err := c.GetSpotV3HistoryKline("BTC_USDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
+	}
+
+	var ac2, err2 = c.GetSpotV3HistoryKline("BTC_USDT", map[string]interface{}{
+		"before": before,
+		"after":  after,
+		"step":   15,
+		"limit":  10,
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
 	}
 }
 
 // GET https://api-cloud.bitmart.com/spot/quotation/v3/books
 func TestGGetSpotV3Book(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotV3Book("BTC_USDT", 5) // find by default
+	ac, err := c.GetSpotV3Book("BTC_USDT") // find by default
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
+	}
+
+	var ac2, err2 = c.GetSpotV3Book("BTC_USDT", map[string]interface{}{
+		"limit": 10,
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
 	}
 
 }
@@ -102,11 +136,20 @@ func TestGGetSpotV3Book(t *testing.T) {
 // GET https://api-cloud.bitmart.com/spot/quotation/v3/trades
 func TestGetSpotV3Trade(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotV3Trade("BTC_USDT", 10)
+	ac, err := c.GetSpotV3Trade("BTC_USDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
+	}
+
+	ac2, err2 := c.GetSpotV3Trade("BTC_USDT", map[string]interface{}{
+		"limit": 10,
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
 	}
 }
 

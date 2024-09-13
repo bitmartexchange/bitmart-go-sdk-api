@@ -78,7 +78,9 @@ func main() {
   client.GetSpotV3Tickers()
 
   // Get Depth (V3)
-  client.GetSpotV3Book("BTC_USDT", 10)
+  client.GetSpotV3Book("BTC_USDT", map[string]interface{}{
+    "limit": 10,
+  })
 
 }
 ```
@@ -122,7 +124,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }
@@ -281,7 +283,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

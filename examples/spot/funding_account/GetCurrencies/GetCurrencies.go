@@ -13,11 +13,11 @@ func main() {
 	client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
 
 	// Get Currencies (V1)
-	var ac, err = client.GetSpotCurrencies()
+	var ac, err = client.GetAccountCurrencies()
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

@@ -76,12 +76,6 @@ const (
 	API_SPOT_CURRENCIES_URL      = "/spot/v1/currencies"
 	API_SPOT_SYMBOLS_URL         = "/spot/v1/symbols"
 	API_SPOT_SYMBOLS_DETAILS_URL = "/spot/v1/symbols/details"
-	API_SPOT_TICKER_URL          = "/spot/v2/ticker"
-	API_SPOT_TICKER_DETAIL_URL   = "/spot/v1/ticker_detail"
-	API_SPOT_STEPS_URL           = "/spot/v1/steps"
-	API_SPOT_SYMBOLS_KLINE_URL   = "/spot/v1/symbols/kline"
-	API_SPOT_SYMBOLS_BOOK_URL    = "/spot/v1/symbols/book"
-	API_SPOT_SYMBOLS_TRADES_URL  = "/spot/v1/symbols/trades"
 
 	API_SPOT_V3_TICKERS_URL       = "/spot/quotation/v3/tickers"
 	API_SPOT_V3_TICKER_URL        = "/spot/quotation/v3/ticker"

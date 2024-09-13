@@ -82,6 +82,23 @@ func NewParams() map[string]interface{} {
 	return make(map[string]interface{})
 }
 
+// AddParams add param
+func AddParams(params map[string]interface{}, options ...map[string]interface{}) map[string]interface{} {
+	if len(options) > 0 && options[0] != nil {
+		// Use the first map from the variadic parameter
+		for key, value := range options[0] {
+			params[key] = value // This will overwrite the value if the key exists
+		}
+	}
+
+	return params
+}
+
+// CreateParams get param
+func CreateParams(options ...map[string]interface{}) map[string]interface{} {
+	return AddParams(NewParams(), options...)
+}
+
 // CreateQueryString create query string
 func CreateQueryString(params map[string]interface{}) string {
 	if params == nil || len(params) == 0 {
@@ -144,16 +161,19 @@ func PrintResponse(response *CloudResponse) {
 	fmt.Printf("\t\t\tRemaining: %d\n", response.Limit.Remaining)
 }
 
+// Deprecated: Use `.Response` instead.
 // GetResponse get response
 func GetResponse(response *CloudResponse) string {
 	return response.Response
 }
 
+// Deprecated: Use `.HttpStatus` instead.
 // GetHttpStatus get http status
 func GetHttpStatus(response *CloudResponse) int {
 	return response.HttpStatus
 }
 
+// Deprecated: Use `.Limit` instead.
 // GetLimit get limit
 func GetLimit(response *CloudResponse) RateLimit {
 	return response.Limit
