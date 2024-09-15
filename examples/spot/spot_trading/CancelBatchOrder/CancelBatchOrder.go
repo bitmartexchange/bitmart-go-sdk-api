@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /spot/v1/cancel_orders
-	Doc: https://developer-pro.bitmart.com/en/spot/#cancel-batch-order-v1-signed
+POST /spot/v4/cancel_orders
+Doc: https://developer-pro.bitmart.com/en/spot/#cancel-batch-order-v4-signed
 */
 func main() {
 
@@ -22,13 +22,25 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Cancel Batch Order(v1) (SIGNED)
-	var ac, err = client.PostSpotCancelOrders("BTC_USDT", "buy")
+	// Cancel Batch Order(v4) (SIGNED)
+	var ac, err = client.PostSpotCancelOrders("BTC_USDT", map[string]interface{}{
+		"orderIds": []string{"12312312", "12312312312"},
+	})
 
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
+	}
+
+	var ac2, err2 = client.PostSpotCancelOrders("BTC_USDT", map[string]interface{}{
+		"clientOrderIds": []string{"12312312", "12312312312"},
+	})
+
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }

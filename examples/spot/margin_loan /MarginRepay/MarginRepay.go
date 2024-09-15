@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /spot/v1/margin/isolated/repay
-	Doc: https://developer-pro.bitmart.com/en/spot/#margin-repay-isolated-signed
+POST /spot/v1/margin/isolated/repay
+Doc: https://developer-pro.bitmart.com/en/spot/#margin-repay-isolated-signed
 */
 func main() {
 
@@ -27,7 +27,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

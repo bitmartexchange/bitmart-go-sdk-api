@@ -6,8 +6,8 @@ import (
 )
 
 /*
-POST /spot/v1/margin/submit_order
-Doc: https://developer-pro.bitmart.com/en/spot/#new-margin-order-v1-signed
+POST /spot/v4/cancel_all
+Doc: https://developer-pro.bitmart.com/en/spot/#cancel-all-order-v4-signed
 */
 func main() {
 
@@ -22,20 +22,22 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// New Margin Order(v1) (SIGNED)
-	var ac, err = client.PostMarginSubmitOrder(bitmart.MarginOrder{
-		Symbol:        "BTC_USDT",
-		Side:          "sell",
-		Type:          "limit",
-		ClientOrderId: "",
-		Size:          "0.1",
-		Price:         "880000",
-	})
-
+	// Cancel All Order(v4) (SIGNED)
+	var ac, err = client.PostSpotCancelAllOrder()
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
+	}
+
+	var ac2, err2 = client.PostSpotCancelAllOrder(map[string]interface{}{
+		"symbol": "BTC_USDT",
+		"side":   "buy",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }

@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /spot/v1/margin/isolated/repay_record
-	Doc: https://developer-pro.bitmart.com/en/spot/#get-repayment-record-isolated-keyed
+GET /spot/v1/margin/isolated/repay_record
+Doc: https://developer-pro.bitmart.com/en/spot/#get-repayment-record-isolated-keyed
 */
 func main() {
 
@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

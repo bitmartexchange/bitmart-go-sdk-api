@@ -33,7 +33,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

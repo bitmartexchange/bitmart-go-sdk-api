@@ -85,10 +85,10 @@ type Order struct {
 	Symbol        string `json:"symbol"`
 	Side          string `json:"side"`
 	Type          string `json:"type"`
-	ClientOrderId string `json:"client_order_id"`
-	Size          string `json:"size"`
-	Price         string `json:"price"`
-	Notional      string `json:"notional"`
+	ClientOrderId string `json:"client_order_id,omitempty"`
+	Size          string `json:"size,omitempty"`
+	Price         string `json:"price,omitempty"`
+	Notional      string `json:"notional,omitempty"`
 }
 
 // PostSpotSubmitOrder /** New Order(v2) (SIGNED)
@@ -144,32 +144,58 @@ func (cloudClient *CloudClient) PostMarginSubmitOrder(order MarginOrder) (*Cloud
 	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_MARGIN_ORDER_URL, params, SIGNED)
 }
 
-// PostSpotBatchOrders /** Batch New Order(v2) (SIGNED)
-func (cloudClient *CloudClient) PostSpotBatchOrders(orderParams []Order) (*CloudResponse, error) {
-	params := NewParams()
-	params["order_params"] = orderParams
+// BatchOrder /** Spot Order Parameters
+type BatchOrder struct {
+	Side          string `json:"side"`
+	Type          string `json:"type"`
+	ClientOrderId string `json:"clientOrderId,omitempty"`
+	Size          string `json:"size,omitempty"`
+	Price         string `json:"price,omitempty"`
+	Notional      string `json:"notional,omitempty"`
+}
+
+// PostSpotBatchOrders /** Batch New Order(v4) (SIGNED)
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - orderParams: Order parameters, the number of transactions cannot exceed 10
+// - Options.recvWindow - Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) PostSpotBatchOrders(symbol string, orderParams []BatchOrder, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = symbol
+	params["orderParams"] = orderParams
 	return cloudClient.requestWithParams(POST, API_SPOT_BATCH_ORDERS_URL, params, SIGNED)
 }
 
 // PostSpotCancelOrder /** Cancel Order(v3) (SIGNED)
-func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId string, clientOrderId string) (*CloudResponse, error) {
-	params := NewParams()
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - Options.order_id	 - Order ID
+// - Options.client_order_id - Client-defined Order ID
+func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-	if orderId != "" {
-		params["order_id"] = orderId
-	}
-	if clientOrderId != "" {
-		params["client_order_id"] = clientOrderId
-	}
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDER_URL, params, SIGNED)
 }
 
-// PostSpotCancelOrders /** Cancel Batch Order(v1) (SIGNED)
-func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string) (*CloudResponse, error) {
-	params := NewParams()
+// PostSpotCancelOrders /** Cancel Batch Order(v4) (SIGNED)
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - Options.orderIds	 - Order Id List (Either orderIds or clientOrderIds must be provided)
+// - Options.clientOrderIds - Client-defined OrderId List (Either orderIds or clientOrderIds must be provided)
+// - Options.recvWindow - Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-	params["side"] = side
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDERS_URL, params, SIGNED)
+}
+
+// PostSpotCancelAllOrder /** Cancel All Order(v4) (SIGNED)
+// Parameters:
+// - Options.symbol: Trading pair (e.g. BTC_USDT)
+// - Options.side: Order side  -buy -sell
+func (cloudClient *CloudClient) PostSpotCancelAllOrder(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ALL_URL, params, SIGNED)
 }
 
 // GetSpotOrderByOrderId /** Query Order By Id (v4) (SIGNED)
