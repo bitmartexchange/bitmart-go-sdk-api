@@ -19,16 +19,20 @@ func main() {
 	})
 
 	// Get Deposit And Withdraw History (KEYED)
-	var ac, err = client.GetDepositWithdrawHistory(bitmart.HistoryApply{
-		Currency:      "BTC",
-		OperationType: "withdraw",
-		N:             100,
-	})
-
+	var ac, err = client.GetDepositWithdrawHistory("withdraw", 10)
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
+	}
+
+	var ac2, err2 = client.GetDepositWithdrawHistory("withdraw", 10, map[string]interface{}{
+		"currency": "BTC",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }

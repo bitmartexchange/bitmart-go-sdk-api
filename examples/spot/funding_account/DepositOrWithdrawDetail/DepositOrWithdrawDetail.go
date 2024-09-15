@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /account/v1/deposit-withdraw/detail
-	Doc: https://developer-pro.bitmart.com/en/spot/#get-a-deposit-or-withdraw-detail-keyed
+GET /account/v1/deposit-withdraw/detail
+Doc: https://developer-pro.bitmart.com/en/spot/#get-a-deposit-or-withdraw-detail-keyed
 */
 func main() {
 
@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

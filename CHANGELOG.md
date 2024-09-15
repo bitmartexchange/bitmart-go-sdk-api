@@ -9,6 +9,9 @@ Changelog
   - `/spot/quotation/v3/lite-klines`
   - `/spot/quotation/v3/klines`
   - `/spot/quotation/v3/books`
+  - `/account/v1/wallet`
+  - `/account/v1/withdraw/apply`
+  - `/account/v2/deposit-withdraw/history"`
 - Removed
   - `/spot/v2/ticker`
   - `/spot/v1/ticker_detail`

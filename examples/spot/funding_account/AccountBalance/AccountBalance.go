@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /account/v1/wallet
-	Doc: https://developer-pro.bitmart.com/en/spot/#get-account-balance-keyed
+GET /account/v1/wallet
+Doc: https://developer-pro.bitmart.com/en/spot/#get-account-balance-keyed
 */
 func main() {
 
@@ -19,11 +19,20 @@ func main() {
 	})
 
 	// Get Account Balance (KEYED)
-	var ac, err = client.GetSpotAccountWallet("BTC")
+	var ac, err = client.GetSpotAccountWallet()
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
+	}
+
+	var ac2, err2 = client.GetSpotAccountWallet(map[string]interface{}{
+		"currency": "BTC",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }
