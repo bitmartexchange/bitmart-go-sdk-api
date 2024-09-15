@@ -6,8 +6,8 @@ import (
 )
 
 /*
-GET /contract/private/get-open-orders
-Doc: https://developer-pro.bitmart.com/en/futures/#get-all-open-orders-keyed
+GET /contract/private/current-plan-order
+Doc: https://developer-pro.bitmart.com/en/futures/#get-all-current-plan-orders-keyed
 */
 func main() {
 
@@ -18,24 +18,23 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Get Order Detail (KEYED)
-	var ac, err = client.GetContractOpenOrders()
+	// Get All Current Plan Orders (KEYED)
+	var ac, err = client.GetContractCurrentPlanOrders()
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
 	}
 
-	ac2, err2 := client.GetContractOpenOrders(map[string]interface{}{
-		"symbol":      "BTCUSDT",
-		"type":        "limit",
-		"order_state": "all",
-		"limit":       10,
+	var ac2, err2 = client.GetContractCurrentPlanOrders(map[string]interface{}{
+		"symbol": "BTCUSDT",
+		"type":   "limit",
+		"limit":  10,
 	})
-
 	if err2 != nil {
 		log.Panic(err2)
 	} else {
 		log.Println(ac2.Response)
 	}
+
 }

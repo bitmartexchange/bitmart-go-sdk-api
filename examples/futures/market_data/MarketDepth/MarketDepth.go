@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /contract/public/depth
-	Doc: https://developer-pro.bitmart.com/en/futures/#get-market-depth
+GET /contract/public/depth
+Doc: https://developer-pro.bitmart.com/en/futures/#get-market-depth
 */
 func main() {
 	client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
@@ -17,7 +17,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

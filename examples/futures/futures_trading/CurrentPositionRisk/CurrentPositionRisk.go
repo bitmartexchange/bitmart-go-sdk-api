@@ -6,8 +6,8 @@ import (
 )
 
 /*
-GET /contract/private/position
-Doc: https://developer-pro.bitmart.com/en/futures/#get-current-position-keyed
+GET /contract/private/position-risk
+Doc: https://developer-pro.bitmart.com/en/futures/#get-current-position-risk-details-keyed
 */
 func main() {
 
@@ -18,15 +18,15 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Get Current Position (KEYED)
-	var ac, err = client.GetContractPosition()
+	// Get Current Position Risk Details(KEYED)
+	var ac, err = client.GetContractPositionRisk()
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
 	}
 
-	ac2, err2 := client.GetContractPosition(map[string]interface{}{
+	ac2, err2 := client.GetContractPositionRisk(map[string]interface{}{
 		"symbol": "BTCUSDT",
 	})
 	if err2 != nil {

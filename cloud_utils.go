@@ -99,6 +99,22 @@ func CreateParams(options ...map[string]interface{}) map[string]interface{} {
 	return AddParams(NewParams(), options...)
 }
 
+// AddToParams add to params
+func AddToParams(key string, value interface{}, params map[string]interface{}) {
+	switch v := value.(type) {
+	case string:
+		if v != "" {
+			params[key] = v
+		}
+	case int:
+		if v != 0 {
+			params[key] = v
+		}
+	default:
+		fmt.Println("Unsupported type")
+	}
+}
+
 // CreateQueryString create query string
 func CreateQueryString(params map[string]interface{}) string {
 	if params == nil || len(params) == 0 {

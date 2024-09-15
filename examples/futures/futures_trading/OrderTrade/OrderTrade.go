@@ -7,8 +7,8 @@ import (
 )
 
 /*
-	GET /contract/private/trades
-	Doc: https://developer-pro.bitmart.com/en/futures/#get-order-trade-keyed
+GET /contract/private/trades
+Doc: https://developer-pro.bitmart.com/en/futures/#get-order-trade-keyed
 */
 func main() {
 
@@ -20,12 +20,22 @@ func main() {
 	})
 
 	// Get Order Trade (KEYED)
-	now := time.Now().Unix()
-	var ac, err = client.GetContractTrades("BTCUSDT", int(now-3600), int(now))
+	var ac, err = client.GetContractTrades("BTCUSDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(bitmart.GetResponse(ac))
+	}
+
+	now := time.Now().Unix()
+	ac2, err2 := client.GetContractTrades("BTCUSDT", map[string]interface{}{
+		"start_time": int(now - 3600),
+		"end_time":   int(now),
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }

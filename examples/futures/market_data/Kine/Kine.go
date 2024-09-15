@@ -7,8 +7,8 @@ import (
 )
 
 /*
-	GET /contract/public/kline
-	Doc: https://developer-pro.bitmart.com/en/futures/#get-k-line
+GET /contract/public/kline
+Doc: https://developer-pro.bitmart.com/en/futures/#get-k-line
 */
 func main() {
 	client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

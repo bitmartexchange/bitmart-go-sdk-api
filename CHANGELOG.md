@@ -8,6 +8,8 @@ Changelog
   - `/spot/v4/batch_orders`
   - `/spot/v4/cancel_orders`
   - `/spot/v4/cancel_all`
+  - `/contract/private/current-plan-order`
+  - `/contract/private/position-risk`
 - Updated
   - `/spot/quotation/v3/lite-klines`
   - `/spot/quotation/v3/klines`
@@ -16,6 +18,8 @@ Changelog
   - `/account/v1/withdraw/apply`
   - `/account/v2/deposit-withdraw/history"`
   - `/spot/v3/cancel_order`
+  - `/contract/private/submit-order"`
+  - `/contract/private/submit-plan-order`
 - Removed
   - `/spot/v2/ticker`
   - `/spot/v1/ticker_detail`
