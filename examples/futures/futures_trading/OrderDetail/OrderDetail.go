@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /contract/private/order
-	Doc: https://developer-pro.bitmart.com/en/futures/#get-order-detail-keyed
+GET /contract/private/order
+Doc: https://developer-pro.bitmart.com/en/futures/#get-order-detail-keyed
 */
 func main() {
 
@@ -26,7 +26,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

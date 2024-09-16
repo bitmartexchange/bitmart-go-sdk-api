@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /contract/private/cancel-orders
-	Doc: https://developer-pro.bitmart.com/en/futures/#cancel-all-orders-signed
+POST /contract/private/cancel-orders
+Doc: https://developer-pro.bitmart.com/en/futures/#cancel-all-orders-signed
 */
 func main() {
 
@@ -28,7 +28,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }
