@@ -8,6 +8,7 @@ type Config struct {
 	Memo          string
 	TimeoutSecond int
 	IsPrint       bool
+	CustomLogger  *CustomLogger
 	Headers       map[string]string
 }
 

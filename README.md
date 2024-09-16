@@ -397,14 +397,37 @@ client := bitmart.NewClient(bitmart.Config{
 ```
 
 
-### Debug
-If you want to print the request and response information, you can set it to true.
+### Logging
+If you want to print out the request information, you can do so by setting the log level to `DEBUG`.
 
 ```go
 client := bitmart.NewClient(bitmart.Config{
-    IsPrint: true,
+    CustomLogger: bitmart.NewCustomLogger(bitmart.DEBUG, os.Stdout)
 })
 ```
+
+Can I write the log to a file? Of course you can. Here is an example of writing a file:
+
+```go
+// Create a log file output
+file, err3 := os.OpenFile("./custom_log.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+if err3 != nil {
+    log.Fatalf("Failed to open log file: %v", err3)
+}
+defer file.Close()
+
+client := bitmart.NewClient(bitmart.Config{
+    CustomLogger: bitmart.NewCustomLogger(bitmart.DEBUG, file)]
+})
+```
+
+Other settings explained:
+* os.O_CREATE: If the custom_log.log file does not exist, Go will automatically create it.
+* os.O_WRONLY: The file can only be used for writing.
+* os.O_APPEND: The newly written data will be appended to the end of the file without overwriting the existing data in the file.
+* The last parameter 0666:
+  1. It specifies the permissions for the newly created file.
+  2. 0666 means the file's read and write permissions are: the owner, group, and other users can read and write the file.
 
 ### Custom request headers
 You can add your own request header information here, but please do not fill in `X-BM-KEY, X-BM-SIGN, X-BM-TIMESTAMP`

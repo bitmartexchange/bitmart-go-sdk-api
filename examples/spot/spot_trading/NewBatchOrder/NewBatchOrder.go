@@ -11,12 +11,11 @@ Doc: https://developer-pro.bitmart.com/en/spot/#new-batch-order-v4-signed
 */
 func main() {
 
-	var yourApiKey = "a0a053a31cca9346e52844ee3f13eaa9867c4a51"
-	var yourSecretKey = "0c45bc61f75ab7b22f34593af965322acfacce90709fdea5eb176c7ab7a63061"
-	var yourMemo = "mytest"
+	var yourApiKey = "Your API KEY"
+	var yourSecretKey = "Your Secret KEY"
+	var yourMemo = "Your Memo"
 
 	client := bitmart.NewClient(bitmart.Config{
-		Url:           "https://api-cloud.bitmartgcp-test.com",
 		ApiKey:        yourApiKey,
 		SecretKey:     yourSecretKey,
 		Memo:          yourMemo,

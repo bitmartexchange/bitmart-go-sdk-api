@@ -31,6 +31,7 @@ Changelog
   - `/spot/v1/cancel_orders`
 #### Improvements
 - Support custom request headers
+- Support custom logging
 #### Bug Fixes
 - The fields of the `CloudResponse` are now publicly accessible
 - The fields of the `RateLimit` are now publicly accessible
