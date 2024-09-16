@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /account/v1/withdraw/apply
-	Doc: https://developer-pro.bitmart.com/en/spot/#withdraw-signed
+POST /account/v1/withdraw/apply
+Doc: https://developer-pro.bitmart.com/en/spot/#withdraw-signed
 */
 func main() {
 
@@ -23,18 +23,30 @@ func main() {
 	})
 
 	// Withdraw (SIGNED)
-	var ac, err = client.PostAccountWithdrawApply(bitmart.WithdrawApply{
+	// Parameters for Withdraw to the blockchain
+	if ac, err := client.PostAccountWithdrawApply(bitmart.WithdrawApply{
 		Currency:    "USDT-ERC20",
 		Amount:      "50",
 		Destination: "To Digital Address",
 		Address:     "0xe57b69a8776b37860407965B73cdFFBDF*******",
 		AddressMemo: "",
-	})
-
-	if err != nil {
+	}); err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
+	}
+
+	// Parameters for Withdraw to BitMart account
+	if ac2, err2 := client.PostAccountWithdrawApply(bitmart.WithdrawApply{
+		Currency: "USDT-ERC20",
+		Amount:   "50",
+		Type:     1,
+		Value:    "876940329",
+		AreaCode: "",
+	}); err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }

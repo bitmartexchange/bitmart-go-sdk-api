@@ -7,8 +7,8 @@ import (
 )
 
 /*
-	POST /account/v1/transfer-contract-list
-	Doc: https://developer-pro.bitmart.com/en/futures/#get-transfer-list-signed
+POST /account/v1/transfer-contract-list
+Doc: https://developer-pro.bitmart.com/en/futures/#get-transfer-list-signed
 */
 func main() {
 
@@ -25,19 +25,17 @@ func main() {
 
 	// Get Transfer List (SIGNED)
 	now := time.Now().UnixNano() / int64(time.Millisecond)
-	var ac, err = client.GetContractTransferList(
-		"BTCUSDT",
-		now-1000*60*60,
-		now,
-		1,
-		20,
-		5000,
-	)
-
+	var ac, err = client.GetContractTransferList(map[string]interface{}{
+		"page":       1,
+		"limit":      10,
+		"currency":   "USDT",
+		"time_start": now - 1000*60*60,
+		"time_end":   now,
+	})
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

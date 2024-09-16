@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /spot/v1/margin/isolated/pairs
-	Doc: https://developer-pro.bitmart.com/en/spot/#get-trading-pair-borrowing-rate-and-amount-keyed
+GET /spot/v1/margin/isolated/pairs
+Doc: https://developer-pro.bitmart.com/en/spot/#get-trading-pair-borrowing-rate-and-amount-keyed
 */
 func main() {
 
@@ -23,7 +23,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

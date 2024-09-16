@@ -6,8 +6,8 @@ import (
 )
 
 /*
-GET /account/v1/wallet
-Doc: https://developer-pro.bitmart.com/en/spot/#get-account-balance-keyed
+GET /contract/private/position-risk
+Doc: https://developer-pro.bitmart.com/en/futures/#get-current-position-risk-details-keyed
 */
 func main() {
 
@@ -18,21 +18,20 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Get Account Balance (KEYED)
-	var ac, err = client.GetSpotAccountWallet()
+	// Get Current Position Risk Details(KEYED)
+	var ac, err = client.GetContractPositionRisk()
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
 	}
 
-	var ac2, err2 = client.GetSpotAccountWallet(map[string]interface{}{
-		"currency": "BTC",
+	ac2, err2 := client.GetContractPositionRisk(map[string]interface{}{
+		"symbol": "BTCUSDT",
 	})
 	if err2 != nil {
 		log.Panic(err2)
 	} else {
-		log.Println(ac2.Response)
+		log.Println(ac2)
 	}
-
 }

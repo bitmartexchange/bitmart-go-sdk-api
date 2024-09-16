@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /spot/v1/margin/isolated/transfer
-	Doc: https://developer-pro.bitmart.com/en/spot/#margin-asset-transfer-signed
+POST /spot/v1/margin/isolated/transfer
+Doc: https://developer-pro.bitmart.com/en/spot/#margin-asset-transfer-signed
 */
 func main() {
 
@@ -33,7 +33,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

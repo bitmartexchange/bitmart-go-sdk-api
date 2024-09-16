@@ -6,11 +6,10 @@ func (cloudClient *CloudClient) GetAccountCurrencies() (*CloudResponse, error) {
 }
 
 // GetSpotAccountWallet /** Get Account Balance (KEYED)
-func (cloudClient *CloudClient) GetSpotAccountWallet(currency string) (*CloudResponse, error) {
-	params := NewParams()
-	if currency != "" {
-		params["currency"] = currency
-	}
+// Parameters:
+// - Options: currency - currency, .e.g. "BTC", "ETH", "USDT"
+func (cloudClient *CloudClient) GetSpotAccountWallet(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	return cloudClient.requestWithParams(GET, API_ACCOUNT_WALLET_URL, params, KEYED)
 }
 
@@ -30,11 +29,16 @@ func (cloudClient *CloudClient) GetAccountWithdrawCharge(currency string) (*Clou
 
 // WithdrawApply Withdraw Parameters
 type WithdrawApply struct {
-	Currency    string `json:"currency"`
-	Amount      string `json:"amount"`
-	Destination string `json:"destination"` // -To Digital Address
-	Address     string `json:"address"`
-	AddressMemo string `json:"address_memo"`
+	Currency string `json:"currency"`
+	Amount   string `json:"amount"`
+
+	Destination string `json:"destination"`  // -To Digital Address
+	Address     string `json:"address"`      // Withdraw address (only the address added on the official website is supported)
+	AddressMemo string `json:"address_memo"` // Address tag(tag Or payment_id Or memo)
+
+	Type     int    `json:"type"`     // Account type 1=CID 2=Email 3=Phone
+	Value    string `json:"value"`    // Account
+	AreaCode string `json:"areaCode"` // Phone area code, required when account type is phone, e.g.: 61
 }
 
 // PostAccountWithdrawApply /** Withdraw (SIGNED)
@@ -42,25 +46,37 @@ func (cloudClient *CloudClient) PostAccountWithdrawApply(apply WithdrawApply) (*
 	params := NewParams()
 	params["currency"] = apply.Currency
 	params["amount"] = apply.Amount
-	params["destination"] = apply.Destination
-	params["address"] = apply.Address
-	params["address_memo"] = apply.AddressMemo
+	if apply.Destination != "" {
+		params["destination"] = apply.Destination
+	}
+	if apply.Address != "" {
+		params["address"] = apply.Address
+	}
+	if apply.AddressMemo != "" {
+		params["address_memo"] = apply.AddressMemo
+	}
+	if apply.Type != 0 {
+		params["type"] = apply.Type
+	}
+	if apply.Value != "" {
+		params["value"] = apply.Value
+	}
+	if apply.AreaCode != "" {
+		params["areaCode"] = apply.AreaCode
+	}
+
 	return cloudClient.requestWithParams(POST, API_ACCOUNT_WITHDRAW_APPLY_URL, params, SIGNED)
 }
 
-// HistoryApply Query Withdraw/Deposit History Parameters
-type HistoryApply struct {
-	Currency      string `json:"currency"`
-	OperationType string `json:"operation_type"` // type -deposit=deposit -withdraw=withdraw
-	N             int    `json:"N"`
-}
-
 // GetDepositWithdrawHistory /** Get Deposit And Withdraw History (KEYED)
-func (cloudClient *CloudClient) GetDepositWithdrawHistory(history HistoryApply) (*CloudResponse, error) {
-	params := NewParams()
-	params["currency"] = history.Currency
-	params["operation_type"] = history.OperationType
-	params["N"] = history.N
+// Parameters:
+// - operationType: type -deposit=deposit -withdraw=withdraw
+// - n: Recent N records (value range 1-100)
+// - Options: currency - Token symbol, e.g., 'BTC'
+func (cloudClient *CloudClient) GetDepositWithdrawHistory(operationType string, n int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["operation_type"] = operationType
+	params["N"] = n
 	return cloudClient.requestWithParams(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL, params, KEYED)
 }
 
@@ -72,11 +88,10 @@ func (cloudClient *CloudClient) GetDepositWithdrawDetail(id string) (*CloudRespo
 }
 
 // GetMarginAccountDetailsIsolated /** Get Margin Account Details(Isolated) (KEYED)
-func (cloudClient *CloudClient) GetMarginAccountDetailsIsolated(symbol string) (*CloudResponse, error) {
-	params := NewParams()
-	if symbol != "" {
-		params["symbol"] = symbol
-	}
+// Parameters:
+// - Options: symbol - Trading pair (e.g. BMX_USDT), no symbol is passed, and all isolated margin assets are returned
+func (cloudClient *CloudClient) GetMarginAccountDetailsIsolated(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	return cloudClient.requestWithParams(GET, API_SPOT_MARGIN_ACCOUNT_ISOLATED_URL, params, KEYED)
 }
 

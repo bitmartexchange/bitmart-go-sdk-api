@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -34,7 +34,11 @@ func NewClient(config Config) *CloudClient {
 
 	timeout := config.TimeoutSecond
 	if timeout <= 0 {
-		timeout = 30
+		timeout = 10
+	}
+
+	if config.CustomLogger == nil {
+		client.Config.CustomLogger = NewCustomLogger(INFO, os.Stdout)
 	}
 
 	client.HttpClient = &http.Client{
@@ -100,9 +104,9 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 
 	// set header
 	if auth == NONE {
-		Headers(request, "", "", "")
+		Headers(request, "", "", "", config.Headers)
 	} else if auth == KEYED {
-		Headers(request, config.ApiKey, "", "")
+		Headers(request, config.ApiKey, "", "", config.Headers)
 	} else if auth == SIGNED {
 		timestamp := UTCTime()
 		sign, err := HmacSha256Base64Signer(
@@ -110,12 +114,24 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 		if err != nil {
 			return response, err
 		}
-		Headers(request, config.ApiKey, timestamp, sign)
+		Headers(request, config.ApiKey, timestamp, sign, config.Headers)
 	}
 
-	if config.IsPrint {
-		fmt.Println("---------------------------------------------")
-		PrintRequest(request, jsonBody)
+	if config.CustomLogger.logLevel == DEBUG {
+		if method == "GET" {
+			config.CustomLogger.Logf(DEBUG, "[%s] url=%s",
+				request.Method,
+				request.URL.String(),
+			)
+		} else {
+			config.CustomLogger.Logf(DEBUG, "[%s] url=%s\n\tHeader: %s\n\tBody: %s\n",
+				request.Method,
+				request.URL.String(),
+				request.Header,
+				jsonBody,
+			)
+		}
+
 	}
 
 	// send a request to remote server, and get a response
@@ -136,11 +152,18 @@ func (cloudClient *CloudClient) Request(method string, requestPath string, param
 		return response, err
 	}
 
-	cloudResponse.httpStatus = response.StatusCode
-	cloudResponse.response = string(body)
-	cloudResponse.limit.limit = StringToInt(response.Header.Get("X-BM-RateLimit-Limit"))
-	cloudResponse.limit.remaining = StringToInt(response.Header.Get("X-BM-RateLimit-Remaining"))
-	cloudResponse.limit.reset = StringToInt(response.Header.Get("X-BM-RateLimit-Reset"))
+	cloudResponse.HttpStatus = response.StatusCode
+	cloudResponse.Response = string(body)
+	cloudResponse.Limit.Limit = StringToInt(response.Header.Get("X-BM-RateLimit-Limit"))
+	cloudResponse.Limit.Remaining = StringToInt(response.Header.Get("X-BM-RateLimit-Remaining"))
+	cloudResponse.Limit.Reset = StringToInt(response.Header.Get("X-BM-RateLimit-Reset"))
+	cloudResponse.Limit.Mode = response.Header.Get("X-BM-RateLimit-Mode")
+
+	if config.CustomLogger.logLevel == DEBUG {
+		config.CustomLogger.Logf(DEBUG, "Response=%s\n",
+			cloudResponse.Response,
+		)
+	}
 
 	return response, nil
 }

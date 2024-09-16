@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /contract/private/submit-plan-order
-	Doc: https://developer-pro.bitmart.com/en/futures/#submit-plan-order-signed
+POST /contract/private/submit-plan-order
+Doc: https://developer-pro.bitmart.com/en/futures/#submit-plan-order-signed
 */
 func main() {
 
@@ -40,7 +40,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

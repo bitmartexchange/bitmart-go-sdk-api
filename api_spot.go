@@ -15,23 +15,9 @@ func (cloudClient *CloudClient) GetSpotSymbolDetail() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_SYMBOLS_DETAILS_URL, NONE)
 }
 
-// Deprecated: Use `GetSpotV3Tickers` instead.
-// GetSpotTicker /** Get Ticker of All Pairs (V2)
-func (cloudClient *CloudClient) GetSpotTicker() (*CloudResponse, error) {
-	return cloudClient.requestWithoutParams(GET, API_SPOT_TICKER_URL, NONE)
-}
-
 // GetSpotV3Tickers /** Get Ticker of All Pairs (V3)
 func (cloudClient *CloudClient) GetSpotV3Tickers() (*CloudResponse, error) {
 	return cloudClient.requestWithoutParams(GET, API_SPOT_V3_TICKERS_URL, NONE)
-}
-
-// Deprecated: Use `GetSpotV3Ticker` instead.
-// GetSpotTickerDetail /** Get Ticker of a Trading Pair (V1)
-func (cloudClient *CloudClient) GetSpotTickerDetail(symbol string) (*CloudResponse, error) {
-	params := NewParams()
-	params["symbol"] = symbol
-	return cloudClient.requestWithParams(GET, API_SPOT_TICKER_DETAIL_URL, params, NONE)
 }
 
 // GetSpotV3Ticker /** Get Ticker of a Trading Pair (V3)
@@ -41,113 +27,51 @@ func (cloudClient *CloudClient) GetSpotV3Ticker(symbol string) (*CloudResponse, 
 	return cloudClient.requestWithParams(GET, API_SPOT_V3_TICKER_URL, params, NONE)
 }
 
-// Deprecated: k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, 180, 240, 1440, 10080, 43200]
-// GetSpotSteps /** Get K-Line Step (V1)
-func (cloudClient *CloudClient) GetSpotSteps() (*CloudResponse, error) {
-	return cloudClient.requestWithoutParams(GET, API_SPOT_STEPS_URL, NONE)
-}
-
-// Deprecated: Use `GetSpotV3LatestKline` or `GetSpotV3HistoryKline` instead.
-// GetSpotSymbolKline /** Get K-Line (V1)
-func (cloudClient *CloudClient) GetSpotSymbolKline(symbol string, from int64, to int64, step int) (*CloudResponse, error) {
-	params := NewParams()
-	params["symbol"] = symbol
-	params["from"] = from
-	params["to"] = to
-	params["step"] = step
-
-	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_KLINE_URL, params, NONE)
-}
-
 // GetSpotV3LatestKline /** Get Latest K-Line (V3)
-func (cloudClient *CloudClient) GetSpotV3LatestKline(symbol string, before, after int64, step, limit int) (*CloudResponse, error) {
-	params := NewParams()
+//
+// Parameters:
+// - symbol - Trading pair (e.g. BMX_USDT)
+// - Options: before - Query timestamp (unit: second, e.g. 1525760116), query the data before this time
+// - Options: after - Query timestamp (unit: second, e.g. 1525769116), query the data after this time
+// - Options: step - k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, 180, 240, 1440, 10080, 43200] unit: minute, default 1
+// - Options: limit - Return number, the maximum value is 200, default is 100
+func (cloudClient *CloudClient) GetSpotV3LatestKline(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-	if before > 0 {
-		params["before"] = before
-	}
-
-	if after > 0 {
-		params["after"] = after
-	}
-
-	if step > 0 {
-		params["step"] = step
-	}
-
-	if limit > 0 {
-		params["limit"] = limit
-	}
-
 	return cloudClient.requestWithParams(GET, API_SPOT_V3_LATEST_KLINE_URL, params, NONE)
 }
 
 // GetSpotV3HistoryKline /** Get History K-Line (V3)
-func (cloudClient *CloudClient) GetSpotV3HistoryKline(symbol string, before, after int64, step, limit int) (*CloudResponse, error) {
-	params := NewParams()
+//
+// Parameters:
+// - symbol - Trading pair (e.g. BMX_USDT)
+// - Options: before - Query timestamp (unit: second, e.g. 1525760116), query the data before this time
+// - Options: after - Query timestamp (unit: second, e.g. 1525769116), query the data after this time
+// - Options: step - k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, 180, 240, 1440, 10080, 43200] unit: minute, default 1
+// - Options: limit - Return number, the maximum value is 200, default is 100
+func (cloudClient *CloudClient) GetSpotV3HistoryKline(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-	if before > 0 {
-		params["before"] = before
-	}
-
-	if after > 0 {
-		params["after"] = after
-	}
-
-	if step > 0 {
-		params["step"] = step
-	}
-
-	if limit > 0 {
-		params["limit"] = limit
-	}
-
 	return cloudClient.requestWithParams(GET, API_SPOT_V3_HISTORY_KLINE_URL, params, NONE)
 }
 
-// Deprecated: Use `GetSpotV3Book` instead.
-// GetSpotSymbolBook /** Get Depth (V1)
-func (cloudClient *CloudClient) GetSpotSymbolBook(symbol string, precision int, size int) (*CloudResponse, error) {
-	params := NewParams()
-	params["symbol"] = symbol
-	if precision != 0 {
-		params["precision"] = precision
-	}
-
-	if size != 0 {
-		params["size"] = size
-	}
-
-	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_BOOK_URL, params, NONE)
-}
-
 // GetSpotV3Book /** Get Depth (V3)
-func (cloudClient *CloudClient) GetSpotV3Book(symbol string, limit int) (*CloudResponse, error) {
-	params := NewParams()
+// Parameters:
+// - symbol - Trading pair (e.g. BMX_USDT)
+// - Options: limit - Order book depth per side. Maximum 50, e.g. 50 bids + 50 asks. Default returns to 35 depth data, e.g. 35 bids + 35 asks.
+func (cloudClient *CloudClient) GetSpotV3Book(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-
-	if limit != 0 {
-		params["limit"] = limit
-	}
-
 	return cloudClient.requestWithParams(GET, API_SPOT_V3_BOOKS_URL, params, NONE)
 }
 
-// Deprecated: Use `GetSpotV3Trade` instead.
-// GetSpotSymbolTrade /** Get Recent Trades (V1)
-func (cloudClient *CloudClient) GetSpotSymbolTrade(symbol string) (*CloudResponse, error) {
-	params := NewParams()
-	params["symbol"] = symbol
-	return cloudClient.requestWithParams(GET, API_SPOT_SYMBOLS_TRADES_URL, params, NONE)
-}
-
 // GetSpotV3Trade /** Get Recent Trades (V3)
-func (cloudClient *CloudClient) GetSpotV3Trade(symbol string, limit int) (*CloudResponse, error) {
-	params := NewParams()
+// Parameters:
+// - symbol - Trading pair (e.g. BMX_USDT)
+// - Options: limit - Number of returned items, maximum is 50, default 50
+func (cloudClient *CloudClient) GetSpotV3Trade(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-	if limit > 0 {
-		params["limit"] = limit
-	}
 	return cloudClient.requestWithParams(GET, API_SPOT_V3_TRADES_URL, params, NONE)
 }
 
@@ -161,10 +85,10 @@ type Order struct {
 	Symbol        string `json:"symbol"`
 	Side          string `json:"side"`
 	Type          string `json:"type"`
-	ClientOrderId string `json:"client_order_id"`
-	Size          string `json:"size"`
-	Price         string `json:"price"`
-	Notional      string `json:"notional"`
+	ClientOrderId string `json:"client_order_id,omitempty"`
+	Size          string `json:"size,omitempty"`
+	Price         string `json:"price,omitempty"`
+	Notional      string `json:"notional,omitempty"`
 }
 
 // PostSpotSubmitOrder /** New Order(v2) (SIGNED)
@@ -220,32 +144,58 @@ func (cloudClient *CloudClient) PostMarginSubmitOrder(order MarginOrder) (*Cloud
 	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_MARGIN_ORDER_URL, params, SIGNED)
 }
 
-// PostSpotBatchOrders /** Batch New Order(v2) (SIGNED)
-func (cloudClient *CloudClient) PostSpotBatchOrders(orderParams []Order) (*CloudResponse, error) {
-	params := NewParams()
-	params["order_params"] = orderParams
+// BatchOrder /** Spot Order Parameters
+type BatchOrder struct {
+	Side          string `json:"side"`
+	Type          string `json:"type"`
+	ClientOrderId string `json:"clientOrderId,omitempty"`
+	Size          string `json:"size,omitempty"`
+	Price         string `json:"price,omitempty"`
+	Notional      string `json:"notional,omitempty"`
+}
+
+// PostSpotBatchOrders /** Batch New Order(v4) (SIGNED)
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - orderParams: Order parameters, the number of transactions cannot exceed 10
+// - Options.recvWindow - Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) PostSpotBatchOrders(symbol string, orderParams []BatchOrder, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = symbol
+	params["orderParams"] = orderParams
 	return cloudClient.requestWithParams(POST, API_SPOT_BATCH_ORDERS_URL, params, SIGNED)
 }
 
 // PostSpotCancelOrder /** Cancel Order(v3) (SIGNED)
-func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, orderId string, clientOrderId string) (*CloudResponse, error) {
-	params := NewParams()
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - Options.order_id	 - Order ID
+// - Options.client_order_id - Client-defined Order ID
+func (cloudClient *CloudClient) PostSpotCancelOrder(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-	if orderId != "" {
-		params["order_id"] = orderId
-	}
-	if clientOrderId != "" {
-		params["client_order_id"] = clientOrderId
-	}
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDER_URL, params, SIGNED)
 }
 
-// PostSpotCancelOrders /** Cancel Batch Order(v1) (SIGNED)
-func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, side string) (*CloudResponse, error) {
-	params := NewParams()
+// PostSpotCancelOrders /** Cancel Batch Order(v4) (SIGNED)
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - Options.orderIds	 - Order Id List (Either orderIds or clientOrderIds must be provided)
+// - Options.clientOrderIds - Client-defined OrderId List (Either orderIds or clientOrderIds must be provided)
+// - Options.recvWindow - Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) PostSpotCancelOrders(symbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = symbol
-	params["side"] = side
 	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ORDERS_URL, params, SIGNED)
+}
+
+// PostSpotCancelAllOrder /** Cancel All Order(v4) (SIGNED)
+// Parameters:
+// - Options.symbol: Trading pair (e.g. BTC_USDT)
+// - Options.side: Order side  -buy -sell
+func (cloudClient *CloudClient) PostSpotCancelAllOrder(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(POST, API_SPOT_CANCEL_ALL_URL, params, SIGNED)
 }
 
 // GetSpotOrderByOrderId /** Query Order By Id (v4) (SIGNED)

@@ -19,16 +19,23 @@ func main() {
 	})
 
 	// Get Order Detail (KEYED)
-	var ac, err = client.GetContractOpenOrders(
-		"BTCUSDT",
-		"limit",
-		"all",
-		5,
-	)
+	var ac, err = client.GetContractOpenOrders()
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
+	ac2, err2 := client.GetContractOpenOrders(map[string]interface{}{
+		"symbol":      "BTCUSDT",
+		"type":        "limit",
+		"order_state": "all",
+		"limit":       10,
+	})
+
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
+	}
 }

@@ -6,8 +6,8 @@ import (
 )
 
 /*
-POST /spot/v2/batch_orders
-Doc: https://developer-pro.bitmart.com/en/spot/#new-batch-order-v2-signed
+POST /spot/v4/batch_orders
+Doc: https://developer-pro.bitmart.com/en/spot/#new-batch-order-v4-signed
 */
 func main() {
 
@@ -22,40 +22,29 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// New Batch Order(v2) (SIGNED)
-	var orderParams [3]bitmart.Order
-	orderParams[0] = bitmart.Order{
-		Symbol:        "BTC_USDT",
+	// New Batch Order(v4) (SIGNED)
+	var orderParams []bitmart.BatchOrder
+	orderParams = append(orderParams, bitmart.BatchOrder{
 		Side:          "sell",
 		Type:          "limit",
-		ClientOrderId: "pix123120312312312312",
+		ClientOrderId: "pix123120312312312313",
 		Size:          "0.1",
 		Price:         "880000",
-	}
+	})
 
-	orderParams[1] = bitmart.Order{
-		Symbol:        "BTC_USDT",
+	orderParams = append(orderParams, bitmart.BatchOrder{
 		Side:          "sell",
-		Type:          "limit",
+		Type:          "market",
 		ClientOrderId: "pix123120312312312314",
 		Size:          "0.1",
-		Price:         "880000",
-	}
+		Notional:      "880000",
+	})
 
-	orderParams[2] = bitmart.Order{
-		Symbol:        "BTC_USDT",
-		Side:          "sell",
-		Type:          "limit",
-		ClientOrderId: "pix123120312312312314",
-		Size:          "0.1",
-		Price:         "880000",
-	}
-
-	ac, err := client.PostSpotBatchOrders(orderParams[:])
+	ac, err := client.PostSpotBatchOrders("BTC_USDT", orderParams[:])
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

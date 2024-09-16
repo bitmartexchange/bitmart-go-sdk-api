@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /spot/v2/submit_order
-	Doc: https://developer-pro.bitmart.com/en/spot/#new-order-v2-signed
+POST /spot/v2/submit_order
+Doc: https://developer-pro.bitmart.com/en/spot/#new-order-v2-signed
 */
 func main() {
 
@@ -27,16 +27,15 @@ func main() {
 		Symbol:        "BTC_USDT",
 		Side:          "buy",
 		Type:          "limit",
-		ClientOrderId: "",
+		ClientOrderId: "jhjj8h8h8h88h998u9u",
 		Size:          "0.1",
 		Price:         "8800",
-		Notional:      "",
 	})
 
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

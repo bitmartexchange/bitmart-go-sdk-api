@@ -82,6 +82,39 @@ func NewParams() map[string]interface{} {
 	return make(map[string]interface{})
 }
 
+// AddParams add param
+func AddParams(params map[string]interface{}, options ...map[string]interface{}) map[string]interface{} {
+	if len(options) > 0 && options[0] != nil {
+		// Use the first map from the variadic parameter
+		for key, value := range options[0] {
+			params[key] = value // This will overwrite the value if the key exists
+		}
+	}
+
+	return params
+}
+
+// CreateParams get param
+func CreateParams(options ...map[string]interface{}) map[string]interface{} {
+	return AddParams(NewParams(), options...)
+}
+
+// AddToParams add to params
+func AddToParams(key string, value interface{}, params map[string]interface{}) {
+	switch v := value.(type) {
+	case string:
+		if v != "" {
+			params[key] = v
+		}
+	case int:
+		if v != 0 {
+			params[key] = v
+		}
+	default:
+		fmt.Println("Unsupported type")
+	}
+}
+
 // CreateQueryString create query string
 func CreateQueryString(params map[string]interface{}) string {
 	if params == nil || len(params) == 0 {
@@ -101,7 +134,7 @@ func CreateQueryString(params map[string]interface{}) string {
 }
 
 // Headers set headers
-func Headers(request *http.Request, apiKey string, timestamp string, sign string) {
+func Headers(request *http.Request, apiKey string, timestamp string, sign string, additionalHeaders map[string]string) {
 	request.Header.Add(ACCEPT, APPLICATION_JSON)
 	request.Header.Add(CONTENT_TYPE, APPLICATION_JSON_UTF8)
 	request.Header.Add(USER_AGENT, VERSION)
@@ -117,6 +150,13 @@ func Headers(request *http.Request, apiKey string, timestamp string, sign string
 	if timestamp != "" {
 		request.Header.Add(X_BM_TIMESTAMP, timestamp)
 	}
+
+	// Add additional headers from the map if they are provided
+	for key, value := range additionalHeaders {
+		if value != "" {
+			request.Header.Add(key, value)
+		}
+	}
 }
 
 // PrintRequest print request
@@ -129,27 +169,30 @@ func PrintRequest(request *http.Request, body string) {
 // PrintResponse print response
 func PrintResponse(response *CloudResponse) {
 	fmt.Println("\tResponse: ")
-	fmt.Println("\t\tHttpStatus: " + IntToString(response.httpStatus))
-	fmt.Println("\t\tBody: " + response.response)
+	fmt.Println("\t\tHttpStatus: " + IntToString(response.HttpStatus))
+	fmt.Println("\t\tBody: " + response.Response)
 	fmt.Println("\t\tRateLimit:")
-	fmt.Printf("\t\t\tReset: %d\n", response.limit.reset)
-	fmt.Printf("\t\t\tLimit: %d\n", response.limit.limit)
-	fmt.Printf("\t\t\tRemaining: %d\n", response.limit.remaining)
+	fmt.Printf("\t\t\tReset: %d\n", response.Limit.Reset)
+	fmt.Printf("\t\t\tLimit: %d\n", response.Limit.Limit)
+	fmt.Printf("\t\t\tRemaining: %d\n", response.Limit.Remaining)
 }
 
+// Deprecated: Use `.Response` instead.
 // GetResponse get response
 func GetResponse(response *CloudResponse) string {
-	return response.response
+	return response.Response
 }
 
+// Deprecated: Use `.HttpStatus` instead.
 // GetHttpStatus get http status
 func GetHttpStatus(response *CloudResponse) int {
-	return response.httpStatus
+	return response.HttpStatus
 }
 
+// Deprecated: Use `.Limit` instead.
 // GetLimit get limit
 func GetLimit(response *CloudResponse) RateLimit {
-	return response.limit
+	return response.Limit
 }
 
 // CreateChannel create channel

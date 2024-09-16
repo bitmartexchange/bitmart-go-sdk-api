@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	POST /spot/v4/query/order-trades
-	Doc: https://developer-pro.bitmart.com/en/spot/#order-trade-list-v4-signed
+POST /spot/v4/query/order-trades
+Doc: https://developer-pro.bitmart.com/en/spot/#order-trade-list-v4-signed
 */
 func main() {
 
@@ -27,7 +27,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

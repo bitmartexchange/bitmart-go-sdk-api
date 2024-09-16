@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /contract/private/assets-detail
-	Doc: https://developer-pro.bitmart.com/en/futures/#futures-account-data
+GET /contract/private/assets-detail
+Doc: https://developer-pro.bitmart.com/en/futures/#futures-account-data
 */
 func main() {
 
@@ -23,7 +23,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }

@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	GET /system/service
-	Doc: https://developer-pro.bitmart.com/en/spot/#get-system-service-status
+GET /system/service
+Doc: https://developer-pro.bitmart.com/en/spot/#get-system-service-status
 */
 func main() {
 	client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
@@ -17,6 +17,6 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 }

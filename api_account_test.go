@@ -19,14 +19,16 @@ func TestGetAccountCurrencies(t *testing.T) {
 // GET https://api-cloud.bitmart.com/account/v1/wallet
 func TestGetSpotAccountWallet(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetSpotAccountWallet("BTC") // find by currency
+	ac, err := c.GetSpotAccountWallet(map[string]interface{}{
+		"currency": "USDT",
+	}) // find by currency
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
 
-	ab, err := c.GetSpotAccountWallet("") // find all
+	ab, err := c.GetSpotAccountWallet() // find all
 	if err != nil {
 		log.Panic(err)
 	} else {
@@ -71,21 +73,41 @@ func TestPostAccountWithdrawApply(t *testing.T) {
 	} else {
 		PrintResponse(ac)
 	}
+
+	ac2, err2 := c.PostAccountWithdrawApply(WithdrawApply{
+		Currency: "USDT-ERC20",
+		Amount:   "50",
+		Type:     1,
+		Value:    "876940329",
+		AreaCode: "",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
 }
 
 // GET https://api-cloud.bitmart.com/account/v2/deposit-withdraw/history
 func TestPostAccountWithdrawHistory(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetDepositWithdrawHistory(HistoryApply{
-		Currency:      "USDT-ERC20",
-		OperationType: "withdraw",
-		N:             100,
-	})
+
+	ac, err := c.GetDepositWithdrawHistory("withdraw", 10)
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
+
+	ac2, err2 := c.GetDepositWithdrawHistory("withdraw", 10, map[string]interface{}{
+		"currency": "BTC",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
+
 }
 
 // GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/detail
@@ -102,14 +124,16 @@ func TestPostAccountWithdrawDetail(t *testing.T) {
 // GET https://api-cloud.bitmart.com/spot/v1/margin/isolated/account
 func TestGetMarginAccountDetailsIsolated(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.GetMarginAccountDetailsIsolated("BTC_USDT") //specified trading pair
+	ac, err := c.GetMarginAccountDetailsIsolated() //specified trading pair
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
 
-	ab, err := c.GetMarginAccountDetailsIsolated("") //all isolated margin assets
+	ab, err := c.GetMarginAccountDetailsIsolated(map[string]interface{}{
+		"symbol": "BTC",
+	}) //all isolated margin assets
 	if err != nil {
 		log.Panic(err)
 	} else {

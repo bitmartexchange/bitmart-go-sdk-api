@@ -1,5 +1,9 @@
 package bitmart
 
+import (
+	"os"
+)
+
 func GetDefaultConfig() *Config {
 	var config Config
 
@@ -9,7 +13,14 @@ func GetDefaultConfig() *Config {
 	config.SecretKey = "Your Secret KEY"
 	config.Memo = "Your Memo"
 	config.TimeoutSecond = 30
-	config.IsPrint = true
+	config.Headers = map[string]string{
+		"X-Custom-Header1": "HeaderValue1",
+		"X-Custom-Header2": "HeaderValue2",
+	}
+
+	// Initialize another logger to output to the console with a log level of DEBUG
+	config.CustomLogger = NewCustomLogger(DEBUG, os.Stdout)
+
 	return &config
 }
 

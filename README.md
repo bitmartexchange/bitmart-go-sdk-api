@@ -58,40 +58,35 @@ Example
 
 #### Spot Market Endpoints Example
 
-<details>
-
-<summary>Get Recent Trades</summary>
-
 ```go
 package main
 
 import (
   "github.com/bitmartexchange/bitmart-go-sdk-api"
-  "log"
 )
 
 func main() {
-  client := bitmart.NewClient(bitmart.Config{TimeoutSecond: 5})
+  client := bitmart.NewClient(bitmart.Config{})
 
-  // Get Recent Trades
-  var ac, err = client.GetSpotSymbolTrade("BTC_USDT")
-  if err != nil {
-    log.Panic(err)
-  } else {
-    log.Println(bitmart.GetResponse(ac))
-  }
+  // Get List of Trading Pairs
+  client.GetSpotSymbol()
   
+  // Get Ticker of a Trading Pair (V3)
+  client.GetSpotV3Ticker("BTC_USDT")
+  
+  // Get Ticker of All Pairs (V3)
+  client.GetSpotV3Tickers()
+
+  // Get Depth (V3)
+  client.GetSpotV3Book("BTC_USDT", map[string]interface{}{
+    "limit": 10,
+  })
+
 }
 ```
 
-</details>
-
 
 #### Spot / Margin Trading Endpoints Example
-
-<details>
-
-<summary>New Order(v2) (SIGNED)</summary>
 
 ```go
 
@@ -102,10 +97,6 @@ import (
 	"log"
 )
 
-/*
-	POST /spot/v2/submit_order
-	Doc: https://developer-pro.bitmart.com/en/spot/#new-order-v2-signed
-*/
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -133,7 +124,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }
@@ -142,18 +133,13 @@ func main() {
 
 ```
 
-</details>
-
 Please find `examples/spot` folder to check for more endpoints.
 
 ---
 
 
-#### Spot Websocket Endpoints
+#### Spot Websocket Endpoints : Subscribe Public Channel
 
-<details>
-
-<summary>Subscribe Public Channel: Ticker</summary>
 
 ```go
 
@@ -162,14 +148,12 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
 )
 
 func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/spot/#public-ticker-channel
 func main() {
 	ws := bitmart.NewWS(bitmart.Config{WsUrl: bitmart.WS_URL})
 
@@ -187,11 +171,8 @@ func main() {
 
 ```
 
-</details>
 
-<details>
-
-<summary>Subscribe Private Channel: Order Progress</summary>
+#### Spot Websocket Endpoints : Subscribe Private Channel
 
 ```go
 
@@ -207,7 +188,6 @@ func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/spot/#private-order-progress
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -234,15 +214,38 @@ func main() {
 
 ```
 
-</details>
+
+Please find `examples/spot/websocket` folder to check for more endpoints.
+
 
 ---
 
+#### Futures Market Endpoints
+
+```go
+package main
+
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+)
+
+func main() {
+	client := bitmart.NewClient(bitmart.Config{})
+
+	// Get Contract Details
+	client.GetContractDetails("BTCUSDT")
+    // Get Current Funding Rate
+    client.GetContractFundingRate("BTCUSDT")
+    // Get Futures Open Interest
+    client.GetContractOpenInterest("BTCUSDT")
+    // Get Market Depth
+    client.GetContractDepth("BTCUSDT")
+}
+
+```
+
 #### Futures Trading Endpoints
 
-<details>
-
-<summary>Submit Order (SIGNED)</summary>
 
 ```go
 
@@ -253,10 +256,6 @@ import (
 	"log"
 )
 
-/*
-	POST /contract/private/submit-order
-	Doc: https://developer-pro.bitmart.com/en/futures/#submit-order-signed
-*/
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -284,7 +283,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	} else {
-		log.Println(bitmart.GetResponse(ac))
+		log.Println(ac.Response)
 	}
 
 }
@@ -292,18 +291,13 @@ func main() {
 
 ```
 
-</details>
 
 Please find `examples/futures` folder to check for more endpoints.
 
 ---
 
 
-#### Futures Websocket Endpoints
-
-<details>
-
-<summary>Subscribe Public Channel: Ticker</summary>
+#### Futures Websocket Endpoints : Subscribe Public Channel
 
 ```go
 
@@ -319,7 +313,6 @@ func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/futures/#public-ticker-channel
 func main() {
 	ws := bitmart.NewWSContract(bitmart.Config{WsUrl: bitmart.CONTRACT_WS_URL})
 
@@ -340,11 +333,7 @@ func main() {
 
 ```
 
-</details>
-
-<details>
-
-<summary>Subscribe Private Channel: Assets</summary>
+#### Futures Websocket Endpoints : Subscribe Private Channel
 
 ```go
 
@@ -353,14 +342,12 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
 )
 
 func OnMessage(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/futures/#private-assets-channel
 func main() {
 
 	var yourApiKey = "Your API KEY"
@@ -382,13 +369,10 @@ func main() {
 	}
 	ws.SubscribeWithLogin(channels)
 
-	// Just test, Please do not use in production.
-	time.Sleep(60 * time.Second)
 }
 
 ```
 
-</details>
 
 Extra Options
 =========================
@@ -413,11 +397,79 @@ client := bitmart.NewClient(bitmart.Config{
 ```
 
 
-### Debug
-If you want to print the request and response information, you can set it to true.
+### Logging
+If you want to print out the request information, you can do so by setting the log level to `DEBUG`.
 
 ```go
 client := bitmart.NewClient(bitmart.Config{
-    IsPrint: true,
+    CustomLogger: bitmart.NewCustomLogger(bitmart.DEBUG, os.Stdout)
 })
+```
+
+Can I write the log to a file? Of course you can. Here is an example of writing a file:
+
+```go
+// Create a log file output
+file, err3 := os.OpenFile("./custom_log.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+if err3 != nil {
+    log.Fatalf("Failed to open log file: %v", err3)
+}
+defer file.Close()
+
+client := bitmart.NewClient(bitmart.Config{
+    CustomLogger: bitmart.NewCustomLogger(bitmart.DEBUG, file)]
+})
+```
+
+Other settings explained:
+* os.O_CREATE: If the custom_log.log file does not exist, Go will automatically create it.
+* os.O_WRONLY: The file can only be used for writing.
+* os.O_APPEND: The newly written data will be appended to the end of the file without overwriting the existing data in the file.
+* The last parameter 0666:
+  1. It specifies the permissions for the newly created file.
+  2. 0666 means the file's read and write permissions are: the owner, group, and other users can read and write the file.
+
+### Custom request headers
+You can add your own request header information here, but please do not fill in `X-BM-KEY, X-BM-SIGN, X-BM-TIMESTAMP`
+
+
+```go
+client := bitmart.NewClient(bitmart.Config{Headers: map[string]string{
+      "X-Custom-Header1": "HeaderValue1",
+      "X-Custom-Header2": "HeaderValue2",
+}})
+client.GetSpotV3Ticker("BTC_USDT")
+```
+
+
+### Response Metadata
+The bitmart API server provides the endpoint rate limit usage in the header of each response. 
+This information can be obtained from the headers property. 
+x-bm-ratelimit-remaining indicates the number of times the current window has been used,
+x-bm-ratelimit-limit indicates the maximum number of times the current window can be used, 
+and x-bm-ratelimit-reset indicates the current window time.
+
+
+Example:
+
+```
+x-bm-ratelimit-mode: IP
+x-bm-ratelimit-remaining: 10
+x-bm-ratelimit-limit: 600
+x-bm-ratelimit-reset: 60
+```
+
+This means that this IP can call the endpoint 600 times within 60 seconds, and has called 10 times so far.
+
+
+```go
+var ac, err = client.GetSpotV3Ticker("BTC_USDT")
+if err != nil {
+    log.Panic(err)
+} else {
+    log.Println(ac.Limit.Limit)
+    log.Println(ac.Limit.Remaining)
+    log.Println(ac.Limit.Reset)
+    log.Println(ac.Limit.Mode)
+}
 ```

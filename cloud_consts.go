@@ -8,18 +8,21 @@ type Config struct {
 	Memo          string
 	TimeoutSecond int
 	IsPrint       bool
+	CustomLogger  *CustomLogger
+	Headers       map[string]string
 }
 
 type CloudResponse struct {
-	httpStatus int
-	response   string
-	limit      RateLimit
+	HttpStatus int
+	Response   string
+	Limit      RateLimit
 }
 
 type RateLimit struct {
-	remaining int
-	limit     int
-	reset     int
+	Remaining int
+	Limit     int
+	Reset     int
+	Mode      string
 }
 
 type Auth int
@@ -44,7 +47,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "BitMart-GO-SDK-API/1.0.1"
+	VERSION      = "BitMart-GO-SDK-API/2.0.0"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
@@ -53,11 +56,11 @@ const (
 	POST   = "POST"
 	DELETE = "DELETE"
 
-	// System Status Endpoints: https://developer-pro.bitmart.com/en/spot/#system-status
+	// API_SYSTEM_TIME_URL System Status Endpoints: https://developer-pro.bitmart.com/en/spot/#system-status
 	API_SYSTEM_TIME_URL    = "/system/time"
 	API_SYSTEM_SERVICE_URL = "/system/service"
 
-	// Funding Account Endpoints: https://developer-pro.bitmart.com/en/spot/#funding-account
+	// API_ACCOUNT_CURRENCIES_URL Funding Account Endpoints: https://developer-pro.bitmart.com/en/spot/#funding-account
 	API_ACCOUNT_CURRENCIES_URL               = "/account/v1/currencies"
 	API_ACCOUNT_WALLET_URL                   = "/account/v1/wallet"
 	API_ACCOUNT_DEPOSIT_ADDRESS_URL          = "/account/v1/deposit/address"
@@ -70,16 +73,10 @@ const (
 	API_SPOT_USER_FEE_URL                    = "/spot/v1/user_fee"
 	API_SPOT_TRADE_FEE_URL                   = "/spot/v1/trade_fee"
 
-	// Public Market Data Endpoints: https://developer-pro.bitmart.com/en/spot/#public-market-data
+	// API_SPOT_CURRENCIES_URL Public Market Data Endpoints: https://developer-pro.bitmart.com/en/spot/#public-market-data
 	API_SPOT_CURRENCIES_URL      = "/spot/v1/currencies"
 	API_SPOT_SYMBOLS_URL         = "/spot/v1/symbols"
 	API_SPOT_SYMBOLS_DETAILS_URL = "/spot/v1/symbols/details"
-	API_SPOT_TICKER_URL          = "/spot/v2/ticker"
-	API_SPOT_TICKER_DETAIL_URL   = "/spot/v1/ticker_detail"
-	API_SPOT_STEPS_URL           = "/spot/v1/steps"
-	API_SPOT_SYMBOLS_KLINE_URL   = "/spot/v1/symbols/kline"
-	API_SPOT_SYMBOLS_BOOK_URL    = "/spot/v1/symbols/book"
-	API_SPOT_SYMBOLS_TRADES_URL  = "/spot/v1/symbols/trades"
 
 	API_SPOT_V3_TICKERS_URL       = "/spot/quotation/v3/tickers"
 	API_SPOT_V3_TICKER_URL        = "/spot/quotation/v3/ticker"
@@ -88,13 +85,14 @@ const (
 	API_SPOT_V3_BOOKS_URL         = "/spot/quotation/v3/books"
 	API_SPOT_V3_TRADES_URL        = "/spot/quotation/v3/trades"
 
-	// Spot / Margin Trading Endpoints: https://developer-pro.bitmart.com/en/spot/#spot-margin-trading
+	// API_SPOT_WALLET_URL Spot / Margin Trading Endpoints: https://developer-pro.bitmart.com/en/spot/#spot-margin-trading
 	API_SPOT_WALLET_URL              = "/spot/v1/wallet"
 	API_SPOT_SUBMIT_ORDER_URL        = "/spot/v2/submit_order"
 	API_SPOT_SUBMIT_MARGIN_ORDER_URL = "/spot/v1/margin/submit_order"
-	API_SPOT_BATCH_ORDERS_URL        = "/spot/v2/batch_orders"
+	API_SPOT_BATCH_ORDERS_URL        = "/spot/v4/batch_orders"
 	API_SPOT_CANCEL_ORDER_URL        = "/spot/v3/cancel_order"
-	API_SPOT_CANCEL_ORDERS_URL       = "/spot/v1/cancel_orders"
+	API_SPOT_CANCEL_ORDERS_URL       = "/spot/v4/cancel_orders"
+	API_SPOT_CANCEL_ALL_URL          = "/spot/v4/cancel_all"
 
 	API_SPOT_V4_QUERY_ORDER_BY_ID_URL     = "/spot/v4/query/order"
 	API_SPOT_V4_QUERY_ORDER_BY_CLIENT_URL = "/spot/v4/query/client-order"
@@ -124,17 +122,19 @@ const (
 	API_CONTRACT_ASSETS_DETAIL_URL = "/contract/private/assets-detail"
 
 	// Futures Trading Endpoints: https://developer-pro.bitmart.com/en/futures/#futures-trading
-	API_CONTRACT_ORDER_URL             = "/contract/private/order"
-	API_CONTRACT_ORDER_HISTORY_URL     = "/contract/private/order-history"
-	API_CONTRACT_OPEN_ORDERS_URL       = "/contract/private/get-open-orders"
-	API_CONTRACT_POSITION_URL          = "/contract/private/position"
-	API_CONTRACT_TRADES_URL            = "/contract/private/trades"
-	API_CONTRACT_TRANSFER_LIST_URL     = "/account/v1/transfer-contract-list"
-	API_CONTRACT_SUBMIT_ORDER_URL      = "/contract/private/submit-order"
-	API_CONTRACT_CANCEL_ORDER_URL      = "/contract/private/cancel-order"
-	API_CONTRACT_CANCEL_ORDERS_URL     = "/contract/private/cancel-orders"
-	API_CONTRACT_SUBMIT_PLAN_ORDER_URL = "/contract/private/submit-plan-order"
-	API_CONTRACT_CANCEL_PLAN_ORDER_URL = "/contract/private/cancel-plan-order"
+	API_CONTRACT_ORDER_URL              = "/contract/private/order"
+	API_CONTRACT_ORDER_HISTORY_URL      = "/contract/private/order-history"
+	API_CONTRACT_OPEN_ORDERS_URL        = "/contract/private/get-open-orders"
+	API_CONTRACT_CURRENT_PLAN_ORDER_URL = "/contract/private/current-plan-order"
+	API_CONTRACT_POSITION_URL           = "/contract/private/position"
+	API_CONTRACT_POSITION_RISK_URL      = "/contract/private/position-risk"
+	API_CONTRACT_TRADES_URL             = "/contract/private/trades"
+	API_CONTRACT_TRANSFER_LIST_URL      = "/account/v1/transfer-contract-list"
+	API_CONTRACT_SUBMIT_ORDER_URL       = "/contract/private/submit-order"
+	API_CONTRACT_CANCEL_ORDER_URL       = "/contract/private/cancel-order"
+	API_CONTRACT_CANCEL_ORDERS_URL      = "/contract/private/cancel-orders"
+	API_CONTRACT_SUBMIT_PLAN_ORDER_URL  = "/contract/private/submit-plan-order"
+	API_CONTRACT_CANCEL_PLAN_ORDER_URL  = "/contract/private/cancel-plan-order"
 
 	API_CONTRACT_TRANSFER_URL        = "/account/v1/transfer-contract"
 	API_CONTRACT_SUBMIT_LEVERAGE_URL = "/contract/private/submit-leverage"
