@@ -27,9 +27,10 @@ func main() {
 	}
 
 	var ac2, err2 = client.GetContractCurrentPlanOrders(map[string]interface{}{
-		"symbol": "BTCUSDT",
-		"type":   "limit",
-		"limit":  10,
+		"symbol":    "BTCUSDT",
+		"type":      "limit",
+		"limit":     10,
+		"plan_type": "plan",
 	})
 	if err2 != nil {
 		log.Panic(err2)

@@ -83,6 +83,7 @@ func (cloudClient *CloudClient) GetContractOpenOrders(options ...map[string]inte
 // - Options.symbol: Symbol of the contract(like BTCUSDT)
 // - Options.type: Order type -limit - market
 // - Options.limit: The number of returned results, with a maximum of 100 and a default of 100
+// - Options.plan_type: Plan order type -plan - profit_loss (default all)
 func (cloudClient *CloudClient) GetContractCurrentPlanOrders(options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
 	return cloudClient.requestWithParams(GET, API_CONTRACT_CURRENT_PLAN_ORDER_URL, params, KEYED)
@@ -174,11 +175,11 @@ func (cloudClient *CloudClient) PostContractSubmitOrder(order ContractOrder) (*C
 // PostContractCancelOrder cancel-order /** Cancel Order (SIGNED)
 // Parameters:
 // - symbol: Symbol of the contract(like BTCUSDT)
-// - orderId: Order ID
-func (cloudClient *CloudClient) PostContractCancelOrder(contractSymbol string, orderId string) (*CloudResponse, error) {
-	params := NewParams()
+// - options.order_id: Order ID
+// - options.client_order_id: Client-defined OrderId
+func (cloudClient *CloudClient) PostContractCancelOrder(contractSymbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = contractSymbol
-	params["order_id"] = orderId
 	return cloudClient.requestWithParams(POST, API_CONTRACT_CANCEL_ORDER_URL, params, SIGNED)
 }
 
@@ -235,11 +236,11 @@ func (cloudClient *CloudClient) PostContractPlanOrder(planOrder ContractPlanOrde
 // PostContractCancelPlanOrder cancel-plan-order /** Cancel Plan Order (SIGNED)
 // Parameters:
 // - symbol: Symbol of the contract(like BTCUSDT)
-// - orderId: Order ID
-func (cloudClient *CloudClient) PostContractCancelPlanOrder(contractSymbol string, orderId string) (*CloudResponse, error) {
-	params := NewParams()
+// - options.order_id: Order ID
+// - options.client_order_id: Client Order ID
+func (cloudClient *CloudClient) PostContractCancelPlanOrder(contractSymbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = contractSymbol
-	params["order_id"] = orderId
 	return cloudClient.requestWithParams(POST, API_CONTRACT_CANCEL_PLAN_ORDER_URL, params, SIGNED)
 }
 
@@ -273,4 +274,80 @@ func (cloudClient *CloudClient) PostContractSubmitLeverage(contractSymbol string
 		params["leverage"] = leverage
 	}
 	return cloudClient.requestWithParams(POST, API_CONTRACT_SUBMIT_LEVERAGE_URL, params, SIGNED)
+}
+
+// PostContractSubmitTpSlOrder /** Submit TP or SL Order (SIGNED)
+// Parameters:
+// - symbol: Symbol of the contract(like BTCUSDT)
+// - orderType: Order type -take_profit -stop_loss
+// - side: Order side -2=buy_close_short -3=sell_close_long
+// - triggerPrice: Trigger price
+// - executivePrice: Execution price
+// - priceType: Trigger price type -1=last_price -2=fair_price
+// - Options.size: Order size (Number of contracts) Default the size of position
+// - Options.plan_category: TP/SL type -1=TP/SL(default) -2=Position TP/SL
+// - Options.client_order_id: 	Client order ID
+// - Options.category: 	Trigger order type, position TP/SL default market, -limit -market
+func (cloudClient *CloudClient) PostContractSubmitTpSlOrder(contractSymbol string, orderType string, side int,
+	triggerPrice string, executivePrice string, priceType int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = contractSymbol
+	params["type"] = orderType
+	params["side"] = side
+	params["trigger_price"] = triggerPrice
+	params["executive_price"] = executivePrice
+	params["price_type"] = priceType
+	return cloudClient.requestWithParams(POST, API_CONTRACT_SUBMIT_TP_SL_ORDER_URL, params, SIGNED)
+}
+
+// PostContractModifyPlanOrder /** Modify Plan Order (SIGNED)
+// Parameters:
+// - symbol: Symbol of the contract(like BTCUSDT)
+// - orderType: Order type -limit -market
+// - triggerPrice: Trigger price
+// - priceType: Trigger price type -1=last_price -2=fair_price
+// - Options.order_id: 	Order ID(order_id or client_order_id must give one)
+// - Options.client_order_id: Client order ID(order_id or client_order_id must give one)
+// - Options.executive_price: Execution price for plan order, mandatory when type = limit
+func (cloudClient *CloudClient) PostContractModifyPlanOrder(contractSymbol string, orderType string,
+	triggerPrice string, priceType int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = contractSymbol
+	params["type"] = orderType
+	params["trigger_price"] = triggerPrice
+	params["price_type"] = priceType
+	return cloudClient.requestWithParams(POST, API_CONTRACT_MODIFY_PLAN_ORDER_URL, params, SIGNED)
+}
+
+// PostContractModifyPresetPlanOrder /** Modify Preset Plan Order (SIGNED)
+// Parameters:
+// - symbol: Symbol of the contract(like BTCUSDT)
+// - orderId: Order ID
+// - Options.preset_take_profit_price_type: Pre-set TP price type  -1=last_price(default)  -2=fair_price
+// - Options.preset_stop_loss_price_type: Pre-set SL price type  -1=last_price(default) -2=fair_price
+// - Options.preset_take_profit_price: Pre-set TP price
+// - Options.preset_stop_loss_price: Pre-set SL price
+func (cloudClient *CloudClient) PostContractModifyPresetPlanOrder(contractSymbol string, orderId string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = contractSymbol
+	params["order_id"] = orderId
+	return cloudClient.requestWithParams(POST, API_CONTRACT_MODIFY_PRESET_PLAN_ORDER_URL, params, SIGNED)
+}
+
+// PostContractModifyTpSlOrder /** Modify TP/SL Order (SIGNED)
+// Parameters:
+// - symbol: Symbol of the contract(like BTCUSDT)
+// - triggerPrice: Trigger price
+// - priceType: Trigger price type -1=last_price -2=fair_price
+// - Options.order_id: Order ID(order_id or client_order_id must give one)
+// - Options.client_order_id: Client order ID(order_id or client_order_id must give one)
+// - Options.executive_price: Execution price for order, mandatory when plan_category =
+// - Options.plan_category: TP/SL type -1=TP/SL -2=Position TP/SL
+// - Options.category: Order type, Position TP/SL default market -limit -market
+func (cloudClient *CloudClient) PostContractModifyTpSlOrder(contractSymbol string, triggerPrice string, priceType int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = contractSymbol
+	params["trigger_price"] = triggerPrice
+	params["price_type"] = priceType
+	return cloudClient.requestWithParams(POST, API_CONTRACT_MODIFY_TP_SL_ORDER_URL, params, SIGNED)
 }

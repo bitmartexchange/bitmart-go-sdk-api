@@ -25,13 +25,36 @@ func main() {
 	// Cancel Order (SIGNED)
 	var ac, err = client.PostContractCancelOrder(
 		"ETHUSDT",
-		"230610330315085",
 	)
 
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
+	}
+
+	var ac2, err2 = client.PostContractCancelOrder(
+		"ETHUSDT",
+		map[string]interface{}{
+			"order_id": "220906179559421",
+		},
+	)
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
+	}
+
+	var ac3, err3 = client.PostContractCancelOrder(
+		"ETHUSDT",
+		map[string]interface{}{
+			"client_order_id": "220906179559421",
+		},
+	)
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		log.Println(ac3.Response)
 	}
 
 }

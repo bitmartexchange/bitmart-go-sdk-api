@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// GET https://api-cloud.bitmart.com/contract/public/details
+// GET https://api-cloud-v2.bitmart.com/contract/public/details
 func TestGetContractDetails(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractDetails("BTCUSDT")
@@ -17,7 +17,7 @@ func TestGetContractDetails(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/public/depth
+// GET https://api-cloud-v2.bitmart.com/contract/public/depth
 func TestGetContractDepth(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractDepth("BTCUSDT")
@@ -28,7 +28,7 @@ func TestGetContractDepth(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/public/open-interest
+// GET https://api-cloud-v2.bitmart.com/contract/public/open-interest
 func TestGetContractOpenInterest(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractOpenInterest("BTCUSDT")
@@ -39,7 +39,7 @@ func TestGetContractOpenInterest(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/public/funding-rate
+// GET https://api-cloud-v2.bitmart.com/contract/public/funding-rate
 func TestGetContractFundingRate(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractFundingRate("BTCUSDT")
@@ -50,7 +50,7 @@ func TestGetContractFundingRate(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/public/kline
+// GET https://api-cloud-v2.bitmart.com/contract/public/kline
 func TestGetContractKline(t *testing.T) {
 	c := NewTestClient()
 	now := time.Now().Unix()
@@ -62,7 +62,7 @@ func TestGetContractKline(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/assets-detail
+// GET https://api-cloud-v2.bitmart.com/contract/private/assets-detail
 func TestGetContractAssetsDetail(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractAssetsDetail()
@@ -73,7 +73,7 @@ func TestGetContractAssetsDetail(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/order
+// GET https://api-cloud-v2.bitmart.com/contract/private/order
 func TestGetContractOrder(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractOrder("BTCUSDT", "220609666322019")
@@ -84,7 +84,7 @@ func TestGetContractOrder(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/order-history
+// GET https://api-cloud-v2.bitmart.com/contract/private/order-history
 func TestGetContractOrderHistory(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractOrderHistory("BTCUSDT")
@@ -106,7 +106,7 @@ func TestGetContractOrderHistory(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/get-open-orders
+// GET https://api-cloud-v2.bitmart.com/contract/private/get-open-orders
 func TestGetContractOpenOrders(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractOpenOrders()
@@ -129,13 +129,14 @@ func TestGetContractOpenOrders(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/current-plan-order
+// GET https://api-cloud-v2.bitmart.com/contract/private/current-plan-order
 func TestGetContractCurrentPlanOrder(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractCurrentPlanOrders(map[string]interface{}{
-		"symbol": "BTCUSDT",
-		"type":   "limit",
-		"limit":  10,
+		"symbol":    "BTCUSDT",
+		"type":      "limit",
+		"limit":     10,
+		"plan_type": "plan",
 	})
 	if err != nil {
 		log.Panic(err)
@@ -144,7 +145,7 @@ func TestGetContractCurrentPlanOrder(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/position
+// GET https://api-cloud-v2.bitmart.com/contract/private/position
 func TestGetContractPosition(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractPosition()
@@ -164,7 +165,7 @@ func TestGetContractPosition(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/position-risk
+// GET https://api-cloud-v2.bitmart.com/contract/private/position-risk
 func TestGetContractPositionRisk(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractPositionRisk()
@@ -184,7 +185,7 @@ func TestGetContractPositionRisk(t *testing.T) {
 	}
 }
 
-// GET https://api-cloud.bitmart.com/contract/private/trades
+// GET https://api-cloud-v2.bitmart.com/contract/private/trades
 func TestGetContractTrades(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractTrades("BTCUSDT")
@@ -206,7 +207,7 @@ func TestGetContractTrades(t *testing.T) {
 	}
 }
 
-// POST https://api-cloud.bitmart.com/account/v1/transfer-contract-list
+// POST https://api-cloud-v2.bitmart.com/account/v1/transfer-contract-list
 func TestGetContractTransferList(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetContractTransferList(map[string]interface{}{
@@ -221,7 +222,7 @@ func TestGetContractTransferList(t *testing.T) {
 	}
 }
 
-// POST https://api-cloud.bitmart.com/contract/private/submit-order
+// POST https://api-cloud-v2.bitmart.com/contract/private/submit-order
 func TestPostContractSubmitOrder(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostContractSubmitOrder(ContractOrder{
@@ -240,18 +241,36 @@ func TestPostContractSubmitOrder(t *testing.T) {
 	}
 }
 
-// POST https://api-cloud.bitmart.com/contract/private/cancel-order
+// POST https://api-cloud-v2.bitmart.com/contract/private/cancel-order
 func TestPostContractCancelOrder(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.PostContractCancelOrder("ETHUSDT", "220906179559421")
+	ac, err := c.PostContractCancelOrder("ETHUSDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
+
+	ac2, err2 := c.PostContractCancelOrder("ETHUSDT", map[string]interface{}{
+		"order_id": "12321313",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
+
+	ac3, err3 := c.PostContractCancelOrder("ETHUSDT", map[string]interface{}{
+		"client_order_id": "12321313",
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		PrintResponse(ac3)
+	}
 }
 
-// POST https://api-cloud.bitmart.com/contract/private/cancel-orders
+// POST https://api-cloud-v2.bitmart.com/contract/private/cancel-orders
 func TestPostContractCancelOrders(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostContractCancelOrders("ETHUSDT")
@@ -262,7 +281,7 @@ func TestPostContractCancelOrders(t *testing.T) {
 	}
 }
 
-// POST https://api-cloud.bitmart.com/contract/private/submit-plan-order
+// POST https://api-cloud-v2.bitmart.com/contract/private/submit-plan-order
 func TestPostContractPlanOrder(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostContractPlanOrder(ContractPlanOrder{
@@ -285,18 +304,28 @@ func TestPostContractPlanOrder(t *testing.T) {
 	}
 }
 
-// POST https://api-cloud.bitmart.com/contract/private/cancel-plan-order
+// POST https://api-cloud-v2.bitmart.com/contract/private/cancel-plan-order
 func TestPostContractCancelPlanOrder(t *testing.T) {
 	c := NewTestClient()
-	ac, err := c.PostContractCancelPlanOrder("ETHUSDT", "230608317804369")
+	ac, err := c.PostContractCancelPlanOrder("ETHUSDT")
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
+
+	ac2, err2 := c.PostContractCancelPlanOrder("ETHUSDT", map[string]interface{}{
+		"order_id": "220906179559421",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
+
 }
 
-// POST https://api-cloud.bitmart.com/account/v1/transfer-contract
+// POST https://api-cloud-v2.bitmart.com/account/v1/transfer-contract
 func TestPostContractTransfer(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostContractTransfer("USDT", "100", "spot_to_contract", 5000)
@@ -307,10 +336,94 @@ func TestPostContractTransfer(t *testing.T) {
 	}
 }
 
-// POST https://api-cloud.bitmart.com/contract/private/submit-leverage
+// POST https://api-cloud-v2.bitmart.com/contract/private/submit-leverage
 func TestPostContractSubmitLeverage(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.PostContractSubmitLeverage("ETHUSDT", "10", "cross")
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order
+func TestPostContractSubmitTpSlOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractSubmitTpSlOrder(
+		"ETHUSDT",
+		"take_profit",
+		2,
+		"2000",
+		"1450",
+		1,
+		map[string]interface{}{
+			"plan_category":   1,
+			"client_order_id": "123123123123",
+			"category":        "limit",
+		},
+	)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/modify-plan-order
+func TestPostContractModifyPlanOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractModifyPlanOrder(
+		"ETHUSDT",
+		"limit",
+		"2000",
+		1,
+		map[string]interface{}{
+			"client_order_id": "123123123123",
+			"executive_price": "1450",
+		},
+	)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/modify-preset-plan-order
+func TestPostContractModifyPresetPlanOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractModifyPresetPlanOrder(
+		"ETHUSDT",
+		"220609666322019",
+		map[string]interface{}{
+			"preset_take_profit_price":      "2000",
+			"preset_stop_loss_price":        "1900",
+			"preset_take_profit_price_type": 1,
+			"preset_stop_loss_price_type":   1,
+		},
+	)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/modify-tp-sl-order
+func TestPostContractModifyTpSlOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostContractModifyTpSlOrder(
+		"ETHUSDT",
+		"2100",
+		2,
+		map[string]interface{}{
+			"executive_price": "2100",
+			"order_id":        "q232434234234",
+			"plan_category":   2,
+			"category":        "limit",
+		},
+	)
 	if err != nil {
 		log.Panic(err)
 	} else {
