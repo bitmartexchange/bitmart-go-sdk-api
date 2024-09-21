@@ -2,7 +2,7 @@ Changelog
 =========================
 
 
-### v2.0.0 Release
+### v1.0.2 Release
 #### New Features
 - New
   - `/spot/v4/batch_orders`
