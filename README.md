@@ -63,24 +63,27 @@ package main
 
 import (
   "github.com/bitmartexchange/bitmart-go-sdk-api"
+  "log"
 )
 
 func main() {
   client := bitmart.NewClient(bitmart.Config{})
 
   // Get List of Trading Pairs
-  client.GetSpotSymbol()
+  var ac, _ = client.GetSpotSymbol()
+  log.Println(ac.Response)
   
   // Get Ticker of a Trading Pair (V3)
-  client.GetSpotV3Ticker("BTC_USDT")
+  ac, _ = client.GetSpotV3Ticker("BTC_USDT")
+  log.Println(ac.Response)
   
   // Get Ticker of All Pairs (V3)
-  client.GetSpotV3Tickers()
-
+  ac, _ = client.GetSpotV3Tickers()
+  log.Println(ac.Response)
+  
   // Get Depth (V3)
-  client.GetSpotV3Book("BTC_USDT", map[string]interface{}{
-    "limit": 10,
-  })
+  ac, _ = client.GetSpotV3Book("BTC_USDT")
+  log.Println(ac.Response)
 
 }
 ```
@@ -227,19 +230,26 @@ package main
 
 import (
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
+    "log"
 )
 
 func main() {
 	client := bitmart.NewClient(bitmart.Config{})
 
 	// Get Contract Details
-	client.GetContractDetails("BTCUSDT")
+    var ac, _ = client.GetContractDetails("BTCUSDT")
+    log.Println(ac.Response)
     // Get Current Funding Rate
-    client.GetContractFundingRate("BTCUSDT")
+    ac, _ = client.GetContractFundingRate("BTCUSDT")
+	log.Println(ac.Response)
+    
     // Get Futures Open Interest
-    client.GetContractOpenInterest("BTCUSDT")
+    ac, _ = client.GetContractOpenInterest("BTCUSDT")
+    log.Println(ac.Response)
+  
     // Get Market Depth
-    client.GetContractDepth("BTCUSDT")
+    ac, _ = client.GetContractDepth("BTCUSDT")
+    log.Println(ac.Response)
 }
 
 ```

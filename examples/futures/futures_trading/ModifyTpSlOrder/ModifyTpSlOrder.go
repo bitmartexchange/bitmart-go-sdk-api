@@ -6,8 +6,8 @@ import (
 )
 
 /*
-POST /contract/private/cancel-plan-order
-Doc: https://developer-pro.bitmart.com/en/futures/#cancel-plan-order-signed
+POST /contract/private/modify-tp-sl-order
+Doc: https://developer-pro.bitmart.com/en/futuresv2/#modify-tp-sl-order-signed
 */
 func main() {
 
@@ -22,27 +22,23 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Cancel Plan Order (SIGNED)
-	var ac, err = client.PostContractCancelPlanOrder(
+	// Modify TP/SL Order (SIGNED)
+	var ac, err = client.PostContractModifyTpSlOrder(
 		"ETHUSDT",
+		"2100",
+		2,
+		map[string]interface{}{
+			"executive_price": "2100",
+			"order_id":        "q232434234234",
+			"plan_category":   2,
+			"category":        "limit",
+		},
 	)
 
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
-	}
-
-	var ac2, err2 = client.PostContractCancelPlanOrder(
-		"ETHUSDT", map[string]interface{}{
-			"order_id": "220906179559421",
-			// "client_order_id": "123456789",
-		},
-	)
-	if err2 != nil {
-		log.Panic(err2)
-	} else {
-		log.Println(ac2.Response)
 	}
 
 }
