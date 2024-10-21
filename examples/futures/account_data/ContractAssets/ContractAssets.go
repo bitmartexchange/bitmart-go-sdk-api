@@ -14,6 +14,7 @@ func main() {
 	var yourApiKey = "Your API KEY"
 
 	client := bitmart.NewClient(bitmart.Config{
+		Url:           bitmart.API_URL_V2_PRO,
 		ApiKey:        yourApiKey,
 		TimeoutSecond: 5,
 	})

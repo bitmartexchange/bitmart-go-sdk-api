@@ -3,26 +3,25 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
+	"os"
+	"sync"
 )
 
-func OnMessage(message string) {
+func Callback(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/spot/#public-ticker-channel
 func main() {
-	ws := bitmart.NewWS(bitmart.Config{WsUrl: bitmart.WS_URL})
+	var wg sync.WaitGroup
+	wg.Add(1)
 
-	_ = ws.Connection(OnMessage)
+	ws := bitmart.NewSpotWSClient(bitmart.Config{
+		WsUrl:        bitmart.SPOT_WS_URL,
+		CustomLogger: bitmart.NewCustomLogger(bitmart.INFO, os.Stdout),
+	}, Callback)
 
-	// 【Public】Ticker Channel
-	channels := []string{
-		"spot/ticker:BTC_USDT",
-	}
-
-	ws.SubscribeWithoutLogin(channels)
+	ws.Send(`{"op": "subscribe", "args": ["spot/ticker:BTC_USDT"]}`)
 
 	// Just test, Please do not use in production.
-	time.Sleep(60 * time.Second)
+	wg.Wait()
 }

@@ -6,7 +6,7 @@ BitMart-Go-SDK-API
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/bitmartexchange/bitmart-go-sdk-api)
 [![Go version](https://shields.io/badge/Go-v1.15-blue)](https://go.dev/dl/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+[![Telegram](https://img.shields.io/badge/Telegram-Join%20Us-blue?logo=Telegram)](https://t.me/bitmart_api)
 
 [BitMart Exchange official](https://bitmart.com) Go client for the BitMart Cloud API.
 
@@ -20,15 +20,15 @@ Feature
 - Efficiency, higher speeds, and lower latencies
 - Priority in development and maintenance
 - Dedicated and responsive technical support
-- Provide webSocket apis calls
 - Supported APIs:
     - `/spot/*`
     - `/contract/*`
     - `/account/*`
-    - Spot WebSocket Market Stream
-    - Spot User Data Stream
-    - Contract User Data Stream
-    - Contract WebSocket Market Stream
+- Supported websockets:
+  - Spot WebSocket Market Stream
+  - Spot User Data Stream
+  - futures User Data Stream
+  - futures WebSocket Market Stream
 - Test cases and examples
 
 
@@ -145,32 +145,42 @@ Please find `examples/spot` folder to check for more endpoints.
 
 
 ```go
-
 package main
 
 import (
-	"fmt"
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
+  "fmt"
+  "github.com/bitmartexchange/bitmart-go-sdk-api"
+  "os"
+  "sync"
 )
 
-func OnMessage(message string) {
-	fmt.Println("------------------------>" + message)
+func Callback(message string) {
+  fmt.Println("------------------------>" + message)
 }
 
 func main() {
-	ws := bitmart.NewWS(bitmart.Config{WsUrl: bitmart.WS_URL})
+  var wg sync.WaitGroup
+  wg.Add(1)
 
-	_ = ws.Connection(OnMessage)
+  ws := bitmart.NewSpotWSClient(bitmart.Config{
+    WsUrl:        bitmart.SPOT_WS_URL,
+  }, Callback)
 
-	// 【Public】Ticker Channel
-	channels := []string{
-		"spot/ticker:BTC_USDT",
-	}
+  // Ticker
+  ws.Send(`{"op": "subscribe", "args": ["spot/ticker:BTC_USDT"]}`)
 
-	ws.SubscribeWithoutLogin(channels)
+  // Kline
+  ws.Send(`{"op": "subscribe", "args": ["spot/kline1m:BTC_USDT"]}`)
 
+  // Trade
+  ws.Send(`{"op": "subscribe", "args": ["spot/trade:BTC_USDT"]}`)
+
+  // Depth
+  ws.Send(`{"op": "subscribe", "args": ["spot/depth5:BTC_USDT"]}`)
+
+  // Just test, Please do not use in production.
+  wg.Wait()
 }
-
 
 ```
 
@@ -178,43 +188,43 @@ func main() {
 #### Spot Websocket Endpoints : Subscribe Private Channel
 
 ```go
-
 package main
 
 import (
-	"fmt"
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
+  "fmt"
+  "github.com/bitmartexchange/bitmart-go-sdk-api"
+  "sync"
 )
 
-func OnMessage(message string) {
-	fmt.Println("------------------------>" + message)
+func Callback(message string) {
+  fmt.Println("------------------------>" + message)
 }
 
 func main() {
+  var wg sync.WaitGroup
+  wg.Add(1)
 
-	var yourApiKey = "Your API KEY"
-	var yourSecretKey = "Your Secret KEY"
-	var yourMemo = "Your Memo"
+  var yourApiKey = "Your API KEY"
+  var yourSecretKey = "Your Secret KEY"
+  var yourMemo = "Your Memo"
 
-	ws := bitmart.NewWS(bitmart.Config{
-		WsUrl:     bitmart.WS_URL_USER,
-		ApiKey:    yourApiKey,
-		SecretKey: yourSecretKey,
-		Memo:      yourMemo,
-	})
+  ws := bitmart.NewSpotWSClient(bitmart.Config{
+    WsUrl:     bitmart.SPOT_WS_USER,
+    ApiKey:    yourApiKey,
+    SecretKey: yourSecretKey,
+    Memo:      yourMemo,
+  }, Callback)
 
-	_ = ws.Connection(OnMessage)
+  // login
+  ws.Login()
 
-	// 【Private】Order Progress
-	channels := []string{
-		"spot/user/order:BTC_USDT",
-	}
+  // 【Private】Balance Change
+  ws.Send(`{"op": "subscribe", "args": ["spot/user/balance:BALANCE_UPDATE"]}`)
 
-	ws.SubscribeWithLogin(channels)
+  // Just test, Please do not use in production.
+  wg.Wait()
 
 }
-
 ```
 
 
@@ -234,7 +244,9 @@ import (
 )
 
 func main() {
-	client := bitmart.NewClient(bitmart.Config{})
+	client := bitmart.NewClient(bitmart.Config{
+      Url: bitmart.API_URL_V2_PRO,
+    })
 
 	// Get Contract Details
     var ac, _ = client.GetContractDetails("BTCUSDT")
@@ -273,6 +285,7 @@ func main() {
 	var yourMemo = "Your Memo"
 
 	client := bitmart.NewClient(bitmart.Config{
+        Url:           bitmart.API_URL_V2_PRO,
 		ApiKey:        yourApiKey,
 		SecretKey:     yourSecretKey,
 		Memo:          yourMemo,
@@ -310,75 +323,80 @@ Please find `examples/futures` folder to check for more endpoints.
 #### Futures Websocket Endpoints : Subscribe Public Channel
 
 ```go
-
 package main
 
 import (
-	"fmt"
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
+  "fmt"
+  "github.com/bitmartexchange/bitmart-go-sdk-api"
+  "os"
+  "sync"
 )
 
-func OnMessage(message string) {
-	fmt.Println("------------------------>" + message)
+func Callback(message string) {
+  fmt.Println("------------------------>" + message)
 }
 
 func main() {
-	ws := bitmart.NewWSContract(bitmart.Config{WsUrl: bitmart.CONTRACT_WS_URL})
+  var wg sync.WaitGroup
+  wg.Add(3)
 
-	_ = ws.Connection(OnMessage)
+  ws := bitmart.NewFuturesWSClient(bitmart.Config{
+    WsUrl:        bitmart.FUTURES_WS_URL,
+    CustomLogger: bitmart.NewCustomLogger(bitmart.INFO, os.Stdout),
+  }, Callback)
 
-	// 【Public】Ticker Channel
-	channels := []string{
-		"futures/ticker",
-	}
+  ws.Send(`{"action":"subscribe","args":["futures/ticker"]}`)
 
-	ws.SubscribeWithoutLogin(channels)
+  ws.Send(`{"action":"subscribe","args":["futures/depth20:BTCUSDT"]}`)
 
-	// Just test, Please do not use in production.
-	time.Sleep(60 * time.Second)
+  ws.Send(`{"action":"subscribe","args":["futures/klineBin1m:BTCUSDT"]}`)
+
+  ws.Send(`{"action":"subscribe","args":["futures/trade:BTCUSDT"]}`)
+
+  // Just test, Please do not use in production.
+  wg.Wait()
 }
-
-
 
 ```
 
 #### Futures Websocket Endpoints : Subscribe Private Channel
 
 ```go
-
 package main
 
 import (
-	"fmt"
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
+  "fmt"
+  "github.com/bitmartexchange/bitmart-go-sdk-api"
+  "sync"
 )
 
-func OnMessage(message string) {
-	fmt.Println("------------------------>" + message)
+func Callback(message string) {
+  fmt.Println("------------------------>" + message)
 }
 
 func main() {
+  var wg sync.WaitGroup
+  wg.Add(3)
 
-	var yourApiKey = "Your API KEY"
-	var yourSecretKey = "Your Secret KEY"
-	var yourMemo = "Your Memo"
+  var yourApiKey = "Your API KEY"
+  var yourSecretKey = "Your Secret KEY"
+  var yourMemo = "Your Memo"
 
-	ws := bitmart.NewWSContract(bitmart.Config{
-		WsUrl:     bitmart.CONTRACT_WS_PRIVATE_URL,
-		ApiKey:    yourApiKey,
-		SecretKey: yourSecretKey,
-		Memo:      yourMemo,
-	})
+  ws := bitmart.NewFuturesWSClient(bitmart.Config{
+    WsUrl:     bitmart.FUTURES_WS_USER,
+    ApiKey:    yourApiKey,
+    SecretKey: yourSecretKey,
+    Memo:      yourMemo,
+  }, Callback)
 
-	_ = ws.Connection(OnMessage)
+  // login
+  ws.Login()
 
-	// 【Private】Assets Channel
-	channels := []string{
-		"futures/asset:USDT",
-	}
-	ws.SubscribeWithLogin(channels)
+  // 【Private】Assets Channel
+  ws.Send(`{"action": "subscribe","args":["futures/asset:USDT", "futures/asset:BTC", "futures/asset:ETH"]}`)
 
+  // Just test, Please do not use in production.
+  wg.Wait()
 }
 
 ```

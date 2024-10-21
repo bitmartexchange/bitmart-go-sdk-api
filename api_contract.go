@@ -45,6 +45,15 @@ func (cloudClient *CloudClient) GetContractAssetsDetail() (*CloudResponse, error
 	return cloudClient.requestWithoutParams(GET, API_CONTRACT_ASSETS_DETAIL_URL, KEYED)
 }
 
+// GetContractTradeFeeRate order /** Get Trade Fee Rate (KEYED)
+// Parameters:
+// - symbol:  Symbol of the contract(like BTCUSDT)
+func (cloudClient *CloudClient) GetContractTradeFeeRate(contractSymbol string) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = contractSymbol
+	return cloudClient.requestWithParams(GET, API_CONTRACT_TRADE_FEE_RATE_URL, params, KEYED)
+}
+
 // GetContractOrder order /** Get Order Detail (KEYED)
 // Parameters:
 // - symbol:  Symbol of the contract(like BTCUSDT)

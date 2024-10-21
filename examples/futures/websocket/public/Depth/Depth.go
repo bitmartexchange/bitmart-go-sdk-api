@@ -3,26 +3,25 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
+	"os"
+	"sync"
 )
 
-func OnMessage(message string) {
+func Callback(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/futures/#public-depth-channel
 func main() {
-	ws := bitmart.NewWSContract(bitmart.Config{WsUrl: bitmart.CONTRACT_WS_URL})
+	var wg sync.WaitGroup
+	wg.Add(3)
 
-	_ = ws.Connection(OnMessage)
+	ws := bitmart.NewFuturesWSClient(bitmart.Config{
+		WsUrl:        bitmart.FUTURES_WS_URL,
+		CustomLogger: bitmart.NewCustomLogger(bitmart.INFO, os.Stdout),
+	}, Callback)
 
-	// 【Public】Depth Channel
-	channels := []string{
-		"futures/depth20:BTCUSDT",
-	}
-
-	ws.SubscribeWithoutLogin(channels)
+	ws.Send(`{"action":"subscribe","args":["futures/depth20:BTCUSDT"]}`)
 
 	// Just test, Please do not use in production.
-	time.Sleep(60 * time.Second)
+	wg.Wait()
 }

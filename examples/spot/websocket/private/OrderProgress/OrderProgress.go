@@ -3,37 +3,35 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
+	"sync"
 )
 
-func OnMessage(message string) {
+func Callback(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/spot/#private-order-progress
 func main() {
+	var wg sync.WaitGroup
+	wg.Add(1)
 
 	var yourApiKey = "Your API KEY"
 	var yourSecretKey = "Your Secret KEY"
 	var yourMemo = "Your Memo"
 
-	ws := bitmart.NewWS(bitmart.Config{
-		WsUrl:     bitmart.WS_URL_USER,
+	ws := bitmart.NewSpotWSClient(bitmart.Config{
+		WsUrl:     bitmart.SPOT_WS_USER,
 		ApiKey:    yourApiKey,
 		SecretKey: yourSecretKey,
 		Memo:      yourMemo,
-	})
+	}, Callback)
 
-	_ = ws.Connection(OnMessage)
+	// login
+	ws.Login()
 
 	// 【Private】Order Progress
-	channels := []string{
-		"spot/user/order:BTC_USDT",
-	}
-
-	ws.SubscribeWithLogin(channels)
+	ws.Send(`{"op": "subscribe", "args": ["spot/user/order:BTC_USDT"]}`)
 
 	// Just test, Please do not use in production.
-	time.Sleep(60 * time.Second)
+	wg.Wait()
 
 }
