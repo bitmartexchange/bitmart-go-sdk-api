@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"os"
 	"sync"
 )
 
@@ -15,13 +14,24 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
+	var yourApiKey = "Your API KEY"
+	var yourSecretKey = "Your Secret KEY"
+	var yourMemo = "Your Memo"
+
 	ws := bitmart.NewSpotWSClient(bitmart.Config{
-		WsUrl:        bitmart.SPOT_WS_URL,
-		CustomLogger: bitmart.NewCustomLogger(bitmart.INFO, os.Stdout),
+		WsUrl:     bitmart.SPOT_WS_USER,
+		ApiKey:    yourApiKey,
+		SecretKey: yourSecretKey,
+		Memo:      yourMemo,
 	}, Callback)
 
-	ws.Send(`{"op": "subscribe", "args": ["spot/depth5:BTC_USDT"]}`)
+	// login
+	ws.Login()
+
+	// 【Private】Balance Change
+	ws.Send(`{"op": "subscribe", "args": ["spot/user/balance:BALANCE_UPDATE"]}`)
 
 	// Just test, Please do not use in production.
 	wg.Wait()
+
 }

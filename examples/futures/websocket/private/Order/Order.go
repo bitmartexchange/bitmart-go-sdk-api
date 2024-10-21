@@ -3,35 +3,34 @@ package main
 import (
 	"fmt"
 	"github.com/bitmartexchange/bitmart-go-sdk-api"
-	"time"
+	"sync"
 )
 
-func OnMessage(message string) {
+func Callback(message string) {
 	fmt.Println("------------------------>" + message)
 }
 
-// https://developer-pro.bitmart.com/en/futures/#private-order-channel
 func main() {
+	var wg sync.WaitGroup
+	wg.Add(3)
 
 	var yourApiKey = "Your API KEY"
 	var yourSecretKey = "Your Secret KEY"
 	var yourMemo = "Your Memo"
 
-	ws := bitmart.NewWSContract(bitmart.Config{
-		WsUrl:     bitmart.CONTRACT_WS_PRIVATE_URL,
+	ws := bitmart.NewFuturesWSClient(bitmart.Config{
+		WsUrl:     bitmart.FUTURES_WS_USER,
 		ApiKey:    yourApiKey,
 		SecretKey: yourSecretKey,
 		Memo:      yourMemo,
-	})
+	}, Callback)
 
-	_ = ws.Connection(OnMessage)
+	// login
+	ws.Login()
 
 	// 【Private】Order Channel
-	channels := []string{
-		"futures/order",
-	}
-	ws.SubscribeWithLogin(channels)
+	ws.Send(`{"action": "subscribe","args":["futures/order"]}`)
 
 	// Just test, Please do not use in production.
-	time.Sleep(60 * time.Second)
+	wg.Wait()
 }

@@ -34,11 +34,12 @@ const (
 )
 
 const (
-	API_URL_PRO             = "https://api-cloud.bitmart.com"                           // rest api url
-	WS_URL                  = "wss://ws-manager-compress.bitmart.com/api?protocol=1.1"  // spot-ws-public
-	WS_URL_USER             = "wss://ws-manager-compress.bitmart.com/user?protocol=1.1" // spot-ws-private
-	CONTRACT_WS_URL         = "wss://openapi-ws.bitmart.com/api?protocol=1.1"           // contract-ws-public
-	CONTRACT_WS_PRIVATE_URL = "wss://openapi-ws.bitmart.com/user?protocol=1.1"          // contract-ws-private
+	API_URL_PRO     = "https://api-cloud.bitmart.com"                           // rest api url
+	API_URL_V2_PRO  = "https://api-cloud-v2.bitmart.com"                        // rest api url
+	SPOT_WS_URL     = "wss://ws-manager-compress.bitmart.com/api?protocol=1.1"  // spot-ws-public
+	SPOT_WS_USER    = "wss://ws-manager-compress.bitmart.com/user?protocol=1.1" // spot-ws-private
+	FUTURES_WS_URL  = "wss://openapi-ws.bitmart.com/api?protocol=1.1"           // contract-ws-public
+	FUTURES_WS_USER = "wss://openapi-ws.bitmart.com/user?protocol=1.1"          // contract-ws-private
 
 	X_BM_KEY       = "X-BM-KEY"
 	X_BM_SIGN      = "X-BM-SIGN"
@@ -47,7 +48,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "BitMart-GO-SDK-API/1.1.0"
+	VERSION      = "bitmart-go-sdk-api/1.2.0"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
@@ -122,6 +123,7 @@ const (
 	API_CONTRACT_ASSETS_DETAIL_URL = "/contract/private/assets-detail"
 
 	// Futures Trading Endpoints: https://developer-pro.bitmart.com/en/futures/#futures-trading
+	API_CONTRACT_TRADE_FEE_RATE_URL     = "/contract/private/trade-fee-rate"
 	API_CONTRACT_ORDER_URL              = "/contract/private/order"
 	API_CONTRACT_ORDER_HISTORY_URL      = "/contract/private/order-history"
 	API_CONTRACT_OPEN_ORDERS_URL        = "/contract/private/get-open-orders"
