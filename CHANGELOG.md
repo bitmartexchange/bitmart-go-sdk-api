@@ -2,6 +2,18 @@ Changelog
 =========================
 
 
+### v1.2.1 Release
+#### Improvements
+- The domain name `wss://openapi-ws.bitmart.com` will not provide Futures 1.0 Websocket services.
+  Please use the domain name `wss://openapi-ws-v2.bitmart.com` to access Futures 2.0 Websocket services
+- Change the value of the variable FUTURES_WS_URL
+  from `wss://openapi-ws.bitmart.com/api?protocol=1.1` to `wss://openapi-ws-v2.bitmart.com/api?protocol=1.1`
+- Change the value of the variable FUTURES_WS_USER
+  from `wss://openapi-ws.bitmart.com/user?protocol=1.1` to `wss://openapi-ws-v2.bitmart.com/user?protocol=1.1`
+
+
+---
+
 ### v1.2.0 Release
 #### New Features
 - New
