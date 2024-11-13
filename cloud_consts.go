@@ -38,8 +38,8 @@ const (
 	API_URL_V2_PRO  = "https://api-cloud-v2.bitmart.com"                        // rest api url
 	SPOT_WS_URL     = "wss://ws-manager-compress.bitmart.com/api?protocol=1.1"  // spot-ws-public
 	SPOT_WS_USER    = "wss://ws-manager-compress.bitmart.com/user?protocol=1.1" // spot-ws-private
-	FUTURES_WS_URL  = "wss://openapi-ws.bitmart.com/api?protocol=1.1"           // contract-ws-public
-	FUTURES_WS_USER = "wss://openapi-ws.bitmart.com/user?protocol=1.1"          // contract-ws-private
+	FUTURES_WS_URL  = "wss://openapi-ws-v2.bitmart.com/api?protocol=1.1"        // contract-ws-public
+	FUTURES_WS_USER = "wss://openapi-ws-v2.bitmart.com/user?protocol=1.1"       // contract-ws-private
 
 	X_BM_KEY       = "X-BM-KEY"
 	X_BM_SIGN      = "X-BM-SIGN"
@@ -48,7 +48,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "bitmart-go-sdk-api/1.2.0"
+	VERSION      = "bitmart-go-sdk-api/1.2.1"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
