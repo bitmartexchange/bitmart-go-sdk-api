@@ -48,7 +48,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "bitmart-go-sdk-api/1.2.1"
+	VERSION      = "bitmart-go-sdk-api/1.2.2"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
