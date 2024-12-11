@@ -2,6 +2,12 @@ Changelog
 =========================
 
 
+### v1.2.2 Release
+#### Bug Fixes
+- Remove the space in the `examples/spot/margin_loan /` path to solve the problem that windows cannot be pulled
+
+---
+
 ### v1.2.1 Release
 #### Improvements
 - The domain name `wss://openapi-ws.bitmart.com` will not provide Futures 1.0 Websocket services.
