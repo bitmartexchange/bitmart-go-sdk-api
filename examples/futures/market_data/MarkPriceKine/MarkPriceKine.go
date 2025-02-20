@@ -1,0 +1,28 @@
+package main
+
+import (
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
+	"log"
+	"time"
+)
+
+/*
+GET /contract/public/markprice-kline
+Doc: https://developer-pro.bitmart.com/en/futuresv2/#get-markprice-k-line
+*/
+func main() {
+	client := bitmart.NewClient(bitmart.Config{
+		Url:           bitmart.API_URL_V2_PRO,
+		TimeoutSecond: 5,
+	})
+
+	// Get Mark Price K-line
+	now := time.Now().Unix()
+	var ac, err = client.GetContractMarkPriceKline("BTCUSDT", int(now-3600), int(now), 15)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		log.Println(ac.Response)
+	}
+
+}

@@ -30,14 +30,32 @@ func (cloudClient *CloudClient) GetContractFundingRate(contractSymbol string) (*
 	return cloudClient.requestWithParams(GET, API_CONTRACT_FUNDING_RATE_URL, params, NONE)
 }
 
-// GetContractKline kline /** Get K-line
-func (cloudClient *CloudClient) GetContractKline(contractSymbol string, from, to, step int) (*CloudResponse, error) {
+// GetContractFundingRateHistory funding-rate-history /** Get Funding Rate History
+func (cloudClient *CloudClient) GetContractFundingRateHistory(contractSymbol string, limit int) (*CloudResponse, error) {
 	params := NewParams()
 	params["symbol"] = contractSymbol
-	params["start_time"] = from
-	params["end_time"] = to
+	params["limit"] = limit
+	return cloudClient.requestWithParams(GET, API_CONTRACT_FUNDING_RATE_HISTORY_URL, params, NONE)
+}
+
+// GetContractKline kline /** Get K-line
+func (cloudClient *CloudClient) GetContractKline(contractSymbol string, startTime, endTime, step int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = contractSymbol
+	params["start_time"] = startTime
+	params["end_time"] = endTime
 	params["step"] = step
 	return cloudClient.requestWithParams(GET, API_CONTRACT_KLINE_URL, params, NONE)
+}
+
+// GetContractMarkPriceKline mark kline /** Get MarkPrice K-line
+func (cloudClient *CloudClient) GetContractMarkPriceKline(contractSymbol string, startTime, endTime, step int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = contractSymbol
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	params["step"] = step
+	return cloudClient.requestWithParams(GET, API_CONTRACT_MARK_PRICE_KLINE_URL, params, NONE)
 }
 
 // GetContractAssetsDetail assets-detail /** Get Contract Assets (KEYED)
@@ -125,6 +143,24 @@ func (cloudClient *CloudClient) GetContractTrades(contractSymbol string, options
 	return cloudClient.requestWithParams(GET, API_CONTRACT_TRADES_URL, params, KEYED)
 }
 
+// GetContractTransactionHistory /** Get Transaction History (KEYED)
+// Parameters:
+// - Options.symbol: Symbol of the contract(like BTCUSDT)
+// - Options.flow_type: Type
+// - 0 = All (default)
+// - 1 = Transfer
+// - 2 = Realized PNL
+// - 3 = Funding Fee
+// - 4 = Commission Fee
+// - 5 = Liquidation Clearance
+// - Options.start_time: Start time, timestamp in ms
+// - Options.end_time: End time, timestamp in ms
+// - Options.page_size: Default 100; max 1000
+func (cloudClient *CloudClient) GetContractTransactionHistory(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_CONTRACT_TRANSACTION_HISTORY_URL, params, KEYED)
+}
+
 // GetContractTransferList /** Get Transfer List (SIGNED)
 // Parameters:
 // - Options.currency: Currency (like USDT)
@@ -149,9 +185,6 @@ type ContractOrder struct {
 	Mode                      int    `json:"mode,omitempty"`
 	Price                     string `json:"price,omitempty"`
 	Size                      int    `json:"size,omitempty"`
-	ActivationPrice           string `json:"activation_price,omitempty"`
-	CallbackRate              string `json:"callback_rate,omitempty"`
-	ActivationPriceType       int    `json:"activation_price_type,omitempty"`
 	PresetTakeProfitPriceType int    `json:"preset_take_profit_price_type,omitempty"`
 	PresetStopLossPriceType   int    `json:"preset_stop_loss_price_type,omitempty"`
 	PresetTakeProfitPrice     string `json:"preset_take_profit_price,omitempty"`
@@ -170,9 +203,6 @@ func (cloudClient *CloudClient) PostContractSubmitOrder(order ContractOrder) (*C
 	AddToParams("mode", order.Mode, params)
 	AddToParams("price", order.Price, params)
 	AddToParams("size", order.Size, params)
-	AddToParams("activation_price", order.ActivationPrice, params)
-	AddToParams("callback_rate", order.CallbackRate, params)
-	AddToParams("activation_price_type", order.ActivationPriceType, params)
 	AddToParams("preset_take_profit_price_type", order.PresetTakeProfitPriceType, params)
 	AddToParams("preset_stop_loss_price_type", order.PresetStopLossPriceType, params)
 	AddToParams("preset_take_profit_price", order.PresetTakeProfitPrice, params)
@@ -316,7 +346,6 @@ func (cloudClient *CloudClient) PostContractSubmitTpSlOrder(contractSymbol strin
 // - triggerPrice: Trigger price
 // - priceType: Trigger price type -1=last_price -2=fair_price
 // - Options.order_id: 	Order ID(order_id or client_order_id must give one)
-// - Options.client_order_id: Client order ID(order_id or client_order_id must give one)
 // - Options.executive_price: Execution price for plan order, mandatory when type = limit
 func (cloudClient *CloudClient) PostContractModifyPlanOrder(contractSymbol string, orderType string,
 	triggerPrice string, priceType int, options ...map[string]interface{}) (*CloudResponse, error) {
@@ -359,4 +388,36 @@ func (cloudClient *CloudClient) PostContractModifyTpSlOrder(contractSymbol strin
 	params["trigger_price"] = triggerPrice
 	params["price_type"] = priceType
 	return cloudClient.requestWithParams(POST, API_CONTRACT_MODIFY_TP_SL_ORDER_URL, params, SIGNED)
+}
+
+type ContractTrailOrder struct {
+	Symbol              string `json:"symbol"`
+	Side                int    `json:"side"`
+	Leverage            string `json:"leverage"`
+	OpenType            string `json:"open_type"`
+	Size                int    `json:"size"`
+	ActivationPrice     string `json:"activation_price"`
+	CallbackRate        string `json:"callback_rate"`
+	ActivationPriceType int    `json:"activation_price_type"`
+}
+
+// PostContractTrailOrder plan-order /** Submit Trail Order (SIGNED)
+func (cloudClient *CloudClient) PostContractTrailOrder(trailOrder ContractTrailOrder) (*CloudResponse, error) {
+	params := NewParams()
+	AddToParams("symbol", trailOrder.Symbol, params)
+	AddToParams("side", trailOrder.Side, params)
+	AddToParams("leverage", trailOrder.Leverage, params)
+	AddToParams("open_type", trailOrder.OpenType, params)
+	AddToParams("size", trailOrder.Size, params)
+	AddToParams("activation_price", trailOrder.ActivationPrice, params)
+	AddToParams("callback_rate", trailOrder.CallbackRate, params)
+	AddToParams("activation_price_type", trailOrder.ActivationPriceType, params)
+	return cloudClient.requestWithParams(POST, API_CONTRACT_SUBMIT_TRAIL_ORDER_URL, params, SIGNED)
+}
+
+// PostContractCancelTrailOrder cancel-trail-order /** Cancel Trail Order (SIGNED)
+func (cloudClient *CloudClient) PostContractCancelTrailOrder(contractSymbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = contractSymbol
+	return cloudClient.requestWithParams(POST, API_CONTRACT_CANCEL_TRAIL_ORDER_URL, params, SIGNED)
 }

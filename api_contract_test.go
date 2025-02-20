@@ -50,11 +50,34 @@ func TestGetContractFundingRate(t *testing.T) {
 	}
 }
 
+// GET https://api-cloud-v2.bitmart.com/contract/public/funding-rate-history
+func TestGetContractFundingRateHistory(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractFundingRateHistory("BTCUSDT", 10)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
 // GET https://api-cloud-v2.bitmart.com/contract/public/kline
 func TestGetContractKline(t *testing.T) {
 	c := NewTestFuturesClient()
 	now := time.Now().Unix()
 	ac, err := c.GetContractKline("BTCUSDT", int(now-3600*24), int(now), 5)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/public/markprice-kline
+func TestGetContractMarkPriceKline(t *testing.T) {
+	c := NewTestFuturesClient()
+	now := time.Now().Unix()
+	ac, err := c.GetContractMarkPriceKline("BTCUSDT", int(now-3600*24), int(now), 5)
 	if err != nil {
 		log.Panic(err)
 	} else {
@@ -215,6 +238,24 @@ func TestGetContractTrades(t *testing.T) {
 		log.Panic(err2)
 	} else {
 		PrintResponse(ac2)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/transaction-history
+func TestGetContractTransactionHistory(t *testing.T) {
+	c := NewTestFuturesClient()
+	now := time.Now().Unix()
+	ac, err := c.GetContractTransactionHistory(map[string]interface{}{
+		"symbol":     "BTCUSDT",
+		"flow_type":  0,
+		"page_size":  12,
+		"start_time": int(now-3600) * 1000,
+		"end_time":   int(now) * 1000,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
 	}
 }
 
@@ -435,6 +476,40 @@ func TestPostContractModifyTpSlOrder(t *testing.T) {
 			"category":        "limit",
 		},
 	)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/submit-trail-order
+func TestPostContractTrailOrder(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.PostContractTrailOrder(ContractTrailOrder{
+		Symbol:              "BTCUSDT",
+		Side:                1,
+		Leverage:            "5",
+		OpenType:            "isolated",
+		Size:                1,
+		ActivationPrice:     "81000",
+		CallbackRate:        "2",
+		ActivationPriceType: 1,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/cancel-trail-order
+func TestPostContractCancelTrailOrder(t *testing.T) {
+	c := NewTestFuturesClient()
+	//ac, err := c.PostContractCancelTrailOrder("BTCUSDT", map[string]interface{}{
+	//	"order_id": "60604000002",
+	//})
+	ac, err := c.PostContractCancelTrailOrder("BTCUSDT")
 	if err != nil {
 		log.Panic(err)
 	} else {

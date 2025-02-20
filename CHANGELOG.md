@@ -2,6 +2,20 @@ Changelog
 =========================
 
 
+### v1.3.0 Release
+#### New Features
+- New
+  - `/contract/private/submit-trail-order` Submit Trail Order (SIGNED)
+  - `/contract/private/cancel-trail-order` Cancel Trail Order (SIGNED)
+  - `/contract/public/funding-rate-history` Query Funding Rate History
+  - `/contract/public/transaction-history` Query Transaction History (KEYED)
+  - `/contract/public/markprice-kline` Get MarkPrice K-line
+- Update
+  - `/contract/private/submit-order` Submit Order (SIGNED): Remove the Request Parameters related replacing trail orders
+  - `/contract/private/modify-plan-order` Modify Plan Order (SIGNED): Remove the Request Parameters **client_order_id**
+
+---
+
 ### v1.2.2 Release
 #### Bug Fixes
 - Remove the space in the `examples/spot/margin_loan /` path to solve the problem that windows cannot be pulled
