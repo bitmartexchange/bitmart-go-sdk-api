@@ -7,9 +7,9 @@ import (
 func GetDefaultConfig(url string) *Config {
 	var config Config
 	config.Url = url
-	config.ApiKey = "a0a053a31cca9346e52844ee3f13eaa9867c4a51"
-	config.SecretKey = "0c45bc61f75ab7b22f34593af965322acfacce90709fdea5eb176c7ab7a63061"
-	config.Memo = "mytest"
+	config.ApiKey = "Your API KEY"
+	config.SecretKey = "Your Secret KEY"
+	config.Memo = "Your Memo"
 	config.TimeoutSecond = 30
 	config.Headers = map[string]string{
 		"X-Custom-Header1": "HeaderValue1",
@@ -27,5 +27,5 @@ func NewTestClient() *CloudClient {
 }
 
 func NewTestFuturesClient() *CloudClient {
-	return NewClient(*GetDefaultConfig("https://api-cloud-v2.bitmartgcp-test.com"))
+	return NewClient(*GetDefaultConfig(API_URL_V2_PRO))
 }
