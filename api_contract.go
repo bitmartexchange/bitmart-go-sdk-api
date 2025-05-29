@@ -161,6 +161,12 @@ func (cloudClient *CloudClient) GetContractTransactionHistory(options ...map[str
 	return cloudClient.requestWithParams(GET, API_CONTRACT_TRANSACTION_HISTORY_URL, params, KEYED)
 }
 
+// GetContractPositionMode /** Get Position Mode (KEYED)
+func (cloudClient *CloudClient) GetContractPositionMode() (*CloudResponse, error) {
+	params := NewParams()
+	return cloudClient.requestWithParams(GET, API_CONTRACT_GET_POSITION_MODE_URL, params, KEYED)
+}
+
 // GetContractTransferList /** Get Transfer List (SIGNED)
 // Parameters:
 // - Options.currency: Currency (like USDT)
@@ -420,4 +426,13 @@ func (cloudClient *CloudClient) PostContractCancelTrailOrder(contractSymbol stri
 	params := CreateParams(options...)
 	params["symbol"] = contractSymbol
 	return cloudClient.requestWithParams(POST, API_CONTRACT_CANCEL_TRAIL_ORDER_URL, params, SIGNED)
+}
+
+// PostContractSetPositionMode Set-Position /** Set Position Mode (SIGNED)
+// Parameters:
+// - positionMode: hedge_mode or one_way_mode
+func (cloudClient *CloudClient) PostContractSetPositionMode(positionMode string) (*CloudResponse, error) {
+	params := NewParams()
+	params["position_mode"] = positionMode
+	return cloudClient.requestWithParams(POST, API_CONTRACT_SET_POSITION_MODE_URL, params, SIGNED)
 }

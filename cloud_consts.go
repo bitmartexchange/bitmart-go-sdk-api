@@ -149,6 +149,8 @@ const (
 	API_CONTRACT_MODIFY_PLAN_ORDER_URL        = "/contract/private/modify-plan-order"
 	API_CONTRACT_MODIFY_PRESET_PLAN_ORDER_URL = "/contract/private/modify-preset-plan-order"
 	API_CONTRACT_MODIFY_TP_SL_ORDER_URL       = "/contract/private/modify-tp-sl-order"
+	API_CONTRACT_SET_POSITION_MODE_URL        = "/contract/private/set-position-mode"
+	API_CONTRACT_GET_POSITION_MODE_URL        = "/contract/private/get-position-mode"
 
 	// web socket
 	// spot common

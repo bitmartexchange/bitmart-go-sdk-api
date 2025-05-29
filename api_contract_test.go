@@ -516,3 +516,26 @@ func TestPostContractCancelTrailOrder(t *testing.T) {
 		PrintResponse(ac)
 	}
 }
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/set-position-mode
+func TestPostContractSetPositionMode(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.PostContractSetPositionMode("one_way_mode")
+	//ac, err := c.PostContractSetPositionMode("hedge_mode")
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// Get https://api-cloud-v2.bitmart.com/contract/private/get-position-mode
+func TestGetContractPositionMode(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractPositionMode()
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
