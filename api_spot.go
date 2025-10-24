@@ -89,6 +89,7 @@ type Order struct {
 	Size          string `json:"size,omitempty"`
 	Price         string `json:"price,omitempty"`
 	Notional      string `json:"notional,omitempty"`
+	StpMode       string `json:"stpMode,omitempty"`
 }
 
 // PostSpotSubmitOrder /** New Order(v2) (SIGNED)
@@ -108,6 +109,9 @@ func (cloudClient *CloudClient) PostSpotSubmitOrder(order Order) (*CloudResponse
 	}
 	if order.Notional != "" {
 		params["notional"] = order.Notional
+	}
+	if order.StpMode != "" {
+		params["stpMode"] = order.StpMode
 	}
 	return cloudClient.requestWithParams(POST, API_SPOT_SUBMIT_ORDER_URL, params, SIGNED)
 }
@@ -152,6 +156,7 @@ type BatchOrder struct {
 	Size          string `json:"size,omitempty"`
 	Price         string `json:"price,omitempty"`
 	Notional      string `json:"notional,omitempty"`
+	StpMode       string `json:"stpMode,omitempty"`
 }
 
 // PostSpotBatchOrders /** Batch New Order(v4) (SIGNED)

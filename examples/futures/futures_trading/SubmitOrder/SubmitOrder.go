@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
 	"log"
+
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
 )
 
 /*
@@ -32,6 +33,7 @@ func main() {
 		OpenType: "isolated",
 		Size:     10,
 		Price:    "2000",
+		StpMode:  1,
 	})
 
 	if err != nil {

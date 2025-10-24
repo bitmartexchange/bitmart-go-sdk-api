@@ -1,8 +1,10 @@
 package main
 
 import (
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
 	"log"
+	"time"
+
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
 )
 
 /*
@@ -33,6 +35,19 @@ func main() {
 		log.Panic(err2)
 	} else {
 		log.Println(ac2.Response)
+	}
+
+	// Test with startTime and endTime parameters
+	now := time.Now().Unix()
+	var ac3, err3 = client.GetDepositWithdrawHistory("withdraw", 10, map[string]interface{}{
+		"currency":  "BTC",
+		"startTime": int(now-3600) * 1000,
+		"endTime":   int(now) * 1000,
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		log.Println(ac3.Response)
 	}
 
 }

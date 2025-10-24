@@ -7,8 +7,8 @@ import (
 )
 
 /*
-POST /spot/v2/submit_order
-Doc: https://developer-pro.bitmart.com/en/spot/#new-order-v2-signed
+POST /contract/private/set-position-mode
+Doc: https://developer-pro.bitmart.com/en/futuresv2/#set-position-mode-signed
 */
 func main() {
 
@@ -17,22 +17,16 @@ func main() {
 	var yourMemo = "Your Memo"
 
 	client := bitmart.NewClient(bitmart.Config{
+		Url:           bitmart.API_URL_V2_PRO,
 		ApiKey:        yourApiKey,
 		SecretKey:     yourSecretKey,
 		Memo:          yourMemo,
 		TimeoutSecond: 5,
 	})
 
-	// New Order(v2) (SIGNED)
-	var ac, err = client.PostSpotSubmitOrder(bitmart.Order{
-		Symbol:        "BTC_USDT",
-		Side:          "buy",
-		Type:          "limit",
-		ClientOrderId: "jhjj8h8h8h88h998u9u",
-		Size:          "0.1",
-		Price:         "8800",
-		StpMode:       "cancel_maker",
-	})
+	// Set Position Mode (SIGNED)
+	// positionMode: hedge_mode, one_way_mode
+	var ac, err = client.PostContractSetPositionMode("hedge_mode")
 
 	if err != nil {
 		log.Panic(err)

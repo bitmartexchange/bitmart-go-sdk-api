@@ -1,8 +1,11 @@
 package bitmart
 
 // GetAccountCurrencies /** Get Currencies
-func (cloudClient *CloudClient) GetAccountCurrencies() (*CloudResponse, error) {
-	return cloudClient.requestWithoutParams(GET, API_ACCOUNT_CURRENCIES_URL, NONE)
+// Parameters:
+// - Options.currencies: Currency list (BTC,ETH,BMX)
+func (cloudClient *CloudClient) GetAccountCurrencies(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_ACCOUNT_CURRENCIES_URL, params, NONE)
 }
 
 // GetSpotAccountWallet /** Get Account Balance (KEYED)
@@ -73,6 +76,8 @@ func (cloudClient *CloudClient) PostAccountWithdrawApply(apply WithdrawApply) (*
 // - operationType: type -deposit=deposit -withdraw=withdraw
 // - n: Recent N records (value range 1-100)
 // - Options: currency - Token symbol, e.g., 'BTC'
+// - Options.startTime: Start time, timestamp in ms
+// - Options.endTime: End time, timestamp in ms
 func (cloudClient *CloudClient) GetDepositWithdrawHistory(operationType string, n int, options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
 	params["operation_type"] = operationType
@@ -122,4 +127,10 @@ func (cloudClient *CloudClient) GetActualTradeFeeRate(symbol string) (*CloudResp
 	params := NewParams()
 	params["symbol"] = symbol
 	return cloudClient.requestWithParams(GET, API_SPOT_TRADE_FEE_URL, params, KEYED)
+}
+
+// GetAccountWithdrawAddressList withdraw-address-list /** Query Withdraw Address List (KEYED)
+func (cloudClient *CloudClient) GetAccountWithdrawAddressList(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_ACCOUNT_WITHDRAW_ADDRESS_LIST_URL, params, KEYED)
 }

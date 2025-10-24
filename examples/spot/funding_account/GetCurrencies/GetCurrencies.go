@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
 	"log"
+
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
 )
 
 /*
@@ -18,6 +19,16 @@ func main() {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
+	}
+
+	// Get Currencies with specific currencies parameter
+	var ac2, err2 = client.GetAccountCurrencies(map[string]interface{}{
+		"currencies": "BMX,ETH,BTC",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }

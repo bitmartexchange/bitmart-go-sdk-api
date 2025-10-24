@@ -76,8 +76,9 @@ func (cloudClient *CloudClient) GetContractTradeFeeRate(contractSymbol string) (
 // Parameters:
 // - symbol:  Symbol of the contract(like BTCUSDT)
 // - orderId: Order ID
-func (cloudClient *CloudClient) GetContractOrder(contractSymbol string, orderId string) (*CloudResponse, error) {
-	params := NewParams()
+// - Options.account: Account type -copy_trading -futures
+func (cloudClient *CloudClient) GetContractOrder(contractSymbol string, orderId string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
 	params["symbol"] = contractSymbol
 	params["order_id"] = orderId
 	return cloudClient.requestWithParams(GET, API_CONTRACT_ORDER_URL, params, KEYED)
@@ -88,6 +89,9 @@ func (cloudClient *CloudClient) GetContractOrder(contractSymbol string, orderId 
 // - symbol:  Symbol of the contract(like BTCUSDT)
 // - Options.start_time: Start time, default is the last 7 days
 // - Options.end_time: End time, default is the last 7 days
+// - Options.account: Account type -copy_trading -futures
+// - Options.order_id: Order ID
+// - Options.client_order_id: Client Order ID
 func (cloudClient *CloudClient) GetContractOrderHistory(contractSymbol string, options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
 	params["symbol"] = contractSymbol
@@ -119,6 +123,7 @@ func (cloudClient *CloudClient) GetContractCurrentPlanOrders(options ...map[stri
 // GetContractPosition position /** Get Current Position (KEYED)
 // Parameters:
 // - Options.symbol: Symbol of the contract(like BTCUSDT)
+// - Options.account: Account type -copy_trading -futures
 func (cloudClient *CloudClient) GetContractPosition(options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
 	return cloudClient.requestWithParams(GET, API_CONTRACT_POSITION_URL, params, KEYED)
@@ -127,6 +132,7 @@ func (cloudClient *CloudClient) GetContractPosition(options ...map[string]interf
 // GetContractPositionRisk /** Get Current Position Risk Details(KEYED)
 // Parameters:
 // - Options.symbol: Symbol of the contract(like BTCUSDT)
+// - Options.account: Account type -copy_trading -futures
 func (cloudClient *CloudClient) GetContractPositionRisk(options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
 	return cloudClient.requestWithParams(GET, API_CONTRACT_POSITION_RISK_URL, params, KEYED)
@@ -134,12 +140,12 @@ func (cloudClient *CloudClient) GetContractPositionRisk(options ...map[string]in
 
 // GetContractTrades trades /** Get Order Trade (KEYED)
 // Parameters:
-// - symbol: Symbol of the contract(like BTCUSDT)
+// - Options.symbol: Symbol of the contract(like BTCUSDT) - optional
 // - Options.start_time: Start time, default is the last 7 days
 // - Options.end_time: End time, default is the last 7 days
-func (cloudClient *CloudClient) GetContractTrades(contractSymbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+// - Options.account: Account type -copy_trading -futures
+func (cloudClient *CloudClient) GetContractTrades(options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
-	params["symbol"] = contractSymbol
 	return cloudClient.requestWithParams(GET, API_CONTRACT_TRADES_URL, params, KEYED)
 }
 
@@ -156,6 +162,7 @@ func (cloudClient *CloudClient) GetContractTrades(contractSymbol string, options
 // - Options.start_time: Start time, timestamp in ms
 // - Options.end_time: End time, timestamp in ms
 // - Options.page_size: Default 100; max 1000
+// - Options.account: Account type -copy_trading -futures
 func (cloudClient *CloudClient) GetContractTransactionHistory(options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
 	return cloudClient.requestWithParams(GET, API_CONTRACT_TRANSACTION_HISTORY_URL, params, KEYED)
@@ -185,6 +192,7 @@ type ContractOrder struct {
 	Mode                      int    `json:"mode,omitempty"`
 	Price                     string `json:"price,omitempty"`
 	Size                      int    `json:"size,omitempty"`
+	StpMode                   int    `json:"stp_mode,omitempty"`
 	PresetTakeProfitPriceType int    `json:"preset_take_profit_price_type,omitempty"`
 	PresetStopLossPriceType   int    `json:"preset_stop_loss_price_type,omitempty"`
 	PresetTakeProfitPrice     string `json:"preset_take_profit_price,omitempty"`
@@ -203,6 +211,7 @@ func (cloudClient *CloudClient) PostContractSubmitOrder(order ContractOrder) (*C
 	AddToParams("mode", order.Mode, params)
 	AddToParams("price", order.Price, params)
 	AddToParams("size", order.Size, params)
+	AddToParams("stp_mode", order.StpMode, params)
 	AddToParams("preset_take_profit_price_type", order.PresetTakeProfitPriceType, params)
 	AddToParams("preset_stop_loss_price_type", order.PresetStopLossPriceType, params)
 	AddToParams("preset_take_profit_price", order.PresetTakeProfitPrice, params)
@@ -420,4 +429,72 @@ func (cloudClient *CloudClient) PostContractCancelTrailOrder(contractSymbol stri
 	params := CreateParams(options...)
 	params["symbol"] = contractSymbol
 	return cloudClient.requestWithParams(POST, API_CONTRACT_CANCEL_TRAIL_ORDER_URL, params, SIGNED)
+}
+
+// v1.4.0 New APIs
+
+// PostContractModifyLimitOrder modify-limit-order /** Modify Limit Orders (SIGNED)
+// Parameters:
+// - symbol: Symbol of the contract(like BTCUSDT)
+// - Options.orderId: Order ID
+// - Options.clientOrderId: Client Order ID
+// - Options.price: New price
+// - Options.size: New size
+func (cloudClient *CloudClient) PostContractModifyLimitOrder(contractSymbol string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = contractSymbol
+	return cloudClient.requestWithParams(POST, API_CONTRACT_MODIFY_LIMIT_ORDER_URL, params, SIGNED)
+}
+
+// PostContractCancelAllAfter cancel-all-after /** Timed Cancel All Orders (SIGNED)
+// Parameters:
+// - symbol: Symbol of the contract(like BTCUSDT)
+// - timeout: Timeout in seconds
+func (cloudClient *CloudClient) PostContractCancelAllAfter(contractSymbol string, timeout int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = contractSymbol
+	params["timeout"] = timeout
+	return cloudClient.requestWithParams(POST, API_CONTRACT_CANCEL_ALL_AFTER_URL, params, SIGNED)
+}
+
+// PostContractSetPositionMode set-position-mode /** Set Position Mode (SIGNED)
+// Parameters:
+// - positionMode: Position mode -hedge_mode -one_way_mode
+func (cloudClient *CloudClient) PostContractSetPositionMode(positionMode string) (*CloudResponse, error) {
+	params := NewParams()
+	params["position_mode"] = positionMode
+	return cloudClient.requestWithParams(POST, API_CONTRACT_SET_POSITION_MODE_URL, params, SIGNED)
+}
+
+// GetContractPositionMode get-position-mode /** Get Position Mode (KEYED)
+func (cloudClient *CloudClient) GetContractPositionMode() (*CloudResponse, error) {
+	return cloudClient.requestWithoutParams(GET, API_CONTRACT_GET_POSITION_MODE_URL, KEYED)
+}
+
+// GetContractPositionV2 position-v2 /** Get Current Position V2 (KEYED)
+// Parameters:
+// - Options.symbol: Symbol of the contract(like BTCUSDT)
+// - Options.account: Account type -copy_trading -contract
+func (cloudClient *CloudClient) GetContractPositionV2(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_CONTRACT_POSITION_V2_URL, params, KEYED)
+}
+
+// GetContractLeverageBracket leverage-bracket /** Get Current Leverage Risk Limit
+// Parameters:
+// - Options.symbol: Symbol of the contract(like BTCUSDT)
+func (cloudClient *CloudClient) GetContractLeverageBracket(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_CONTRACT_LEVERAGE_BRACKET_URL, params, NONE)
+}
+
+// GetContractMarketTrade market-trade /** Query the latest trade data
+// Parameters:
+// - symbol: Symbol of the contract(like BTCUSDT)
+// - limit: Number of trades to return, default 50, max 1000
+func (cloudClient *CloudClient) GetContractMarketTrade(contractSymbol string, limit int) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = contractSymbol
+	params["limit"] = limit
+	return cloudClient.requestWithParams(GET, API_CONTRACT_MARKET_TRADE_URL, params, NONE)
 }

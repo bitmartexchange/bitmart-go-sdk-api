@@ -3,6 +3,7 @@ package bitmart
 import (
 	"log"
 	"testing"
+	"time"
 )
 
 // GET https://api-cloud.bitmart.com/account/v1/currencies
@@ -13,6 +14,16 @@ func TestGetAccountCurrencies(t *testing.T) {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
+	}
+
+	// Test with currencies parameter
+	ac2, err2 := c.GetAccountCurrencies(map[string]interface{}{
+		"currencies": "BTC,ETH,BMX",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
 	}
 }
 
@@ -108,6 +119,19 @@ func TestPostAccountWithdrawHistory(t *testing.T) {
 		PrintResponse(ac2)
 	}
 
+	// Test with startTime and endTime parameters
+	now := time.Now().Unix()
+	ac3, err3 := c.GetDepositWithdrawHistory("withdraw", 10, map[string]interface{}{
+		"currency":  "BTC",
+		"startTime": int(now-3600) * 1000,
+		"endTime":   int(now) * 1000,
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		PrintResponse(ac3)
+	}
+
 }
 
 // GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/detail
@@ -172,6 +196,17 @@ func TestGetUserFee(t *testing.T) {
 func TestGetActualTradeFeeRate(t *testing.T) {
 	c := NewTestClient()
 	ac, err := c.GetActualTradeFeeRate("BTC_USDT")
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud.bitmart.com/account/v1/withdraw/address/list
+func TestGetAccountWithdrawAddressList(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetAccountWithdrawAddressList()
 	if err != nil {
 		log.Panic(err)
 	} else {

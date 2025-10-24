@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
 	"log"
 	"time"
+
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
 )
 
 /*
 GET /contract/private/trades
-Doc: https://developer-pro.bitmart.com/en/futures/#get-order-trade-keyed
+Doc: https://developer-pro.bitmart.com/en/futuresv2/#get-order-trade-keyed
 */
 func main() {
 
@@ -20,23 +21,35 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Get Order Trade (KEYED)
-	var ac, err = client.GetContractTrades("BTCUSDT")
+	// Get Order Trade (KEYED) - All trades
+	var ac, err = client.GetContractTrades()
 	if err != nil {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
 	}
 
-	now := time.Now().Unix()
-	ac2, err2 := client.GetContractTrades("BTCUSDT", map[string]interface{}{
-		"start_time": int(now - 3600),
-		"end_time":   int(now),
+	// Get Order Trade (KEYED) - With symbol
+	ac2, err2 := client.GetContractTrades(map[string]interface{}{
+		"symbol": "BTCUSDT",
 	})
 	if err2 != nil {
 		log.Panic(err2)
 	} else {
 		log.Println(ac2.Response)
+	}
+
+	now := time.Now().Unix()
+	ac3, err3 := client.GetContractTrades(map[string]interface{}{
+		"symbol":     "BTCUSDT",
+		"start_time": int(now - 3600),
+		"end_time":   int(now),
+		"account":    "futures",
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		log.Println(ac3.Response)
 	}
 
 }

@@ -175,6 +175,7 @@ func TestPostSpotSubmitOrder(t *testing.T) {
 		Size:          "0.1",
 		Price:         "8800",
 		Notional:      "",
+		StpMode:       "cancel_maker",
 	})
 	if err != nil {
 		log.Panic(err)
@@ -220,6 +221,7 @@ func TestPostSpotBatchOrders(t *testing.T) {
 		ClientOrderId: "pix123120312312nn",
 		Size:          "0.1",
 		Notional:      "880000",
+		StpMode:       "cancel_maker",
 	})
 	ac, err := c.PostSpotBatchOrders("BTC_USDT", orderParams[:])
 	if err != nil {

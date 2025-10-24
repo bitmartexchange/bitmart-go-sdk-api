@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
 	"log"
+
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
 )
 
 /*
 GET /contract/private/order
-Doc: https://developer-pro.bitmart.com/en/futures/#get-order-detail-keyed
+Doc: https://developer-pro.bitmart.com/en/futuresv2/#get-order-detail-keyed
 */
 func main() {
 
@@ -28,6 +29,17 @@ func main() {
 		log.Panic(err)
 	} else {
 		log.Println(ac.Response)
+	}
+
+	// Get Order Detail with account parameter
+	var ac2, err2 = client.GetContractOrder("BTCUSDT", "220609666322019", map[string]interface{}{
+		"account": "futures",
+	})
+
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		log.Println(ac2.Response)
 	}
 
 }
