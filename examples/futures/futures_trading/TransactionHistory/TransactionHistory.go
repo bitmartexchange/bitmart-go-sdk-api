@@ -22,7 +22,8 @@ func main() {
 
 	// Get Transaction History (KEYED)
 	var ac, err = client.GetContractTransactionHistory(map[string]interface{}{
-		"symbol": "BTCUSDT",
+		"symbol":  "BTCUSDT",
+		"account": "futures",
 	})
 	if err != nil {
 		log.Panic(err)
@@ -35,6 +36,7 @@ func main() {
 		"flow_type":  1,
 		"start_time": int(now-3600) * 1000,
 		"end_time":   int(now) * 1000,
+		"account":    "futures",
 	})
 	if err2 != nil {
 		log.Panic(err2)

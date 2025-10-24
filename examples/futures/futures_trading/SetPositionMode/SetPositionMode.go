@@ -7,8 +7,8 @@ import (
 )
 
 /*
-POST /contract/private/submit-order
-Doc: https://developer-pro.bitmart.com/en/futures/#submit-order-signed
+POST /contract/private/set-position-mode
+Doc: https://developer-pro.bitmart.com/en/futuresv2/#set-position-mode-signed
 */
 func main() {
 
@@ -24,17 +24,9 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Submit Order (SIGNED)
-	var ac, err = client.PostContractSubmitOrder(bitmart.ContractOrder{
-		Symbol:   "ETHUSDT",
-		Side:     4,
-		Type:     "limit",
-		Leverage: "1",
-		OpenType: "isolated",
-		Size:     10,
-		Price:    "2000",
-		StpMode:  1,
-	})
+	// Set Position Mode (SIGNED)
+	// positionMode: hedge_mode, one_way_mode
+	var ac, err = client.PostContractSetPositionMode("hedge_mode")
 
 	if err != nil {
 		log.Panic(err)

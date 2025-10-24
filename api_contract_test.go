@@ -116,6 +116,16 @@ func TestGetContractOrder(t *testing.T) {
 	} else {
 		PrintResponse(ac)
 	}
+
+	// Test with account parameter
+	ac2, err2 := c.GetContractOrder("BTCUSDT", "220609666322019", map[string]interface{}{
+		"account": "futures",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
 }
 
 // GET https://api-cloud-v2.bitmart.com/contract/private/order-history
@@ -132,11 +142,24 @@ func TestGetContractOrderHistory(t *testing.T) {
 	ac2, err2 := c.GetContractOrderHistory("BTCUSDT", map[string]interface{}{
 		"start_time": int(now - 3600),
 		"end_time":   int(now),
+		"account":    "futures",
 	})
 	if err2 != nil {
 		log.Panic(err2)
 	} else {
 		PrintResponse(ac2)
+	}
+
+	// Test with order_id and client_order_id
+	ac3, err3 := c.GetContractOrderHistory("BTCUSDT", map[string]interface{}{
+		"order_id":        "123456789",
+		"client_order_id": "client_order_123",
+		"account":         "futures",
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		PrintResponse(ac3)
 	}
 }
 
@@ -197,6 +220,17 @@ func TestGetContractPosition(t *testing.T) {
 	} else {
 		PrintResponse(ac2)
 	}
+
+	// Test with account parameter
+	ac3, err3 := c.GetContractPosition(map[string]interface{}{
+		"symbol":  "BTCUSDT",
+		"account": "futures",
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		PrintResponse(ac3)
+	}
 }
 
 // GET https://api-cloud-v2.bitmart.com/contract/private/position-risk
@@ -217,27 +251,50 @@ func TestGetContractPositionRisk(t *testing.T) {
 	} else {
 		PrintResponse(ac2)
 	}
+
+	// Test with account parameter
+	ac3, err3 := c.GetContractPositionRisk(map[string]interface{}{
+		"symbol":  "BTCUSDT",
+		"account": "futures",
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		PrintResponse(ac3)
+	}
 }
 
 // GET https://api-cloud-v2.bitmart.com/contract/private/trades
 func TestGetContractTrades(t *testing.T) {
 	c := NewTestFuturesClient()
-	ac, err := c.GetContractTrades("BTCUSDT")
+	ac, err := c.GetContractTrades()
 	if err != nil {
 		log.Panic(err)
 	} else {
 		PrintResponse(ac)
 	}
 
-	now := time.Now().Unix()
-	ac2, err2 := c.GetContractTrades("BTCUSDT", map[string]interface{}{
-		"start_time": int(now - 3600),
-		"end_time":   int(now),
+	// Test with symbol parameter
+	ac2, err2 := c.GetContractTrades(map[string]interface{}{
+		"symbol": "BTCUSDT",
 	})
 	if err2 != nil {
 		log.Panic(err2)
 	} else {
 		PrintResponse(ac2)
+	}
+
+	now := time.Now().Unix()
+	ac3, err3 := c.GetContractTrades(map[string]interface{}{
+		"symbol":     "BTCUSDT",
+		"start_time": int(now - 3600),
+		"end_time":   int(now),
+		"account":    "futures",
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		PrintResponse(ac3)
 	}
 }
 
@@ -251,6 +308,7 @@ func TestGetContractTransactionHistory(t *testing.T) {
 		"page_size":  12,
 		"start_time": int(now-3600) * 1000,
 		"end_time":   int(now) * 1000,
+		"account":    "futures",
 	})
 	if err != nil {
 		log.Panic(err)
@@ -285,6 +343,7 @@ func TestPostContractSubmitOrder(t *testing.T) {
 		OpenType: "isolated",
 		Size:     10,
 		Price:    "2000",
+		StpMode:  1,
 	})
 	if err != nil {
 		log.Panic(err)
@@ -510,6 +569,129 @@ func TestPostContractCancelTrailOrder(t *testing.T) {
 	//	"order_id": "60604000002",
 	//})
 	ac, err := c.PostContractCancelTrailOrder("BTCUSDT")
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// v1.4.0 New API Tests
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/modify-limit-order
+func TestPostContractModifyLimitOrder(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.PostContractModifyLimitOrder("BTCUSDT", map[string]interface{}{
+		"client_order_id": "123123123123",
+		"price":           "100",
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+
+	// Test with client_order_id
+	ac2, err2 := c.PostContractModifyLimitOrder("BTCUSDT", map[string]interface{}{
+		"order_id": 1231231231312312,
+		"size":     100,
+	})
+
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/cancel-all-after
+func TestPostContractCancelAllAfter(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.PostContractCancelAllAfter("BTCUSDT", 60)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/set-position-mode
+func TestPostContractSetPositionMode(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.PostContractSetPositionMode("hedge_mode") // hedge_mode,one_way_mode
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/get-position-mode
+func TestGetContractPositionMode(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractPositionMode()
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/position-v2
+func TestGetContractPositionV2(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractPositionV2()
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+
+	// Test with symbol parameter
+	ac2, err2 := c.GetContractPositionV2(map[string]interface{}{
+		"symbol": "BTCUSDT",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
+
+	// Test with account parameter
+	ac3, err3 := c.GetContractPositionV2(map[string]interface{}{
+		"account": "futures",
+	})
+	if err3 != nil {
+		log.Panic(err3)
+	} else {
+		PrintResponse(ac3)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/public/leverage-bracket
+func TestGetContractLeverageBracket(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractLeverageBracket()
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+
+	ac2, err2 := c.GetContractLeverageBracket(map[string]interface{}{
+		"symbol": "BTCUSDT",
+	})
+	if err2 != nil {
+		log.Panic(err2)
+	} else {
+		PrintResponse(ac2)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/public/market-trade
+func TestGetContractMarketTrade(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractMarketTrade("BTCUSDT", 50)
 	if err != nil {
 		log.Panic(err)
 	} else {

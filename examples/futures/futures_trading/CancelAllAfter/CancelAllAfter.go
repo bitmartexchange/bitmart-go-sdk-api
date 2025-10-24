@@ -7,8 +7,8 @@ import (
 )
 
 /*
-POST /contract/private/submit-order
-Doc: https://developer-pro.bitmart.com/en/futures/#submit-order-signed
+POST /contract/private/cancel-all-after
+Doc: https://developer-pro.bitmart.com/en/futuresv2/#timed-cancel-all-orders-signed
 */
 func main() {
 
@@ -24,17 +24,8 @@ func main() {
 		TimeoutSecond: 5,
 	})
 
-	// Submit Order (SIGNED)
-	var ac, err = client.PostContractSubmitOrder(bitmart.ContractOrder{
-		Symbol:   "ETHUSDT",
-		Side:     4,
-		Type:     "limit",
-		Leverage: "1",
-		OpenType: "isolated",
-		Size:     10,
-		Price:    "2000",
-		StpMode:  1,
-	})
+	// Timed Cancel All Orders (SIGNED)
+	var ac, err = client.PostContractCancelAllAfter("BTCUSDT", 60)
 
 	if err != nil {
 		log.Panic(err)

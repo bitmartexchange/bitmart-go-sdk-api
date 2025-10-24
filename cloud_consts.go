@@ -48,7 +48,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "bitmart-go-sdk-api/1.3.0"
+	VERSION      = "bitmart-go-sdk-api/1.4.0"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
@@ -149,6 +149,15 @@ const (
 	API_CONTRACT_MODIFY_PLAN_ORDER_URL        = "/contract/private/modify-plan-order"
 	API_CONTRACT_MODIFY_PRESET_PLAN_ORDER_URL = "/contract/private/modify-preset-plan-order"
 	API_CONTRACT_MODIFY_TP_SL_ORDER_URL       = "/contract/private/modify-tp-sl-order"
+
+	// v1.4.0 New APIs
+	API_CONTRACT_MODIFY_LIMIT_ORDER_URL = "/contract/private/modify-limit-order"
+	API_CONTRACT_CANCEL_ALL_AFTER_URL   = "/contract/private/cancel-all-after"
+	API_CONTRACT_SET_POSITION_MODE_URL  = "/contract/private/set-position-mode"
+	API_CONTRACT_GET_POSITION_MODE_URL  = "/contract/private/get-position-mode"
+	API_CONTRACT_POSITION_V2_URL        = "/contract/private/position-v2"
+	API_CONTRACT_LEVERAGE_BRACKET_URL   = "/contract/public/leverage-bracket"
+	API_CONTRACT_MARKET_TRADE_URL       = "/contract/public/market-trade"
 
 	// web socket
 	// spot common
