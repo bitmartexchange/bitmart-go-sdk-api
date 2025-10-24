@@ -159,6 +159,9 @@ const (
 	API_CONTRACT_LEVERAGE_BRACKET_URL   = "/contract/public/leverage-bracket"
 	API_CONTRACT_MARKET_TRADE_URL       = "/contract/public/market-trade"
 
+	// v1.4.0 Additional APIs
+	API_ACCOUNT_WITHDRAW_ADDRESS_LIST_URL = "/account/v1/withdraw/address/list"
+
 	// web socket
 	// spot common
 	WS_PUBLIC_SPOT_TICKER     = "spot/ticker"

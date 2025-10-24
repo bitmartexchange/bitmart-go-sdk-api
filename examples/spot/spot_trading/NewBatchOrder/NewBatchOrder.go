@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/bitmartexchange/bitmart-go-sdk-api"
 	"log"
+
+	"github.com/bitmartexchange/bitmart-go-sdk-api"
 )
 
 /*
@@ -38,6 +39,7 @@ func main() {
 		ClientOrderId: "pix123120312312312314",
 		Size:          "0.1",
 		Notional:      "880000",
+		StpMode:       "cancel_maker",
 	})
 
 	ac, err := client.PostSpotBatchOrders("BTC_USDT", orderParams[:])
