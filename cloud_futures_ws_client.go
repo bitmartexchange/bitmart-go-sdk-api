@@ -5,19 +5,20 @@ import (
 	_ "compress/flate"
 	"encoding/json"
 	"errors"
-	"github.com/gorilla/websocket"
 	_ "io/ioutil"
 	"log"
 	_ "runtime/debug"
 	_ "time"
+
+	"github.com/gorilla/websocket"
 )
 
 type CloudFuturesWSClient struct {
 	CloudWsClient
 }
 
-func NewFuturesWSClient(config Config, callback Callback) *CloudSpotWSClient {
-	client := &CloudSpotWSClient{}
+func NewFuturesWSClient(config Config, callback Callback) *CloudFuturesWSClient {
+	client := &CloudFuturesWSClient{}
 	client.Init(false, config, callback)
 
 	return client

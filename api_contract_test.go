@@ -698,3 +698,149 @@ func TestGetContractMarketTrade(t *testing.T) {
 		PrintResponse(ac)
 	}
 }
+
+// GET https://api-cloud-v2.bitmart.com/contract/public/funding-rate-v2
+func TestGetContractFundingRateV2(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractFundingRateV2(map[string]interface{}{
+		"symbol": "BTCUSDT",
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/auto_repayment
+func TestGetContractAutoRepayment(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAutoRepayment(map[string]interface{}{
+		"from_coin_code": "USDT",
+		"size":           1000,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/cross_collateral/interest_log
+func TestGetContractCrossCollateralInterestLog(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractCrossCollateralInterestLog(map[string]interface{}{
+		"coin_code": "USDT",
+		"size":      1,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-user
+func TestGetContractAffiliateRebateUser(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateRebateUser(123456789, 1735660800, 1740844800)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-api
+func TestGetContractAffiliateRebateApi(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateRebateApi(123456789, 1735660800, 1740844800)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/invite-check
+func TestGetContractAffiliateInviteCheck(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateInviteCheck(123456789)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-inviteUser
+func TestGetContractAffiliateRebateInviteUser(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateRebateInviteUser(1735660800, 1740844800, 1, 50, map[string]interface{}{
+		"cid": 123456789,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/deposit-withdrawal-list
+func TestGetContractAffiliateDepositWithdrawalList(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateDepositWithdrawalList(123456789, 1735660800, 1740844800, 1, 50, map[string]interface{}{
+		"type": 1,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/aff-customer-info
+func TestGetContractAffiliateCustomerInfo(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateCustomerInfo(123456789)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud-v2.bitmart.com/contract/private/claim
+func TestPostContractClaimDemoAssets(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.PostContractClaimDemoAssets()
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-list
+func TestGetContractAffiliateRebateList(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateRebateList("USDT", 1, 50, map[string]interface{}{
+		"user_id": 123456789,
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// GET https://api-cloud-v2.bitmart.com/contract/private/affiliate/trade-list
+func TestGetContractAffiliateTradeList(t *testing.T) {
+	c := NewTestFuturesClient()
+	ac, err := c.GetContractAffiliateTradeList(123456789, 1, 1, 50)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}

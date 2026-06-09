@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "allow": ["Skill(w-sdk-for-go)", "Skill(w-sdk-for-go:*)"]
+  }
+}

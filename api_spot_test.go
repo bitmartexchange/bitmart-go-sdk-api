@@ -366,3 +366,88 @@ func TestGetSpotOrderTradeList(t *testing.T) {
 		PrintResponse(ac)
 	}
 }
+
+// POST https://api-cloud.bitmart.com/spot/v4/algo/submit_order
+func TestPostSpotAlgoSubmitOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostSpotAlgoSubmitOrder("BTC_USDT", "buy", "trigger", map[string]interface{}{
+		"client_order_id": "jhjj8h8h8h88h998u9u",
+		"size":   "0.001",
+		"price":   "8000",
+		"trigger_price":   "9000",
+		"trigger_type":    "limit",
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/spot/v4/algo/cancel_order
+func TestPostSpotAlgoCancelOrder(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostSpotAlgoCancelOrder("BTC_USDT", "1644484303872175616", "trigger")
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/spot/v4/algo/cancel_all
+func TestPostSpotAlgoCancelAll(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.PostSpotAlgoCancelAll("trigger", map[string]interface{}{
+		"symbol": "BTC_USDT",
+	})
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/spot/v4/query/algo/order
+func TestGetSpotAlgoOrderByOrderId(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetSpotAlgoOrderByOrderId("137478201134228132", "open", 0)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/spot/v4/query/algo/client-order
+func TestGetSpotAlgoOrderByClientOrderId(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetSpotAlgoOrderByClientOrderId("jhjj8h8h8h88h998u9u", "open", 0)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/spot/v4/query/algo/open-orders
+func TestGetSpotAlgoOpenOrders(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetSpotAlgoOpenOrders("BTC_USDT", "trigger", 0, 0, 200, 0)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
+
+// POST https://api-cloud.bitmart.com/spot/v4/query/algo/history-orders
+func TestGetSpotAlgoHistoryOrders(t *testing.T) {
+	c := NewTestClient()
+	ac, err := c.GetSpotAlgoHistoryOrders("BTC_USDT", "trigger", 0, 0, 200, 0)
+	if err != nil {
+		log.Panic(err)
+	} else {
+		PrintResponse(ac)
+	}
+}
