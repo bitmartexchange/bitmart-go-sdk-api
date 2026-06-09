@@ -1,3 +1,6 @@
 .idea
 bitmart-go-sdk-api.iml
 go_path
+
+# Local credentials for unit tests (never commit). See .env.example
+.env

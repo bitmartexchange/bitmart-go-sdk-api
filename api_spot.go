@@ -310,3 +310,138 @@ func (cloudClient *CloudClient) GetSpotOrderTradeList(orderId string, recvWindow
 	}
 	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ORDER_TRADES_URL, params, SIGNED)
 }
+
+// PostSpotAlgoSubmitOrder /** Submit Algo Order(v4) (SIGNED)
+// Supports plan(trigger) orders and one-way take-profit/stop-loss orders.
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - side: Order side -buy -sell
+// - orderType: Order type -tp/sl(one-way take-profit/stop-loss) -trigger(plan order)
+// - Options.client_order_id - Client-defined Order ID
+// - Options: other type-specific fields per the online doc (e.g. price/size/trigger price)
+func (cloudClient *CloudClient) PostSpotAlgoSubmitOrder(symbol string, side string, orderType string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["symbol"] = symbol
+	params["side"] = side
+	params["type"] = orderType
+	return cloudClient.requestWithParams(POST, API_SPOT_ALGO_SUBMIT_ORDER_URL, params, SIGNED)
+}
+
+// PostSpotAlgoCancelOrder /** Cancel Algo Order(v4) (SIGNED)
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT)
+// - orderId: Order ID
+// - orderType: Order type -tp/sl(one-way take-profit/stop-loss) -trigger(plan order)
+func (cloudClient *CloudClient) PostSpotAlgoCancelOrder(symbol string, orderId string, orderType string) (*CloudResponse, error) {
+	params := NewParams()
+	params["symbol"] = symbol
+	params["order_id"] = orderId
+	params["type"] = orderType
+	return cloudClient.requestWithParams(POST, API_SPOT_ALGO_CANCEL_ORDER_URL, params, SIGNED)
+}
+
+// PostSpotAlgoCancelAll /** Cancel All Algo Orders(v4) (SIGNED)
+// Parameters:
+// - orderType: Order type -tp/sl(one-way take-profit/stop-loss) -trigger(plan order)
+// - Options.symbol: Trading pair (e.g. BTC_USDT), all pairs by default
+func (cloudClient *CloudClient) PostSpotAlgoCancelAll(orderType string, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["type"] = orderType
+	return cloudClient.requestWithParams(POST, API_SPOT_ALGO_CANCEL_ALL_URL, params, SIGNED)
+}
+
+// GetSpotAlgoOrderByOrderId /** Query Algo Order By orderId (v4) (SIGNED)
+// Parameters:
+// - orderId: Order ID
+// - queryState: Query type -open([new, partially_filled]) -history([filled, canceled, partially_canceled])
+// - recvWindow: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) GetSpotAlgoOrderByOrderId(orderId string, queryState string, recvWindow int) (*CloudResponse, error) {
+	params := NewParams()
+	params["orderId"] = orderId
+	if queryState != "" {
+		params["queryState"] = queryState
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ALGO_ORDER_URL, params, SIGNED)
+}
+
+// GetSpotAlgoOrderByClientOrderId /** Query Algo Order By clientOrderId (v4) (SIGNED)
+// Parameters:
+// - clientOrderId: Client-defined Order ID
+// - queryState: Query type -open([new, partially_filled]) -history([filled, canceled, partially_canceled])
+// - recvWindow: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) GetSpotAlgoOrderByClientOrderId(clientOrderId string, queryState string, recvWindow int) (*CloudResponse, error) {
+	params := NewParams()
+	params["clientOrderId"] = clientOrderId
+	if queryState != "" {
+		params["queryState"] = queryState
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ALGO_CLIENT_ORDER_URL, params, SIGNED)
+}
+
+// GetSpotAlgoOpenOrders /** Query Algo Open Orders (v4) (SIGNED)
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT), all pairs by default
+// - orderMode: Order mode -trigger(plan order) -tp/sl(take-profit/stop-loss), all modes by default
+// - startTime: Start time in milliseconds
+// - endTime: End time in milliseconds
+// - limit: Number of queries, allowed range [1,200], default 200
+// - recvWindow: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) GetSpotAlgoOpenOrders(symbol string, orderMode string, startTime int64, endTime int64, limit int, recvWindow int) (*CloudResponse, error) {
+	params := NewParams()
+	if symbol != "" {
+		params["symbol"] = symbol
+	}
+	if orderMode != "" {
+		params["orderMode"] = orderMode
+	}
+	if startTime != 0 {
+		params["startTime"] = startTime
+	}
+	if endTime != 0 {
+		params["endTime"] = endTime
+	}
+	if limit > 0 {
+		params["limit"] = limit
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ALGO_OPEN_ORDERS_URL, params, SIGNED)
+}
+
+// GetSpotAlgoHistoryOrders /** Query Algo History Orders (v4) (SIGNED)
+// Parameters:
+// - symbol: Trading pair (e.g. BTC_USDT), all pairs by default
+// - orderMode: Order mode -trigger(plan order) -tp/sl(take-profit/stop-loss), all modes by default
+// - startTime: Start time in milliseconds
+// - endTime: End time in milliseconds
+// - limit: Number of queries, allowed range [1,200], default 200
+// - recvWindow: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+func (cloudClient *CloudClient) GetSpotAlgoHistoryOrders(symbol string, orderMode string, startTime int64, endTime int64, limit int, recvWindow int) (*CloudResponse, error) {
+	params := NewParams()
+	if symbol != "" {
+		params["symbol"] = symbol
+	}
+	if orderMode != "" {
+		params["orderMode"] = orderMode
+	}
+	if startTime != 0 {
+		params["startTime"] = startTime
+	}
+	if endTime != 0 {
+		params["endTime"] = endTime
+	}
+	if limit > 0 {
+		params["limit"] = limit
+	}
+	if recvWindow > 0 {
+		params["recvWindow"] = recvWindow
+	}
+	return cloudClient.requestWithParams(POST, API_SPOT_V4_QUERY_ALGO_HISTORY_ORDERS_URL, params, SIGNED)
+}

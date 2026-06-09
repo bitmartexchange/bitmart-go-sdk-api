@@ -48,7 +48,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "bitmart-go-sdk-api/1.4.0"
+	VERSION      = "bitmart-go-sdk-api/1.5.0"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
@@ -101,6 +101,15 @@ const (
 	API_SPOT_V4_QUERY_HISTORY_ORDERS_URL  = "/spot/v4/query/history-orders"
 	API_SPOT_V4_QUERY_TRADES_URL          = "/spot/v4/query/trades"
 	API_SPOT_V4_QUERY_ORDER_TRADES_URL    = "/spot/v4/query/order-trades"
+
+	// Spot Algo (Strategy) Order Endpoints: https://developer.bitmart.com/spot
+	API_SPOT_ALGO_SUBMIT_ORDER_URL            = "/spot/v4/algo/submit_order"
+	API_SPOT_ALGO_CANCEL_ORDER_URL            = "/spot/v4/algo/cancel_order"
+	API_SPOT_ALGO_CANCEL_ALL_URL              = "/spot/v4/algo/cancel_all"
+	API_SPOT_V4_QUERY_ALGO_ORDER_URL          = "/spot/v4/query/algo/order"
+	API_SPOT_V4_QUERY_ALGO_CLIENT_ORDER_URL   = "/spot/v4/query/algo/client-order"
+	API_SPOT_V4_QUERY_ALGO_OPEN_ORDERS_URL    = "/spot/v4/query/algo/open-orders"
+	API_SPOT_V4_QUERY_ALGO_HISTORY_ORDERS_URL = "/spot/v4/query/algo/history-orders"
 
 	// Margin Loan Endpoints: https://developer-pro.bitmart.com/en/spot/#margin-loan
 	API_MARGIN_BORROW_ISOLATED_URL             = "/spot/v1/margin/isolated/borrow"
@@ -162,6 +171,24 @@ const (
 	// v1.4.0 Additional APIs
 	API_ACCOUNT_WITHDRAW_ADDRESS_LIST_URL = "/account/v1/withdraw/address/list"
 
+	// v1.5.0 New APIs
+	// Futures Market Data: https://developer.bitmart.com/futures
+	API_CONTRACT_FUNDING_RATE_V2_URL = "/contract/public/funding-rate-v2"
+	// Futures Trading (cross collateral): https://developer.bitmart.com/futures
+	API_CONTRACT_AUTO_REPAYMENT_URL                = "/contract/private/auto_repayment"
+	API_CONTRACT_CROSS_COLLATERAL_INTEREST_LOG_URL = "/contract/private/cross_collateral/interest_log"
+	// Futures Demo Trading: https://developer.bitmart.com/futures
+	API_CONTRACT_CLAIM_URL = "/contract/private/claim"
+	// Futures Affiliate (Broker): https://developer.bitmart.com/futures
+	API_CONTRACT_AFFILIATE_REBATE_LIST_URL             = "/contract/private/affiliate/rebate-list"
+	API_CONTRACT_AFFILIATE_TRADE_LIST_URL              = "/contract/private/affiliate/trade-list"
+	API_CONTRACT_AFFILIATE_REBATE_USER_URL             = "/contract/private/affiliate/rebate-user"
+	API_CONTRACT_AFFILIATE_REBATE_API_URL              = "/contract/private/affiliate/rebate-api"
+	API_CONTRACT_AFFILIATE_INVITE_CHECK_URL            = "/contract/private/affiliate/invite-check"
+	API_CONTRACT_AFFILIATE_REBATE_INVITE_USER_URL      = "/contract/private/affiliate/rebate-inviteUser"
+	API_CONTRACT_AFFILIATE_DEPOSIT_WITHDRAWAL_LIST_URL = "/contract/private/affiliate/deposit-withdrawal-list"
+	API_CONTRACT_AFFILIATE_CUSTOMER_INFO_URL           = "/contract/private/affiliate/aff-customer-info"
+
 	// web socket
 	// spot common
 	WS_PUBLIC_SPOT_TICKER     = "spot/ticker"
@@ -180,6 +207,8 @@ const (
 	WS_PUBLIC_SPOT_KLINE_1D   = "spot/kline1D"
 	WS_PUBLIC_SPOT_KLINE_1W   = "spot/kline1W"
 	WS_PUBLIC_SPOT_KLINE_1MON = "spot/kline1M"
+
+	WS_PUBLIC_SPOT_BOOK_TICKER = "spot/bookTicker"
 
 	// spot user
 	WS_USER_SPOT_ORDER = "spot/user/order"

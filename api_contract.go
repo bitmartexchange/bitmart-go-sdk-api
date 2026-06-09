@@ -144,6 +144,8 @@ func (cloudClient *CloudClient) GetContractPositionRisk(options ...map[string]in
 // - Options.start_time: Start time, default is the last 7 days
 // - Options.end_time: End time, default is the last 7 days
 // - Options.account: Account type -copy_trading -futures
+// - Options.order_id: Order ID
+// - Options.client_order_id: Client Order ID
 func (cloudClient *CloudClient) GetContractTrades(options ...map[string]interface{}) (*CloudResponse, error) {
 	params := CreateParams(options...)
 	return cloudClient.requestWithParams(GET, API_CONTRACT_TRADES_URL, params, KEYED)
@@ -497,4 +499,156 @@ func (cloudClient *CloudClient) GetContractMarketTrade(contractSymbol string, li
 	params["symbol"] = contractSymbol
 	params["limit"] = limit
 	return cloudClient.requestWithParams(GET, API_CONTRACT_MARKET_TRADE_URL, params, NONE)
+}
+
+// GetContractFundingRateV2 funding-rate-v2 /** Get Current Funding Rate V2
+// Parameters:
+// - Options.symbol: Symbol of the contract(like BTCUSDT) - optional, all pairs by default
+func (cloudClient *CloudClient) GetContractFundingRateV2(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_CONTRACT_FUNDING_RATE_V2_URL, params, NONE)
+}
+
+// GetContractAutoRepayment auto_repayment /** Get Auto Repayment Records (KEYED)
+// Parameters:
+// - Options.start_time: Start time, timestamp in seconds
+// - Options.end_time: End time, timestamp in seconds
+// - Options.page: Current page
+// - Options.size: Query size
+// - Options.from_coin_code: Repayment currency
+// - Options.type: Repayment type (e.g. AUTO_REPAY)
+func (cloudClient *CloudClient) GetContractAutoRepayment(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AUTO_REPAYMENT_URL, params, KEYED)
+}
+
+// GetContractCrossCollateralInterestLog interest_log /** Get Cross Collateral Interest Log (KEYED)
+// Parameters:
+// - Options.start_time: Start time, timestamp in seconds (default last 7 days)
+// - Options.end_time: End time, timestamp in seconds (max interval 90 days)
+// - Options.page: Current page
+// - Options.size: Query size
+// - Options.coin_code: Currency
+func (cloudClient *CloudClient) GetContractCrossCollateralInterestLog(options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	return cloudClient.requestWithParams(GET, API_CONTRACT_CROSS_COLLATERAL_INTEREST_LOG_URL, params, KEYED)
+}
+
+// GetContractAffiliateRebateUser /** Get Affiliate Rebate of a Single User (KEYED)
+// Parameters:
+// - cid: User CID
+// - startTime: Start time, timestamp in seconds
+// - endTime: End time, timestamp in seconds (max interval 60 days)
+func (cloudClient *CloudClient) GetContractAffiliateRebateUser(cid int64, startTime int64, endTime int64) (*CloudResponse, error) {
+	params := NewParams()
+	params["cid"] = cid
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_REBATE_USER_URL, params, KEYED)
+}
+
+// GetContractAffiliateRebateApi /** Get Affiliate API Rebate of a Single User (KEYED)
+// Parameters:
+// - cid: User CID
+// - startTime: Start time, timestamp in seconds
+// - endTime: End time, timestamp in seconds (max interval 60 days)
+func (cloudClient *CloudClient) GetContractAffiliateRebateApi(cid int64, startTime int64, endTime int64) (*CloudResponse, error) {
+	params := NewParams()
+	params["cid"] = cid
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_REBATE_API_URL, params, KEYED)
+}
+
+// GetContractAffiliateInviteCheck /** Check Whether a User Is Invited (KEYED)
+// Parameters:
+// - cid: User CID
+func (cloudClient *CloudClient) GetContractAffiliateInviteCheck(cid int64) (*CloudResponse, error) {
+	params := NewParams()
+	params["cid"] = cid
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_INVITE_CHECK_URL, params, KEYED)
+}
+
+// GetContractAffiliateRebateInviteUser rebate-inviteUser /** Get Invited Customer Rebate List (KEYED)
+// Parameters:
+// - startTime: Start time, timestamp in seconds
+// - endTime: End time, timestamp in seconds (max interval 60 days)
+// - page: Current page
+// - size: Page size (max 50 records returned)
+// - Options.cid: User CID - optional
+func (cloudClient *CloudClient) GetContractAffiliateRebateInviteUser(startTime int64, endTime int64, page int, size int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	params["page"] = page
+	params["size"] = size
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_REBATE_INVITE_USER_URL, params, KEYED)
+}
+
+// GetContractAffiliateDepositWithdrawalList deposit-withdrawal-list /** Get Invited Users Deposit/Withdraw List (KEYED)
+// Parameters:
+// - cid: User CID
+// - startTime: Start time, timestamp in seconds
+// - endTime: End time, timestamp in seconds (max interval 60 days)
+// - page: Current page
+// - size: Page size (max 50 records returned)
+// - Options.type: 1 deposit, 2 withdraw - optional
+func (cloudClient *CloudClient) GetContractAffiliateDepositWithdrawalList(cid int64, startTime int64, endTime int64, page int, size int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["cid"] = cid
+	params["start_time"] = startTime
+	params["end_time"] = endTime
+	params["page"] = page
+	params["size"] = size
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_DEPOSIT_WITHDRAWAL_LIST_URL, params, KEYED)
+}
+
+// GetContractAffiliateCustomerInfo aff-customer-info /** Get Invited User Futures Account Info (KEYED)
+// Parameters:
+// - userId: Invited user ID
+func (cloudClient *CloudClient) GetContractAffiliateCustomerInfo(userId int64) (*CloudResponse, error) {
+	params := NewParams()
+	params["userId"] = userId
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_CUSTOMER_INFO_URL, params, KEYED)
+}
+
+// PostContractClaimDemoAssets claim /** Claim Demo Trading Assets (SIGNED)
+// No request parameters; claims demo trading assets for the demo account.
+func (cloudClient *CloudClient) PostContractClaimDemoAssets() (*CloudResponse, error) {
+	return cloudClient.requestWithParams(POST, API_CONTRACT_CLAIM_URL, NewParams(), SIGNED)
+}
+
+// GetContractAffiliateRebateList rebate-list /** Get Affiliate Rebate List (KEYED)
+// Parameters:
+// - currency: Query currency
+// - page: Current page
+// - size: Page size
+// - Options.user_id: Query user ID - optional
+// - Options.rebate_start_time: Rebate start time, timestamp in seconds
+// - Options.rebate_end_time: Rebate end time, timestamp in seconds
+// - Options.register_start_time: Register start time, timestamp in seconds
+// - Options.register_end_time: Register end time, timestamp in seconds
+func (cloudClient *CloudClient) GetContractAffiliateRebateList(currency string, page int, size int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["currency"] = currency
+	params["page"] = page
+	params["size"] = size
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_REBATE_LIST_URL, params, KEYED)
+}
+
+// GetContractAffiliateTradeList trade-list /** Get Affiliate Trade List (KEYED)
+// Parameters:
+// - userId: Query user ID
+// - queryType: Query type -1(USDT-M) -2(Coin-M)
+// - page: Current page
+// - size: Page size
+// - Options.start_time: Start time, timestamp in seconds
+// - Options.end_time: End time, timestamp in seconds
+func (cloudClient *CloudClient) GetContractAffiliateTradeList(userId int64, queryType int, page int, size int, options ...map[string]interface{}) (*CloudResponse, error) {
+	params := CreateParams(options...)
+	params["user_id"] = userId
+	params["type"] = queryType
+	params["page"] = page
+	params["size"] = size
+	return cloudClient.requestWithParams(GET, API_CONTRACT_AFFILIATE_TRADE_LIST_URL, params, KEYED)
 }
