@@ -48,7 +48,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "bitmart-go-sdk-api/1.5.0"
+	VERSION      = "bitmart-go-sdk-api/1.6.0"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
@@ -179,6 +179,24 @@ const (
 	API_CONTRACT_CROSS_COLLATERAL_INTEREST_LOG_URL = "/contract/private/cross_collateral/interest_log"
 	// Futures Demo Trading: https://developer.bitmart.com/futures
 	API_CONTRACT_CLAIM_URL = "/contract/private/claim"
+
+	// v1.6.0 New APIs
+	// Spot Sub-Account Endpoints: https://developer.bitmart.com/spot
+	API_ACCOUNT_SUB_SPOT_SUB_TO_MAIN_MAIN_URL = "/account/sub-account/main/v1/sub-to-main"
+	API_ACCOUNT_SUB_SPOT_SUB_TO_MAIN_SUB_URL  = "/account/sub-account/sub/v1/sub-to-main"
+	API_ACCOUNT_SUB_SPOT_MAIN_TO_SUB_URL      = "/account/sub-account/main/v1/main-to-sub"
+	API_ACCOUNT_SUB_SPOT_SUB_TO_SUB_URL       = "/account/sub-account/main/v1/sub-to-sub"
+	API_ACCOUNT_SUB_SPOT_TRANSFER_LIST_URL    = "/account/sub-account/main/v1/transfer-list"
+	API_ACCOUNT_SUB_SPOT_TRANSFER_HISTORY_URL = "/account/sub-account/v1/transfer-history"
+	API_ACCOUNT_SUB_SPOT_WALLET_URL           = "/account/sub-account/main/v1/wallet"
+	API_ACCOUNT_SUB_SPOT_LIST_URL             = "/account/sub-account/main/v1/subaccount-list"
+	// Contract Sub-Account Endpoints: https://developer.bitmart.com/futures
+	API_ACCOUNT_SUB_CONTRACT_SUB_TO_MAIN_MAIN_URL = "/account/contract/sub-account/main/v1/sub-to-main"
+	API_ACCOUNT_SUB_CONTRACT_MAIN_TO_SUB_URL      = "/account/contract/sub-account/main/v1/main-to-sub"
+	API_ACCOUNT_SUB_CONTRACT_SUB_TO_MAIN_SUB_URL  = "/account/contract/sub-account/sub/v1/sub-to-main"
+	API_ACCOUNT_SUB_CONTRACT_WALLET_URL           = "/account/contract/sub-account/main/v1/wallet"
+	API_ACCOUNT_SUB_CONTRACT_TRANSFER_LIST_URL    = "/account/contract/sub-account/main/v1/transfer-list"
+	API_ACCOUNT_SUB_CONTRACT_TRANSFER_HISTORY_URL = "/account/contract/sub-account/v1/transfer-history"
 	// Futures Affiliate (Broker): https://developer.bitmart.com/futures
 	API_CONTRACT_AFFILIATE_REBATE_LIST_URL             = "/contract/private/affiliate/rebate-list"
 	API_CONTRACT_AFFILIATE_TRADE_LIST_URL              = "/contract/private/affiliate/trade-list"
