@@ -2,6 +2,27 @@ Changelog
 =========================
 
 
+### v1.7.0 Release
+#### New Features
+- New
+  - `/newearn/cloud/v1/earn` Get Finance Account Savings Holdings (KEYED)
+  - `/newearn/cloud/v1/saving/product` Get Flexible Savings Product List (KEYED)
+  - `/newearn/cloud/v1/saving/subscribe` Subscribe Flexible Savings (SIGNED)
+  - `/newearn/cloud/v1/saving/redeem` Redeem Flexible Savings (SIGNED)
+  - `/newearn/cloud/v1/saving/earn` Get Flexible Savings Holdings (KEYED)
+  - `/newearn/cloud/v1/saving/record` Get Flexible Savings History Records (KEYED)
+  - `/newearn/cloud/v1/saving/fixed/product` Get Fixed Savings Product List (KEYED)
+  - `/newearn/cloud/v1/saving/fixed/subscribe` Subscribe Fixed Savings (SIGNED)
+  - `/newearn/cloud/v1/saving/fixed/earn` Get Fixed Savings Holdings (KEYED)
+  - `/newearn/cloud/v1/saving/fixed/record` Get Fixed Savings History Records (KEYED)
+  - `/newearn/cloud/v1/saving/fixed/redeem` Early Redeem Fixed Savings (SIGNED)
+  - `/newearn/cloud/v1/saving/fixed/subscribe/operate` Modify Fixed Savings Auto-Renewal (SIGNED)
+  - `/newearn/cloud/v1/saving/subscribe/batch/operate` Enable/Disable Auto Savings (SIGNED)
+  - `/newearn/cloud/v1/saving/subscribe/batch` Get Global Auto Savings Status (KEYED)
+  - `/newearn/cloud/v1/saving/subscribe/operate` Enable/Disable Flexible Auto-Subscribe (SIGNED)
+  - `/newearn/cloud/v1/saving/subscribe/status` Get Flexible Auto-Subscribe Status (KEYED)
+
+
 ### v1.6.0 Release
 #### New Features
 - New

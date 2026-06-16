@@ -48,7 +48,7 @@ const (
 	CONTENT_TYPE = "Content-Type"
 	ACCEPT       = "Accept"
 	USER_AGENT   = "User-Agent"
-	VERSION      = "bitmart-go-sdk-api/1.6.0"
+	VERSION      = "bitmart-go-sdk-api/1.7.0"
 
 	APPLICATION_JSON      = "application/json"
 	APPLICATION_JSON_UTF8 = "application/json; charset=UTF-8"
@@ -197,6 +197,25 @@ const (
 	API_ACCOUNT_SUB_CONTRACT_WALLET_URL           = "/account/contract/sub-account/main/v1/wallet"
 	API_ACCOUNT_SUB_CONTRACT_TRANSFER_LIST_URL    = "/account/contract/sub-account/main/v1/transfer-list"
 	API_ACCOUNT_SUB_CONTRACT_TRANSFER_HISTORY_URL = "/account/contract/sub-account/v1/transfer-history"
+
+	// v1.7.0 New APIs
+	// Finance (Savings / Earn) Endpoints: https://developer.bitmart.com/finance
+	API_FINANCE_SAVINGS_HOLDINGS_URL               = "/newearn/cloud/v1/earn"
+	API_FINANCE_FLEXIBLE_PRODUCT_URL               = "/newearn/cloud/v1/saving/product"
+	API_FINANCE_FLEXIBLE_SUBSCRIBE_URL             = "/newearn/cloud/v1/saving/subscribe"
+	API_FINANCE_FLEXIBLE_REDEEM_URL                = "/newearn/cloud/v1/saving/redeem"
+	API_FINANCE_FLEXIBLE_EARN_URL                  = "/newearn/cloud/v1/saving/earn"
+	API_FINANCE_FLEXIBLE_RECORD_URL                = "/newearn/cloud/v1/saving/record"
+	API_FINANCE_FIXED_PRODUCT_URL                  = "/newearn/cloud/v1/saving/fixed/product"
+	API_FINANCE_FIXED_SUBSCRIBE_URL                = "/newearn/cloud/v1/saving/fixed/subscribe"
+	API_FINANCE_FIXED_EARN_URL                     = "/newearn/cloud/v1/saving/fixed/earn"
+	API_FINANCE_FIXED_RECORD_URL                   = "/newearn/cloud/v1/saving/fixed/record"
+	API_FINANCE_FIXED_REDEEM_URL                   = "/newearn/cloud/v1/saving/fixed/redeem"
+	API_FINANCE_FIXED_MODIFY_AUTO_RENEWAL_URL      = "/newearn/cloud/v1/saving/fixed/subscribe/operate"
+	API_FINANCE_AUTO_SAVING_TOGGLE_URL             = "/newearn/cloud/v1/saving/subscribe/batch/operate"
+	API_FINANCE_AUTO_SAVING_STATUS_URL             = "/newearn/cloud/v1/saving/subscribe/batch"
+	API_FINANCE_FLEXIBLE_AUTO_SUBSCRIBE_TOGGLE_URL = "/newearn/cloud/v1/saving/subscribe/operate"
+	API_FINANCE_FLEXIBLE_AUTO_SUBSCRIBE_STATUS_URL = "/newearn/cloud/v1/saving/subscribe/status"
 	// Futures Affiliate (Broker): https://developer.bitmart.com/futures
 	API_CONTRACT_AFFILIATE_REBATE_LIST_URL             = "/contract/private/affiliate/rebate-list"
 	API_CONTRACT_AFFILIATE_TRADE_LIST_URL              = "/contract/private/affiliate/trade-list"
